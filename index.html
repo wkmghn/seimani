@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <link rel="stylesheet" href="css/master.css" media="screen" title="no title" charset="utf-8">
+  <script type="text/javascript" src="main.js"></script>
+</head>
+<body>
+  <p>
+    ユニット種別:
+    <input type="radio" name="exp_bonus_unit_type" value="Melee" onclick="updateTable();" checked>近接
+    <input type="radio" name="exp_bonus_unit_type" value="Ranged" onclick="updateTable();">射撃
+    <input type="radio" name="exp_bonus_unit_type" value="Magic" onclick="updateTable();">魔法
+    <input type="radio" name="exp_bonus_unit_type" value="Heavy" onclick="updateTable();">重装
+  </p>
+  <p>
+    曜日:
+    <input type="radio" name="exp_bonus_day" value="Today" onclick="updateTable();" checked><span id="exp_bonus_day_today">今日</span>
+    <input type="radio" name="exp_bonus_day" value="Tomorrow" onclick="updateTable();"><span id="exp_bonus_day_tomorrow">明日</span>
+  </p>
+  <table id="stages" border="1">
+    <thead style="text-align: center;">
+      <tr>
+        <td rowspan="2">
+          ステージ
+        </td>
+        <td rowspan="2">
+          消費M
+        </td>
+        <td rowspan="2">
+          基本EXP
+        </td>
+        <td colspan="5">
+          EXPボーナス
+        </td>
+        <td colspan="2">
+          補正後EXP
+        </td>
+      </tr>
+      <tr>
+        <td>
+          曜日
+        </td>
+        <td>
+          種別
+        </td>
+        <td>
+          2倍
+        </td>
+        <td>
+          マナ
+        </td>
+        <td>
+          合計
+        </td>
+        <td>
+          EXP
+        </td>
+        <td>
+          EXP/M
+        </td>
+      </tr>
+    </thead>
+  </table id="stages_body">
+</body>
+</html>

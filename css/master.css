@@ -1,0 +1,96 @@
+body {
+    font-family: "Helvetica Neue", Helvetica, "ヒラギノ角ゴ ProN W3", "Hiragino Kaku Gothic ProN", "メイリオ", Meiryo, sans-serif;
+    font-size: 14px;
+    line-height: 1.42857143;
+    color: #4a4a4a;
+}
+
+table {
+  padding: 1px;
+  border: 1px;
+  background-color: white;
+  border-collapse: collapse;;
+  border-spacing: 0px;
+  border-color: #e0e0e0;
+}
+
+thead {
+  background-color: #c0c0c0;
+  font-weight: bold;
+}
+
+tbody tr:nth-child(odd) {
+  background-color: #f0f0f0;
+}
+
+tbody tr:nth-child(even) {
+  background-color: #fdfdfd;
+}
+
+td {
+  margin: 1px;
+  padding: 3px 8px;
+}
+
+td.stage_name {
+  font-weight: bold;
+}
+
+td.stage_mode_normal {
+  color: inherit;
+}
+
+td.stage_mode_hard {
+  color: #E08000;
+}
+
+td.stage_mode_twist {
+  color: #FF0040;
+}
+
+td.exp_bonus_unit_type {
+  /*font-weight: bold;*/
+  text-align: center;
+}
+
+span.unit_type_melee {
+  color: #3b77ff;
+}
+
+span.unit_type_ranged {
+  color: #119770;
+}
+
+span.unit_type_magic {
+  color: #e25bff;
+}
+
+span.unit_type_heavy {
+  color: #dab100;
+}
+
+span.inactive_exp_bonus_unit_type {
+  opacity: 0.25;
+}
+
+td.motivation_consumption {
+  text-align: center;
+}
+
+td.base_exp, td.final_exp {
+  text-align: center;
+}
+
+td.active_exp_bonus_day {
+  text-align: left;
+}
+
+td.inactive_exp_bonus_day {
+  text-align: left;
+  color: silver;
+}
+
+td.final_exp_per_motivation {
+  text-align: right;
+  font-weight: bold;
+}
