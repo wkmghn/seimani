@@ -94,3 +94,7 @@ td.final_exp_per_motivation {
   text-align: right;
   font-weight: bold;
 }
+
+dd {
+  margin-bottom: 0.5em;
+}
