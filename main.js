@@ -1,4 +1,4 @@
-function dayOfWeekToString(dayOfWeek) {
+function getDayOfWeekName(dayOfWeek) {
     switch (dayOfWeek) {
         case 0: return "日曜日";
         case 1: return "月曜日";
@@ -415,13 +415,13 @@ function initialize(ev) {
     var now = new Date();
     {
         var todayRadio = document.getElementById("exp_bonus_day_today");
-        todayRadio.innerText = "今日(" + dayOfWeekToString(now.getDay()) + ")";
+        todayRadio.innerText = "今日(" + getDayOfWeekName(now.getDay()) + ")";
     }
     {
         var tomorrowRadio = document.getElementById("exp_bonus_day_tomorrow");
         var tomorrow = now;
         tomorrow.setDate(now.getDate() + 1);
-        tomorrowRadio.innerText = "明日(" + dayOfWeekToString(tomorrow.getDay()) + ")";
+        tomorrowRadio.innerText = "明日(" + getDayOfWeekName(tomorrow.getDay()) + ")";
     }
     updateTable();
 }

@@ -1,4 +1,4 @@
-function dayOfWeekToString(dayOfWeek: number) : string {
+function getDayOfWeekName(dayOfWeek: number) : string {
   switch (dayOfWeek) {
     case 0: return "日曜日";
     case 1: return "月曜日";
@@ -467,14 +467,14 @@ function initialize(ev: Event): void {
 
   {
     let todayRadio = <HTMLInputElement>document.getElementById("exp_bonus_day_today");
-    todayRadio.innerText = "今日(" + dayOfWeekToString(now.getDay()) + ")";
+    todayRadio.innerText = "今日(" + getDayOfWeekName(now.getDay()) + ")";
   }
 
   {
     let tomorrowRadio = <HTMLInputElement>document.getElementById("exp_bonus_day_tomorrow");
     let tomorrow: Date = now;
     tomorrow.setDate(now.getDate() + 1);
-    tomorrowRadio.innerText = "明日(" + dayOfWeekToString(tomorrow.getDay()) + ")";
+    tomorrowRadio.innerText = "明日(" + getDayOfWeekName(tomorrow.getDay()) + ")";
   }
 
   updateTable();
