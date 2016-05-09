@@ -11,7 +11,13 @@ function getDayOfWeekName(dayOfWeek: number) : string {
   return "？曜日";
 }
 
-function getDayOfWeekLetter(dayOfWeek: number) : string {
+function getBonusDayLetter(dayOfWeek: number) : string {
+  if (dayOfWeek === undefined) {
+    return "？";
+  }
+  if (dayOfWeek == null) {
+    return "--";
+  }
   switch (dayOfWeek) {
     case 0: return "日";
     case 1: return "月";
@@ -97,15 +103,21 @@ class StageInfo
   //============================================================================
 
   // 1, 2, 3, 4, ...
+  // イベントステージの場合は null
   private _districtLetter: string;
   // 1, 2, 3, A, B, C, ...
+  // イベントステージの場合は null
   private _stageLetter: string;
+  // イベントステージの場合は null
   private _mode: StageMode;
+  // イベントステージ以外では null
+  private _eventStageName: string;
+  private _isEventStage: boolean;
   private _motivationConsumption: number;
   private _baseExp: number;
   private _baseGold: number;
   // 0: 日, 1: 月, ..., 6: 土
-  // null の場合はボーナス無し。
+  // null の場合はボーナス無し。undefined の場合はデータ無し。
   private _expBonusDay: number;
   private _goldBonusDay: number;
   // null の場合はボーナス無し。
@@ -128,8 +140,6 @@ class StageInfo
     expBonusUnitType: UnitType,
     isManaBonusAllowed: boolean = true)
   {
-    this._districtLetter = stageName[2];
-    this._stageLetter = stageName[4];
     this._motivationConsumption = motivationConsumption;
     this._baseExp = baseExp;
     this._baseGold = baseGold;
@@ -137,16 +147,29 @@ class StageInfo
     this._goldBonusDay = goldBonusDay;
     this._expBonusUnitType = expBonusUnitType;
     this._isManaBonusAllowed = isManaBonusAllowed;
-    switch (stageName[0]) {
-      case "N":
-        this._mode = StageMode.Normal;
-        break;
-      case "H":
-        this._mode = StageMode.Hard;
-        break;
-      case "T":
-        this._mode = StageMode.Twist;
-        break;
+
+    if (5 == stageName.length && stageName[3] == "-") {
+      this._districtLetter = stageName[2];
+      this._stageLetter = stageName[4];
+      switch (stageName[0]) {
+        case "N":
+          this._mode = StageMode.Normal;
+          break;
+        case "H":
+          this._mode = StageMode.Hard;
+          break;
+        case "T":
+          this._mode = StageMode.Twist;
+          break;
+      }
+      this._eventStageName = null;
+      this._isEventStage = false;
+    } else {
+      this._districtLetter = null;
+      this._stageLetter = null;
+      this._mode = null;
+      this._eventStageName = stageName;
+      this._isEventStage = true;
     }
   }
 
@@ -156,12 +179,20 @@ class StageInfo
 
   // N 1-1 形式
   public get fullName() : string {
-    return getStageModeLetter(this._mode) + " " + this._districtLetter + "-" + this._stageLetter;
+    if (this._isEventStage) {
+      return this._eventStageName;
+    } else {
+      return getStageModeLetter(this._mode) + " " + this._districtLetter + "-" + this._stageLetter;
+    }
   }
 
   // 1-1 形式 (難易度部分を含まない)
   public get shortName() : string {
-    return this._districtLetter + "-" + this._stageLetter;
+    if (this._isEventStage) {
+      return this._eventStageName;
+    } else {
+      return this._districtLetter + "-" + this._stageLetter;
+    }
   }
 
   public get mode() : StageMode {
@@ -368,7 +399,14 @@ function updateTable() : void {
     // N 4
     new StageInfo("N 4-1", 25, 2966, 2740, 月, 木, UnitType.Magic),
     new StageInfo("N 4-2", 25, 3004, 2760, 火, 金, UnitType.Melee),
-    new StageInfo("N 4-3", 25, 3062, 2770, null/*水？*/, 土, UnitType.Ranged),
+    new StageInfo("N 4-3", 25, 3062, 2770, undefined/*水？*/, 土, UnitType.Ranged),
+
+    // 第一次闘弌治宝戦挙
+    new StageInfo("初級", 15, 1500, 1050, 無, 無, null),
+    new StageInfo("中級", 25, 2625, 3500, 無, 無, null),
+    new StageInfo("上級", 35, 3850, 6650, 無, 無, null),
+    new StageInfo("まつり", 40, 4400, 8000, 無, 無, null),
+    new StageInfo("ちまつり", 50, 5500, 9450, 無, 無, null),
   ];
 
   // テーブルの行
@@ -432,7 +470,7 @@ function updateTable() : void {
     // 曜日ボーナス
     {
       let cell = newRow.insertCell();
-      cell.innerText = getDayOfWeekLetter(r.stageInfo.expBonusDay);
+      cell.innerText = getBonusDayLetter(r.stageInfo.expBonusDay);
       cell.innerText += r.isExpBonusDay ? " x1.2" : " ";
       cell.classList.add(r.isExpBonusDay ? "active_exp_bonus_day" : "inactive_exp_bonus_day")
     }

@@ -10,7 +10,13 @@ function getDayOfWeekName(dayOfWeek) {
     }
     return "？曜日";
 }
-function getDayOfWeekLetter(dayOfWeek) {
+function getBonusDayLetter(dayOfWeek) {
+    if (dayOfWeek === undefined) {
+        return "？";
+    }
+    if (dayOfWeek == null) {
+        return "--";
+    }
     switch (dayOfWeek) {
         case 0: return "日";
         case 1: return "月";
@@ -84,8 +90,6 @@ function getExpBonusUnitTypeLetter(unitType) {
 var StageInfo = (function () {
     function StageInfo(stageName, motivationConsumption, baseExp, baseGold, expBonusDay, goldBonusDay, expBonusUnitType, isManaBonusAllowed) {
         if (isManaBonusAllowed === void 0) { isManaBonusAllowed = true; }
-        this._districtLetter = stageName[2];
-        this._stageLetter = stageName[4];
         this._motivationConsumption = motivationConsumption;
         this._baseExp = baseExp;
         this._baseGold = baseGold;
@@ -93,28 +97,51 @@ var StageInfo = (function () {
         this._goldBonusDay = goldBonusDay;
         this._expBonusUnitType = expBonusUnitType;
         this._isManaBonusAllowed = isManaBonusAllowed;
-        switch (stageName[0]) {
-            case "N":
-                this._mode = StageMode.Normal;
-                break;
-            case "H":
-                this._mode = StageMode.Hard;
-                break;
-            case "T":
-                this._mode = StageMode.Twist;
-                break;
+        if (5 == stageName.length && stageName[3] == "-") {
+            this._districtLetter = stageName[2];
+            this._stageLetter = stageName[4];
+            switch (stageName[0]) {
+                case "N":
+                    this._mode = StageMode.Normal;
+                    break;
+                case "H":
+                    this._mode = StageMode.Hard;
+                    break;
+                case "T":
+                    this._mode = StageMode.Twist;
+                    break;
+            }
+            this._eventStageName = null;
+            this._isEventStage = false;
+        }
+        else {
+            this._districtLetter = null;
+            this._stageLetter = null;
+            this._mode = null;
+            this._eventStageName = stageName;
+            this._isEventStage = true;
         }
     }
     Object.defineProperty(StageInfo.prototype, "fullName", {
         get: function () {
-            return getStageModeLetter(this._mode) + " " + this._districtLetter + "-" + this._stageLetter;
+            if (this._isEventStage) {
+                return this._eventStageName;
+            }
+            else {
+                return getStageModeLetter(this._mode) + " " + this._districtLetter + "-" + this._stageLetter;
+            }
         },
         enumerable: true,
         configurable: true
     });
     Object.defineProperty(StageInfo.prototype, "shortName", {
         get: function () {
-            return this._districtLetter + "-" + this._stageLetter;
+            if (this._isEventStage) {
+                return this._eventStageName;
+            }
+            else {
+                return this._districtLetter + "-" + this._stageLetter;
+            }
         },
         enumerable: true,
         configurable: true
@@ -332,7 +359,12 @@ function updateTable() {
         new StageInfo("H 3-5", 41, 4579, 4460, 金, 木, null),
         new StageInfo("N 4-1", 25, 2966, 2740, 月, 木, UnitType.Magic),
         new StageInfo("N 4-2", 25, 3004, 2760, 火, 金, UnitType.Melee),
-        new StageInfo("N 4-3", 25, 3062, 2770, null, 土, UnitType.Ranged),
+        new StageInfo("N 4-3", 25, 3062, 2770, undefined, 土, UnitType.Ranged),
+        new StageInfo("初級", 15, 1500, 1050, 無, 無, null),
+        new StageInfo("中級", 25, 2625, 3500, 無, 無, null),
+        new StageInfo("上級", 35, 3850, 6650, 無, 無, null),
+        new StageInfo("まつり", 40, 4400, 8000, 無, 無, null),
+        new StageInfo("ちまつり", 50, 5500, 9450, 無, 無, null),
     ];
     var records = [];
     var expBonusUnitType = getSelectedExpBonusUnitType();
@@ -389,7 +421,7 @@ function updateTable() {
         }
         {
             var cell = newRow.insertCell();
-            cell.innerText = getDayOfWeekLetter(r.stageInfo.expBonusDay);
+            cell.innerText = getBonusDayLetter(r.stageInfo.expBonusDay);
             cell.innerText += r.isExpBonusDay ? " x1.2" : " ";
             cell.classList.add(r.isExpBonusDay ? "active_exp_bonus_day" : "inactive_exp_bonus_day");
         }
