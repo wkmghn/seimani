@@ -239,6 +239,8 @@ class TableRecord
 
     this._finalExpFactor = expFactor;
     this._finalExp = this._stageInfo.baseExp * expFactor;
+
+    this.colorScaleRatio = 0.0;
   }
 
   public get stageInfo() : StageInfo { return this._stageInfo; }
@@ -249,6 +251,7 @@ class TableRecord
   public get finalExpFactor() : number { return this._finalExpFactor; }
   public get finalExp() : number { return this._finalExp; }
   public get finalExpPerMotivation() : number { return this._finalExp / this._stageInfo.motivationConsumption; }
+  public colorScaleRatio : number;  // 0..1
 }
 
 function getSelectedExpBonusUnitType() : UnitType {
@@ -378,10 +381,24 @@ function updateTable() : void {
     let r = new TableRecord(stageInfo, expBonusUnitType, dayOfWeek, useManaBonus, useDoubleExpBonus);
     records.push(r);
   }
-  // 経験値効率でソートしておく
+  // 経験値効率でソート
   records.sort(function (a: TableRecord, b: TableRecord) {
      return b.finalExpPerMotivation - a.finalExpPerMotivation;
   })
+
+  // カラースケール値を計算する
+  {
+    let maxFinalExpPerMotivation = records[0].finalExpPerMotivation;
+    let minFinalExpPerMotivation = records[Math.min(10, records.length) - 1].finalExpPerMotivation;  // 上位15ステージまでを色付け (records が空の場合は考慮しない)
+    for (let record of records) {
+      if (minFinalExpPerMotivation < record.finalExpPerMotivation) {
+        let linearRatio = (record.finalExpPerMotivation - minFinalExpPerMotivation) / (maxFinalExpPerMotivation - minFinalExpPerMotivation);
+        record.colorScaleRatio = Math.pow(linearRatio, 1.5);
+      } else {
+        record.colorScaleRatio = 0.0;
+      }
+    }
+  }
 
   // table を作成
   let table = <HTMLTableElement>document.getElementById("stages");
@@ -458,6 +475,16 @@ function updateTable() : void {
       let cell = newRow.insertCell();
       cell.innerText = r.finalExpPerMotivation.toFixed(2);
       cell.classList.add("final_exp_per_motivation");
+      // カラースケール
+      if (0 < r.colorScaleRatio) {
+        function lerp(a: number, b: number, t: number) { return a * (1 - t) + b * t; }
+        let colorR = lerp(255, 60, r.colorScaleRatio).toFixed(0);
+        let colorG = lerp(255, 240, r.colorScaleRatio).toFixed(0);
+        let colorB = lerp(255, 92, r.colorScaleRatio).toFixed(0);
+        cell.style.backgroundColor = "rgb(" + colorR + ", " + colorG + ", " + colorB + ")";
+      } else {
+        cell.style.backgroundColor = "inherit";
+      }
     }
   }
 }

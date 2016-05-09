@@ -192,6 +192,7 @@ var TableRecord = (function () {
         }
         this._finalExpFactor = expFactor;
         this._finalExp = this._stageInfo.baseExp * expFactor;
+        this.colorScaleRatio = 0.0;
     }
     Object.defineProperty(TableRecord.prototype, "stageInfo", {
         get: function () { return this._stageInfo; },
@@ -346,6 +347,20 @@ function updateTable() {
     records.sort(function (a, b) {
         return b.finalExpPerMotivation - a.finalExpPerMotivation;
     });
+    {
+        var maxFinalExpPerMotivation = records[0].finalExpPerMotivation;
+        var minFinalExpPerMotivation = records[Math.min(10, records.length) - 1].finalExpPerMotivation;
+        for (var _a = 0, records_1 = records; _a < records_1.length; _a++) {
+            var record = records_1[_a];
+            if (minFinalExpPerMotivation < record.finalExpPerMotivation) {
+                var linearRatio = (record.finalExpPerMotivation - minFinalExpPerMotivation) / (maxFinalExpPerMotivation - minFinalExpPerMotivation);
+                record.colorScaleRatio = Math.pow(linearRatio, 1.5);
+            }
+            else {
+                record.colorScaleRatio = 0.0;
+            }
+        }
+    }
     var table = document.getElementById("stages");
     var table_body = document.getElementById("stages_body");
     if (table_body != null) {
@@ -353,8 +368,8 @@ function updateTable() {
     }
     var tBody = table.createTBody();
     tBody.id = "stages_body";
-    for (var _a = 0, records_1 = records; _a < records_1.length; _a++) {
-        var r = records_1[_a];
+    for (var _b = 0, records_2 = records; _b < records_2.length; _b++) {
+        var r = records_2[_b];
         var newRow = tBody.insertRow();
         {
             var cell = newRow.insertCell();
@@ -408,6 +423,16 @@ function updateTable() {
             var cell = newRow.insertCell();
             cell.innerText = r.finalExpPerMotivation.toFixed(2);
             cell.classList.add("final_exp_per_motivation");
+            if (0 < r.colorScaleRatio) {
+                function lerp(a, b, t) { return a * (1 - t) + b * t; }
+                var colorR = lerp(255, 60, r.colorScaleRatio).toFixed(0);
+                var colorG = lerp(255, 240, r.colorScaleRatio).toFixed(0);
+                var colorB = lerp(255, 92, r.colorScaleRatio).toFixed(0);
+                cell.style.backgroundColor = "rgb(" + colorR + ", " + colorG + ", " + colorB + ")";
+            }
+            else {
+                cell.style.backgroundColor = "inherit";
+            }
         }
     }
 }
