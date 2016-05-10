@@ -446,6 +446,7 @@ function updateTable() : void {
   }
   let tBody = table.createTBody();
   tBody.id = "stages_body";
+  tBody.classList.add("stripe")
   for (let r of records) {
     let newRow = tBody.insertRow();
     // ステージ名
@@ -527,7 +528,7 @@ function updateTable() : void {
   }
 }
 
-function initialize(ev: Event): void {
+function initializeExpTable(ev: Event): void {
   let now: Date = new Date();
 
   {
@@ -544,4 +545,4 @@ function initialize(ev: Event): void {
 
   updateTable();
 }
-window.onload = initialize;
+window.onload = initializeExpTable;

@@ -18,11 +18,11 @@ thead {
   font-weight: bold;
 }
 
-tbody tr:nth-child(odd) {
+tbody.stripe tr:nth-child(even) {
   background-color: #f0f0f0;
 }
 
-tbody tr:nth-child(even) {
+tbody.stripe tr:nth-child(odd) {
   background-color: #fdfdfd;
 }
 

@@ -400,6 +400,7 @@ function updateTable() {
     }
     var tBody = table.createTBody();
     tBody.id = "stages_body";
+    tBody.classList.add("stripe");
     for (var _b = 0, records_2 = records; _b < records_2.length; _b++) {
         var r = records_2[_b];
         var newRow = tBody.insertRow();
@@ -468,7 +469,7 @@ function updateTable() {
         }
     }
 }
-function initialize(ev) {
+function initializeExpTable(ev) {
     var now = new Date();
     {
         var todayRadio = document.getElementById("exp_bonus_day_today");
@@ -482,4 +483,4 @@ function initialize(ev) {
     }
     updateTable();
 }
-window.onload = initialize;
+window.onload = initializeExpTable;
