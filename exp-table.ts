@@ -243,7 +243,7 @@ class TableRecord
 
     let expFactor: number = 1.0;
     // ユニット種別によるボーナス
-    if (this._stageInfo.expBonusUnitType == this._expBonusUnitType) {
+    if ((this._expBonusUnitType != null) && (this._stageInfo.expBonusUnitType == this._expBonusUnitType)) {
       expFactor *= 1.2;
       this._isUnitTypeExpBonusApplied = true;
     } else {
@@ -285,12 +285,17 @@ class TableRecord
   public colorScaleRatio : number;  // 0..1
 }
 
+// 総理が選択されている場合は null を返す。
 function getSelectedExpBonusUnitType() : UnitType {
   let radios = document.getElementsByName("exp_bonus_unit_type");
   for (let i: number = 0; i < radios.length; ++i) {
     let radio = <HTMLInputElement>radios[i];
     if (radio.checked) {
-      return parseUnitType(radio.value);
+      if (radio.value == "Souri") {
+        return null;
+      } else {
+        return parseUnitType(radio.value);
+      }
     }
   }
   return null;
@@ -414,7 +419,7 @@ function updateTable() : void {
   let expBonusUnitType = getSelectedExpBonusUnitType();
   let dayOfWeek: number = getSelectedDayOfWeek();
   let useManaBonus: boolean = true;
-  let useDoubleExpBonus: boolean = true;
+  let useDoubleExpBonus: boolean = (expBonusUnitType != null);  // 総理ランクEXP計算時は2倍を適用しない
   for (let stageInfo of stages) {
     let r = new TableRecord(stageInfo, expBonusUnitType, dayOfWeek, useManaBonus, useDoubleExpBonus);
     records.push(r);
@@ -492,16 +497,19 @@ function updateTable() : void {
     {
       let cell = newRow.insertCell();
       cell.innerText = r.isExpDoubleBonusApplied ? "x2.0" : "";
+      cell.style.textAlign = "center";
     }
     // 残マナボーナス
     {
       let cell = newRow.insertCell();
       cell.innerText = r.isManaBonusApplied ? "x1.2" : "";
+      cell.style.textAlign = "center";
     }
     // 最終補正倍率
     {
       let cell = newRow.insertCell();
       cell.innerText = "x" + r.finalExpFactor.toFixed(2);
+      cell.style.textAlign = "center";
     }
     // 最終EXP
     {

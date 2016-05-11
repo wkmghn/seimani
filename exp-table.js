@@ -193,7 +193,7 @@ var TableRecord = (function () {
         this._dayOfWeek = dayOfWeek;
         this._isDoubleExpBonusApplied = useDoubleExpBonus;
         var expFactor = 1.0;
-        if (this._stageInfo.expBonusUnitType == this._expBonusUnitType) {
+        if ((this._expBonusUnitType != null) && (this._stageInfo.expBonusUnitType == this._expBonusUnitType)) {
             expFactor *= 1.2;
             this._isUnitTypeExpBonusApplied = true;
         }
@@ -268,7 +268,12 @@ function getSelectedExpBonusUnitType() {
     for (var i = 0; i < radios.length; ++i) {
         var radio = radios[i];
         if (radio.checked) {
-            return parseUnitType(radio.value);
+            if (radio.value == "Souri") {
+                return null;
+            }
+            else {
+                return parseUnitType(radio.value);
+            }
         }
     }
     return null;
@@ -370,7 +375,7 @@ function updateTable() {
     var expBonusUnitType = getSelectedExpBonusUnitType();
     var dayOfWeek = getSelectedDayOfWeek();
     var useManaBonus = true;
-    var useDoubleExpBonus = true;
+    var useDoubleExpBonus = (expBonusUnitType != null);
     for (var _i = 0, stages_1 = stages; _i < stages_1.length; _i++) {
         var stageInfo = stages_1[_i];
         var r = new TableRecord(stageInfo, expBonusUnitType, dayOfWeek, useManaBonus, useDoubleExpBonus);
@@ -438,14 +443,17 @@ function updateTable() {
         {
             var cell = newRow.insertCell();
             cell.innerText = r.isExpDoubleBonusApplied ? "x2.0" : "";
+            cell.style.textAlign = "center";
         }
         {
             var cell = newRow.insertCell();
             cell.innerText = r.isManaBonusApplied ? "x1.2" : "";
+            cell.style.textAlign = "center";
         }
         {
             var cell = newRow.insertCell();
             cell.innerText = "x" + r.finalExpFactor.toFixed(2);
+            cell.style.textAlign = "center";
         }
         {
             var cell = newRow.insertCell();
