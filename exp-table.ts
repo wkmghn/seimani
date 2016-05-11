@@ -403,8 +403,20 @@ function updateTable() : void {
 
     // N 4
     new StageInfo("N 4-1", 25, 2966, 2740, 月, 木, UnitType.Magic),
+    new StageInfo("N 4-A", 25, 2971, 1, undefined, undefined, UnitType.Melee),
     new StageInfo("N 4-2", 25, 3004, 2760, 火, 金, UnitType.Melee),
+    new StageInfo("N 4-B", 25, 3042, 1, undefined, undefined, UnitType.Heavy),
     new StageInfo("N 4-3", 25, 3062, 2770, 水, 土, UnitType.Ranged),
+    new StageInfo("N 4-4", 26, 3246, 1, 木, undefined, UnitType.Ranged),
+    new StageInfo("N 4-5", 26, 3251, 1, undefined, undefined, UnitType.Magic),
+
+    new StageInfo("H 4-1", 41, 5186, 1, undefined, undefined, UnitType.Ranged),
+    new StageInfo("H 4-A", 41, 5234, 1, undefined, undefined, UnitType.Ranged),
+    new StageInfo("H 4-2", 41, 5236, 1, undefined, undefined, UnitType.Melee),
+    new StageInfo("H 4-B", 41, 5229, 1, 木, undefined, UnitType.Magic),
+    new StageInfo("H 4-3", 41, 5250, 1, undefined, undefined, UnitType.Magic),
+    new StageInfo("H 4-4", 41, 5352, 1, undefined, 木, UnitType.Melee),
+    new StageInfo("H 4-5", 42, 5535, 1, undefined, undefined, UnitType.Heavy),
 
     // 第一次闘弌治宝戦挙
     new StageInfo("初級", 15, 1500, 1050, 無, 無, null, false),
