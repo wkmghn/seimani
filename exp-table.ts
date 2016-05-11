@@ -407,11 +407,11 @@ function updateTable() : void {
     new StageInfo("N 4-3", 25, 3062, 2770, 水, 土, UnitType.Ranged),
 
     // 第一次闘弌治宝戦挙
-    new StageInfo("初級", 15, 1500, 1050, 無, 無, null),
-    new StageInfo("中級", 25, 2625, 3500, 無, 無, null),
-    new StageInfo("上級", 35, 3850, 6650, 無, 無, null),
-    new StageInfo("まつり", 40, 4400, 8000, 無, 無, null),
-    new StageInfo("ちまつり", 50, 5500, 9450, 無, 無, null),
+    new StageInfo("初級", 15, 1500, 1050, 無, 無, null, false),
+    new StageInfo("中級", 25, 2625, 3500, 無, 無, null, false),
+    new StageInfo("上級", 35, 3850, 6650, 無, 無, null, false),
+    new StageInfo("まつり", 40, 4400, 8000, 無, 無, null, false),
+    new StageInfo("ちまつり", 50, 5500, 9450, 無, 無, null, false),
   ];
 
   // テーブルの行
@@ -491,7 +491,6 @@ function updateTable() : void {
       unitTypeElement.classList.add(r.isUnitTypeExpBonnusApplied ? "active_exp_bonus_unit_type" : "inactive_exp_bonus_unit_type")
 
       cell.innerHTML += r.isUnitTypeExpBonnusApplied ? " x1.2" : "";
-      //cell.innerText = r.isUnitTypeExpBonnusApplied ? "x1.2" : "";
     }
     // 2倍ボーナス
     {
@@ -502,7 +501,10 @@ function updateTable() : void {
     // 残マナボーナス
     {
       let cell = newRow.insertCell();
-      cell.innerText = r.isManaBonusApplied ? "x1.2" : "";
+      cell.innerText = r.isManaBonusApplied ? "x1.2" : (r.stageInfo.isManaBonusAllowed ?  "--" : "--");
+      if (!r.isManaBonusApplied) {
+        cell.classList.add("inactive_mana_bonus");
+      }
       cell.style.textAlign = "center";
     }
     // 最終補正倍率

@@ -90,6 +90,10 @@ td.inactive_exp_bonus_day {
   color: silver;
 }
 
+td.inactive_mana_bonus {
+  color: silver;
+}
+
 td.final_exp_per_motivation {
   text-align: right;
   font-weight: bold;

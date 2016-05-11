@@ -365,11 +365,11 @@ function updateTable() {
         new StageInfo("N 4-1", 25, 2966, 2740, 月, 木, UnitType.Magic),
         new StageInfo("N 4-2", 25, 3004, 2760, 火, 金, UnitType.Melee),
         new StageInfo("N 4-3", 25, 3062, 2770, 水, 土, UnitType.Ranged),
-        new StageInfo("初級", 15, 1500, 1050, 無, 無, null),
-        new StageInfo("中級", 25, 2625, 3500, 無, 無, null),
-        new StageInfo("上級", 35, 3850, 6650, 無, 無, null),
-        new StageInfo("まつり", 40, 4400, 8000, 無, 無, null),
-        new StageInfo("ちまつり", 50, 5500, 9450, 無, 無, null),
+        new StageInfo("初級", 15, 1500, 1050, 無, 無, null, false),
+        new StageInfo("中級", 25, 2625, 3500, 無, 無, null, false),
+        new StageInfo("上級", 35, 3850, 6650, 無, 無, null, false),
+        new StageInfo("まつり", 40, 4400, 8000, 無, 無, null, false),
+        new StageInfo("ちまつり", 50, 5500, 9450, 無, 無, null, false),
     ];
     var records = [];
     var expBonusUnitType = getSelectedExpBonusUnitType();
@@ -447,7 +447,10 @@ function updateTable() {
         }
         {
             var cell = newRow.insertCell();
-            cell.innerText = r.isManaBonusApplied ? "x1.2" : "";
+            cell.innerText = r.isManaBonusApplied ? "x1.2" : (r.stageInfo.isManaBonusAllowed ? "--" : "--");
+            if (!r.isManaBonusApplied) {
+                cell.classList.add("inactive_mana_bonus");
+            }
             cell.style.textAlign = "center";
         }
         {
