@@ -359,7 +359,7 @@ function updateTable() {
         new StageInfo("H 3-5", 41, 4579, 4460, 金, 木, null),
         new StageInfo("N 4-1", 25, 2966, 2740, 月, 木, UnitType.Magic),
         new StageInfo("N 4-2", 25, 3004, 2760, 火, 金, UnitType.Melee),
-        new StageInfo("N 4-3", 25, 3062, 2770, undefined, 土, UnitType.Ranged),
+        new StageInfo("N 4-3", 25, 3062, 2770, 水, 土, UnitType.Ranged),
         new StageInfo("初級", 15, 1500, 1050, 無, 無, null),
         new StageInfo("中級", 25, 2625, 3500, 無, 無, null),
         new StageInfo("上級", 35, 3850, 6650, 無, 無, null),
