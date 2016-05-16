@@ -195,25 +195,14 @@ class StageInfo
     }
   }
 
-  public get mode() : StageMode {
-    return this._mode;
-  }
-
-  public get motivationConsumption() : number {
-    return this._motivationConsumption;
-  }
-
+  public get mode() : StageMode { return this._mode; }
+  public get motivationConsumption() : number { return this._motivationConsumption; }
   public get baseExp() : number { return this._baseExp; }
-
-  public get expBonusDay() : number {
-    return this._expBonusDay;
-  }
-
-  public get expBonusUnitType() : UnitType {
-    return this._expBonusUnitType;
-  }
-
+  public get expBonusDay() : number { return this._expBonusDay; }
+  public get expBonusUnitType() : UnitType { return this._expBonusUnitType; }
   public get isManaBonusAllowed() : boolean { return this._isManaBonusAllowed; }
+  public get baseGold() : number { return this._baseGold; }
+  public get goldBonusDay() : number { return this._goldBonusDay; }
 
   //============================================================================
   // METHODS
@@ -234,44 +223,74 @@ class TableRecord
   private _finalExpFactor: number;
   private _finalExp: number;
 
+  private _isGoldBonusDay: boolean;
+  private _finalGoldFactor: number;
+
   // dayOfWeek: 曜日 (0 = 日, 1 = 月, ..., 6 = 土)
-  public constructor(stageInfo: StageInfo, expBonusUnitType: UnitType, dayOfWeek: number, useManaBonus: boolean, useDoubleExpBonus: boolean) {
+  public constructor(
+    stageInfo: StageInfo,
+    expBonusUnitType: UnitType,
+    dayOfWeek: number,
+    useManaBonus: boolean,
+    useDoubleExpBonus: boolean,
+    useDefenseBonus: boolean)
+  {
     this._stageInfo = stageInfo;
     this._expBonusUnitType = expBonusUnitType;
     this._dayOfWeek = dayOfWeek;
     this._isDoubleExpBonusApplied = useDoubleExpBonus;
 
-    let expFactor: number = 1.0;
-    // ユニット種別によるボーナス
-    if ((this._expBonusUnitType != null) && (this._stageInfo.expBonusUnitType == this._expBonusUnitType)) {
-      expFactor *= 1.2;
-      this._isUnitTypeExpBonusApplied = true;
-    } else {
-      this._isUnitTypeExpBonusApplied = false;
-    }
-    // 曜日によるボーナス
-    if (this._stageInfo.expBonusDay != null && this._stageInfo.expBonusDay == this._dayOfWeek) {
-      expFactor *= 1.2;
-      this._isExpBonusDay = true;
-    } else {
-      this._isExpBonusDay = false;
-    }
-    // 残マナボーナス
-    if (useManaBonus && this._stageInfo.isManaBonusAllowed) {
-      expFactor *= 1.2;
-      this._isManaBonusApplied = true;
-    } else {
-      this._isManaBonusApplied = false;
-    }
-    // 二倍ボーナス
-    if (useDoubleExpBonus) {
-      expFactor *= 2.0;
+    // EXP
+    {
+      let expFactor: number = 1.0;
+      // ユニット種別によるボーナス
+      if ((this._expBonusUnitType != null) && (this._stageInfo.expBonusUnitType == this._expBonusUnitType)) {
+        expFactor *= 1.2;
+        this._isUnitTypeExpBonusApplied = true;
+      } else {
+        this._isUnitTypeExpBonusApplied = false;
+      }
+      // 曜日によるボーナス
+      if (this._stageInfo.expBonusDay != null && this._stageInfo.expBonusDay == this._dayOfWeek) {
+        expFactor *= 1.2;
+        this._isExpBonusDay = true;
+      } else {
+        this._isExpBonusDay = false;
+      }
+      // 残マナボーナス
+      if (useManaBonus && this._stageInfo.isManaBonusAllowed) {
+        expFactor *= 1.2;
+        this._isManaBonusApplied = true;
+      } else {
+        this._isManaBonusApplied = false;
+      }
+      // 二倍ボーナス
+      if (useDoubleExpBonus) {
+        expFactor *= 2.0;
+      }
+
+      this._finalExpFactor = expFactor;
+      this._finalExp = this._stageInfo.baseExp * expFactor;
     }
 
-    this._finalExpFactor = expFactor;
-    this._finalExp = this._stageInfo.baseExp * expFactor;
+    // Gold
+    {
+      let goldFactor: number = 1.0;
+      // 曜日によるボーナス
+      if (this._stageInfo.goldBonusDay != null && this._stageInfo.goldBonusDay == this._dayOfWeek) {
+        goldFactor *= 1.2;
+        this._isGoldBonusDay = true;
+      } else {
+        this._isGoldBonusDay = false;
+      }
+      // 拠点防衛ボーナス
+      if (useDefenseBonus) {
+        goldFactor *= 1.2;
+      }
+      this._finalGoldFactor = goldFactor;
+    }
 
-    this.colorScaleRatio = 0.0;
+    this.expColorScaleRatio = null;
   }
 
   public get stageInfo() : StageInfo { return this._stageInfo; }
@@ -282,7 +301,8 @@ class TableRecord
   public get finalExpFactor() : number { return this._finalExpFactor; }
   public get finalExp() : number { return this._finalExp; }
   public get finalExpPerMotivation() : number { return this._finalExp / this._stageInfo.motivationConsumption; }
-  public colorScaleRatio : number;  // 0..1
+  public get finalGoldPerMotivation() : number { return this._stageInfo.baseGold * this._finalGoldFactor / this._stageInfo.motivationConsumption; }
+  public expColorScaleRatio : number;  // 0..1, or null
 }
 
 // 総理が選択されている場合は null を返す。
@@ -403,38 +423,42 @@ function updateTable() : void {
 
     // N 4
     new StageInfo("N 4-1", 25, 2966, 2740, 月, 木, UnitType.Magic),
-    new StageInfo("N 4-A", 25, 2971, 1, undefined, undefined, UnitType.Melee),
     new StageInfo("N 4-2", 25, 3004, 2760, 火, 金, UnitType.Melee),
-    new StageInfo("N 4-B", 25, 3042, 1, undefined, undefined, UnitType.Heavy),
     new StageInfo("N 4-3", 25, 3062, 2770, 水, 土, UnitType.Ranged),
-    new StageInfo("N 4-4", 26, 3246, 1, 木, undefined, UnitType.Ranged),
-    new StageInfo("N 4-5", 26, 3251, 1, undefined, undefined, UnitType.Magic),
+    new StageInfo("N 4-4", 26, 3246, 2860, 木, 日, UnitType.Ranged),
+    new StageInfo("N 4-5", 26, 3251, 2860, 金, 月, UnitType.Magic),
+    new StageInfo("N 4-A", 25, 2971, 2790, 土, 火, UnitType.Melee),
+    new StageInfo("N 4-B", 25, 3042, 2820, 日, 水, UnitType.Heavy),
 
-    new StageInfo("H 4-1", 41, 5186, 1, undefined, undefined, UnitType.Ranged),
-    new StageInfo("H 4-A", 41, 5234, 1, undefined, undefined, UnitType.Ranged),
-    new StageInfo("H 4-2", 41, 5236, 1, undefined, undefined, UnitType.Melee),
-    new StageInfo("H 4-B", 41, 5229, 1, 木, undefined, UnitType.Magic),
-    new StageInfo("H 4-3", 41, 5250, 1, undefined, undefined, UnitType.Magic),
-    new StageInfo("H 4-4", 41, 5352, 1, undefined, 木, UnitType.Melee),
-    new StageInfo("H 4-5", 42, 5535, 1, undefined, undefined, UnitType.Heavy),
+    // H 4
+    new StageInfo("H 4-1", 41, 5186, 4790, 金, 月, UnitType.Ranged),
+    new StageInfo("H 4-2", 41, 5236, 4840, 土, 火, UnitType.Melee),
+    new StageInfo("H 4-3", 41, 5250, 4740, 日, 水, UnitType.Magic),
+    new StageInfo("H 4-4", 41, 5352, 4750, 月, 木, UnitType.Melee),
+    new StageInfo("H 4-5", 42, 5535, 4830, 火, 金, UnitType.Heavy),
+    new StageInfo("H 4-A", 41, 5234, 4780, 水, 土, UnitType.Ranged),
+    new StageInfo("H 4-B", 41, 5229, 4900, 木, 日, UnitType.Magic),
 
     // 第一次闘弌治宝戦挙
-    new StageInfo("初級", 15, 1500, 1050, 無, 無, null, false),
-    new StageInfo("中級", 25, 2625, 3500, 無, 無, null, false),
-    new StageInfo("上級", 35, 3850, 6650, 無, 無, null, false),
-    new StageInfo("まつり", 40, 4400, 8000, 無, 無, null, false),
-    new StageInfo("ちまつり", 50, 5500, 9450, 無, 無, null, false),
+    //new StageInfo("初級", 15, 1500, 1050, 無, 無, null, false),
+    //new StageInfo("中級", 25, 2625, 3500, 無, 無, null, false),
+    //new StageInfo("上級", 35, 3850, 6650, 無, 無, null, false),
+    //new StageInfo("まつり", 40, 4400, 8000, 無, 無, null, false),
+    //new StageInfo("ちまつり", 50, 5500, 9450, 無, 無, null, false),
   ];
 
   // テーブルの行
   let records: TableRecord[] = [];
-  let expBonusUnitType = getSelectedExpBonusUnitType();
-  let dayOfWeek: number = getSelectedDayOfWeek();
-  let useManaBonus: boolean = true;
-  let useDoubleExpBonus: boolean = (expBonusUnitType != null);  // 総理ランクEXP計算時は2倍を適用しない
-  for (let stageInfo of stages) {
-    let r = new TableRecord(stageInfo, expBonusUnitType, dayOfWeek, useManaBonus, useDoubleExpBonus);
-    records.push(r);
+  {
+    let expBonusUnitType = getSelectedExpBonusUnitType();
+    let dayOfWeek: number = getSelectedDayOfWeek();
+    let useManaBonus: boolean = true;
+    let useDoubleExpBonus: boolean = (expBonusUnitType != null);  // 総理ランクEXP計算時は2倍を適用しない
+    let useDefenseBonus: boolean = true;
+    for (let stageInfo of stages) {
+      let r = new TableRecord(stageInfo, expBonusUnitType, dayOfWeek, useManaBonus, useDoubleExpBonus, useDefenseBonus);
+      records.push(r);
+    }
   }
   // 経験値効率でソート
   records.sort(function (a: TableRecord, b: TableRecord) {
@@ -444,13 +468,13 @@ function updateTable() : void {
   // カラースケール値を計算する
   {
     let maxFinalExpPerMotivation = records[0].finalExpPerMotivation;
-    let minFinalExpPerMotivation = records[Math.min(10, records.length) - 1].finalExpPerMotivation;  // 上位15ステージまでを色付け (records が空の場合は考慮しない)
+    let minFinalExpPerMotivation = records[Math.min(10, records.length) - 1].finalExpPerMotivation;  // 上位10ステージまでを色付け (records が空の場合は考慮しない)
     for (let record of records) {
-      if (minFinalExpPerMotivation < record.finalExpPerMotivation) {
+      if (minFinalExpPerMotivation <= record.finalExpPerMotivation) {
         let linearRatio = (record.finalExpPerMotivation - minFinalExpPerMotivation) / (maxFinalExpPerMotivation - minFinalExpPerMotivation);
-        record.colorScaleRatio = Math.pow(linearRatio, 1.5);
+        record.expColorScaleRatio = Math.pow(linearRatio, 1.5);
       } else {
-        record.colorScaleRatio = 0.0;
+        record.expColorScaleRatio = null;
       }
     }
   }
@@ -537,16 +561,23 @@ function updateTable() : void {
       cell.innerText = r.finalExpPerMotivation.toFixed(2);
       cell.classList.add("final_exp_per_motivation");
       // カラースケール
-      if (0 < r.colorScaleRatio) {
+      if (r.expColorScaleRatio != null) {
         function lerp(a: number, b: number, t: number) { return a * (1 - t) + b * t; }
-        let colorR = lerp(255, 60, r.colorScaleRatio).toFixed(0);
-        let colorG = lerp(255, 240, r.colorScaleRatio).toFixed(0);
-        let colorB = lerp(255, 92, r.colorScaleRatio).toFixed(0);
+        let colorR = lerp(255, 60, r.expColorScaleRatio).toFixed(0);
+        let colorG = lerp(255, 240, r.expColorScaleRatio).toFixed(0);
+        let colorB = lerp(255, 92, r.expColorScaleRatio).toFixed(0);
         cell.style.backgroundColor = "rgb(" + colorR + ", " + colorG + ", " + colorB + ")";
       } else {
         cell.style.backgroundColor = "inherit";
       }
     }
+    /*
+    // Gold/M
+    {
+      let cell = newRow.insertCell();
+      cell.innerText = r.finalGoldPerMotivation.toFixed(2);
+    }
+    */
   }
 }
 
