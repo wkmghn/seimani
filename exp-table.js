@@ -399,6 +399,11 @@ function updateTable() {
         new StageInfo("H 4-5", 42, 5535, 4830, 火, 金, UnitType.Heavy),
         new StageInfo("H 4-A", 41, 5234, 4780, 水, 土, UnitType.Ranged),
         new StageInfo("H 4-B", 41, 5229, 4900, 木, 日, UnitType.Magic),
+        new StageInfo("初級", 15, 1500, 1050, 無, 無, null, false),
+        new StageInfo("中級", 25, 2625, 3500, 無, 無, null, false),
+        new StageInfo("上級", 35, 3850, 6650, 無, 無, null, false),
+        new StageInfo("まつり", 40, 4400, 8000, 無, 無, null, false),
+        new StageInfo("ちまつり", 50, 5500, 9450, 無, 無, null, false),
     ];
     var records = [];
     {
