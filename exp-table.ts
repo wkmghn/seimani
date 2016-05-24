@@ -242,35 +242,46 @@ class TableRecord
 
     // EXP
     {
-      let expFactor: number = 1.0;
-      // ユニット種別によるボーナス
-      if ((this._expBonusUnitType != null) && (this._stageInfo.expBonusUnitType == this._expBonusUnitType)) {
-        expFactor *= 1.2;
-        this._isUnitTypeExpBonusApplied = true;
-      } else {
-        this._isUnitTypeExpBonusApplied = false;
-      }
+      // 適用される倍率を列挙して、最後にまとめて乗算する。
+      // 適用順が異なると最終経験値が微妙にずれるので注意。
+      let factors: number[] = [];
+
       // 曜日によるボーナス
       if (this._stageInfo.expBonusDay != null && this._stageInfo.expBonusDay == this._dayOfWeek) {
-        expFactor *= 1.2;
+        factors.push(1.2);
         this._isExpBonusDay = true;
       } else {
         this._isExpBonusDay = false;
       }
       // 残マナボーナス
       if (useManaBonus && this._stageInfo.isManaBonusAllowed) {
-        expFactor *= 1.2;
+        factors.push(1.2);
         this._isManaBonusApplied = true;
       } else {
         this._isManaBonusApplied = false;
       }
       // 二倍ボーナス
       if (useDoubleExpBonus) {
-        expFactor *= 2.0;
+        factors.push(2.0);
+      }
+      // ユニット種別によるボーナス
+      if ((this._expBonusUnitType != null) && (this._stageInfo.expBonusUnitType == this._expBonusUnitType)) {
+        factors.push(1.2);
+        this._isUnitTypeExpBonusApplied = true;
+      } else {
+        this._isUnitTypeExpBonusApplied = false;
       }
 
-      this._finalExpFactor = expFactor;
-      this._finalExp = this._stageInfo.baseExp * expFactor;
+      // 最終値を計算
+      let finalFactor: number = 1.0;
+      let finalExp: number = this._stageInfo.baseExp;
+      for (let factor of factors) {
+        finalFactor *= factor;
+        finalExp = Math.floor(finalExp * factor);
+      }
+
+      this._finalExpFactor = finalFactor;
+      this._finalExp = finalExp;
     }
 
     // Gold

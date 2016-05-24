@@ -195,33 +195,40 @@ var TableRecord = (function () {
         this._dayOfWeek = dayOfWeek;
         this._isDoubleExpBonusApplied = useDoubleExpBonus;
         {
-            var expFactor = 1.0;
-            if ((this._expBonusUnitType != null) && (this._stageInfo.expBonusUnitType == this._expBonusUnitType)) {
-                expFactor *= 1.2;
-                this._isUnitTypeExpBonusApplied = true;
-            }
-            else {
-                this._isUnitTypeExpBonusApplied = false;
-            }
+            var factors = [];
             if (this._stageInfo.expBonusDay != null && this._stageInfo.expBonusDay == this._dayOfWeek) {
-                expFactor *= 1.2;
+                factors.push(1.2);
                 this._isExpBonusDay = true;
             }
             else {
                 this._isExpBonusDay = false;
             }
             if (useManaBonus && this._stageInfo.isManaBonusAllowed) {
-                expFactor *= 1.2;
+                factors.push(1.2);
                 this._isManaBonusApplied = true;
             }
             else {
                 this._isManaBonusApplied = false;
             }
             if (useDoubleExpBonus) {
-                expFactor *= 2.0;
+                factors.push(2.0);
             }
-            this._finalExpFactor = expFactor;
-            this._finalExp = this._stageInfo.baseExp * expFactor;
+            if ((this._expBonusUnitType != null) && (this._stageInfo.expBonusUnitType == this._expBonusUnitType)) {
+                factors.push(1.2);
+                this._isUnitTypeExpBonusApplied = true;
+            }
+            else {
+                this._isUnitTypeExpBonusApplied = false;
+            }
+            var finalFactor = 1.0;
+            var finalExp = this._stageInfo.baseExp;
+            for (var _i = 0, factors_1 = factors; _i < factors_1.length; _i++) {
+                var factor = factors_1[_i];
+                finalFactor *= factor;
+                finalExp = Math.floor(finalExp * factor);
+            }
+            this._finalExpFactor = finalFactor;
+            this._finalExp = finalExp;
         }
         {
             var goldFactor = 1.0;
