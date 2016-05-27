@@ -108,6 +108,15 @@ td.final_exp_per_motivation {
   font-weight: bold;
 }
 
+td.active_gold_bonus_day {
+  text-align: center;
+}
+
+td.inactive_gold_bonus_day {
+  text-align: center;
+  color: silver;
+}
+
 td.final_gold_per_motivation {
   text-align: right;
 }

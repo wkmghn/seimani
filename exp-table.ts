@@ -312,6 +312,7 @@ class TableRecord
   public get finalExpFactor() : number { return this._finalExpFactor; }
   public get finalExp() : number { return this._finalExp; }
   public get finalExpPerMotivation() : number { return this._finalExp / this._stageInfo.motivationConsumption; }
+  public get isGoldBonusDay() : boolean { return this._isGoldBonusDay; }
   public get finalGoldPerMotivation() : number { return this._stageInfo.baseGold * this._finalGoldFactor / this._stageInfo.motivationConsumption; }
   public expColorScaleRatio : number;  // 0..1, or null
 }
@@ -419,7 +420,7 @@ function updateTable() : void {
     new StageInfo("N 3-D", 22, 2167, 2200, 日, 金, UnitType.Heavy),
     new StageInfo("N 3-E", 23, 2282, 2440, 月, 土, UnitType.Ranged),
     new StageInfo("N 3-5", 24, 2450, 2530, 火, 日, null),
-    new StageInfo("N 3-F", 19, 1810, 1, 水, undefined, UnitType.Heavy),
+    new StageInfo("N 3-F", 19, 1810, 0, 水, undefined, UnitType.Heavy),
 
     // H 3
     new StageInfo("H 3-1", 37, 3920, 4070, 水, 月, UnitType.Melee),
@@ -432,7 +433,7 @@ function updateTable() : void {
     new StageInfo("H 3-D", 40, 4323, 4350, 水, 火, UnitType.Magic),
     new StageInfo("H 3-E", 40, 4343, 4540, 木, 水, UnitType.Heavy),
     new StageInfo("H 3-5", 41, 4579, 4460, 金, 木, null),
-    new StageInfo("H 3-F", 37, 3928, 1, undefined, 金, UnitType.Melee),
+    new StageInfo("H 3-F", 37, 3928, 0, undefined, 金, UnitType.Melee),
 
     // N 4
     new StageInfo("N 4-1", 25, 2966, 2740, 月, 木, UnitType.Magic),
@@ -442,7 +443,7 @@ function updateTable() : void {
     new StageInfo("N 4-5", 26, 3251, 2860, 金, 月, UnitType.Magic),
     new StageInfo("N 4-A", 25, 2971, 2790, 土, 火, UnitType.Melee),
     new StageInfo("N 4-B", 25, 3042, 2820, 日, 水, UnitType.Heavy),
-    new StageInfo("N 4-C", 26, 3194, 1, undefined, 木, UnitType.Heavy),
+    new StageInfo("N 4-C", 26, 3194, 0, undefined, 木, UnitType.Heavy),
 
     // H 4
     new StageInfo("H 4-1", 41, 5186, 4790, 金, 月, UnitType.Ranged),
@@ -452,7 +453,7 @@ function updateTable() : void {
     new StageInfo("H 4-5", 42, 5535, 4830, 火, 金, UnitType.Heavy),
     new StageInfo("H 4-A", 41, 5234, 4780, 水, 土, UnitType.Ranged),
     new StageInfo("H 4-B", 41, 5229, 4900, 木, 日, UnitType.Magic),
-    new StageInfo("H 4-C", 41, 5272, 1, 金, undefined, UnitType.Heavy),
+    new StageInfo("H 4-C", 41, 5272, 0, 金, undefined, UnitType.Heavy),
 
     // 第一次闘弌治宝戦挙
     //new StageInfo("初級", 15, 1500, 1050, 無, 無, null, false),
@@ -596,18 +597,25 @@ function updateTable() : void {
       }
     }
     // Gold/M
-/*
     {
-      let cell = newRow.insertCell();
-      cell.classList.add("final_gold_per_motivation");
-      cell.style.border = "none 1px #FFFFFF"
-      let text = "";
-      text += r.finalGoldPerMotivation.toFixed(2);
-      text += " ";
-      text += getBonusDayLetter(r.stageInfo.goldBonusDay);
-      cell.innerText = text;
+      {
+        let cell = newRow.insertCell();
+        cell.classList.add("final_gold_per_motivation");
+        cell.style.borderRightWidth = "0px";
+        if (0 < r.finalGoldPerMotivation) {
+          cell.innerText = r.finalGoldPerMotivation.toFixed(2);
+        } else {
+          cell.innerText = "？";
+        }
+      }
+      {
+        let cell = newRow.insertCell();
+        cell.style.borderLeftWidth = "0px";
+        cell.style.paddingLeft = "0px";
+        cell.classList.add(r.isGoldBonusDay ? "active_exp_bonus_day" : "inactive_exp_bonus_day");
+        cell.innerText = getBonusDayLetter(r.stageInfo.goldBonusDay);
+      }
     }
-*/
   }
 }
 

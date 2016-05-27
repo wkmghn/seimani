@@ -286,6 +286,11 @@ var TableRecord = (function () {
         enumerable: true,
         configurable: true
     });
+    Object.defineProperty(TableRecord.prototype, "isGoldBonusDay", {
+        get: function () { return this._isGoldBonusDay; },
+        enumerable: true,
+        configurable: true
+    });
     Object.defineProperty(TableRecord.prototype, "finalGoldPerMotivation", {
         get: function () { return this._stageInfo.baseGold * this._finalGoldFactor / this._stageInfo.motivationConsumption; },
         enumerable: true,
@@ -382,7 +387,7 @@ function updateTable() {
         new StageInfo("N 3-D", 22, 2167, 2200, 日, 金, UnitType.Heavy),
         new StageInfo("N 3-E", 23, 2282, 2440, 月, 土, UnitType.Ranged),
         new StageInfo("N 3-5", 24, 2450, 2530, 火, 日, null),
-        new StageInfo("N 3-F", 19, 1810, 1, 水, undefined, UnitType.Heavy),
+        new StageInfo("N 3-F", 19, 1810, 0, 水, undefined, UnitType.Heavy),
         new StageInfo("H 3-1", 37, 3920, 4070, 水, 月, UnitType.Melee),
         new StageInfo("H 3-2", 37, 3914, 4080, 木, 火, UnitType.Ranged),
         new StageInfo("H 3-A", 38, 4018, 4210, 金, 水, UnitType.Magic),
@@ -393,7 +398,7 @@ function updateTable() {
         new StageInfo("H 3-D", 40, 4323, 4350, 水, 火, UnitType.Magic),
         new StageInfo("H 3-E", 40, 4343, 4540, 木, 水, UnitType.Heavy),
         new StageInfo("H 3-5", 41, 4579, 4460, 金, 木, null),
-        new StageInfo("H 3-F", 37, 3928, 1, undefined, 金, UnitType.Melee),
+        new StageInfo("H 3-F", 37, 3928, 0, undefined, 金, UnitType.Melee),
         new StageInfo("N 4-1", 25, 2966, 2740, 月, 木, UnitType.Magic),
         new StageInfo("N 4-2", 25, 3004, 2760, 火, 金, UnitType.Melee),
         new StageInfo("N 4-3", 25, 3062, 2770, 水, 土, UnitType.Ranged),
@@ -401,7 +406,7 @@ function updateTable() {
         new StageInfo("N 4-5", 26, 3251, 2860, 金, 月, UnitType.Magic),
         new StageInfo("N 4-A", 25, 2971, 2790, 土, 火, UnitType.Melee),
         new StageInfo("N 4-B", 25, 3042, 2820, 日, 水, UnitType.Heavy),
-        new StageInfo("N 4-C", 26, 3194, 1, undefined, 木, UnitType.Heavy),
+        new StageInfo("N 4-C", 26, 3194, 0, undefined, 木, UnitType.Heavy),
         new StageInfo("H 4-1", 41, 5186, 4790, 金, 月, UnitType.Ranged),
         new StageInfo("H 4-2", 41, 5236, 4840, 土, 火, UnitType.Melee),
         new StageInfo("H 4-3", 41, 5250, 4740, 日, 水, UnitType.Magic),
@@ -409,7 +414,7 @@ function updateTable() {
         new StageInfo("H 4-5", 42, 5535, 4830, 火, 金, UnitType.Heavy),
         new StageInfo("H 4-A", 41, 5234, 4780, 水, 土, UnitType.Ranged),
         new StageInfo("H 4-B", 41, 5229, 4900, 木, 日, UnitType.Magic),
-        new StageInfo("H 4-C", 41, 5272, 1, 金, undefined, UnitType.Heavy),
+        new StageInfo("H 4-C", 41, 5272, 0, 金, undefined, UnitType.Heavy),
     ];
     var records = [];
     {
@@ -521,6 +526,26 @@ function updateTable() {
             }
             else {
                 cell.style.backgroundColor = "inherit";
+            }
+        }
+        {
+            {
+                var cell = newRow.insertCell();
+                cell.classList.add("final_gold_per_motivation");
+                cell.style.borderRightWidth = "0px";
+                if (0 < r.finalGoldPerMotivation) {
+                    cell.innerText = r.finalGoldPerMotivation.toFixed(2);
+                }
+                else {
+                    cell.innerText = "？";
+                }
+            }
+            {
+                var cell = newRow.insertCell();
+                cell.style.borderLeftWidth = "0px";
+                cell.style.paddingLeft = "0px";
+                cell.classList.add(r.isGoldBonusDay ? "active_exp_bonus_day" : "inactive_exp_bonus_day");
+                cell.innerText = getBonusDayLetter(r.stageInfo.goldBonusDay);
             }
         }
     }
