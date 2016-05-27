@@ -432,7 +432,7 @@ function updateTable() : void {
     new StageInfo("H 3-D", 40, 4323, 4350, 水, 火, UnitType.Magic),
     new StageInfo("H 3-E", 40, 4343, 4540, 木, 水, UnitType.Heavy),
     new StageInfo("H 3-5", 41, 4579, 4460, 金, 木, null),
-    new StageInfo("H 3-F", 37, 3928, 1, undefined, undefined, UnitType.Melee),
+    new StageInfo("H 3-F", 37, 3928, 1, undefined, 金, UnitType.Melee),
 
     // N 4
     new StageInfo("N 4-1", 25, 2966, 2740, 月, 木, UnitType.Magic),
@@ -452,7 +452,7 @@ function updateTable() : void {
     new StageInfo("H 4-5", 42, 5535, 4830, 火, 金, UnitType.Heavy),
     new StageInfo("H 4-A", 41, 5234, 4780, 水, 土, UnitType.Ranged),
     new StageInfo("H 4-B", 41, 5229, 4900, 木, 日, UnitType.Magic),
-    new StageInfo("H 4-C", 41, 5272, 1, undefined, undefined, UnitType.Heavy),
+    new StageInfo("H 4-C", 41, 5272, 1, 金, undefined, UnitType.Heavy),
 
     // 第一次闘弌治宝戦挙
     //new StageInfo("初級", 15, 1500, 1050, 無, 無, null, false),
@@ -589,17 +589,25 @@ function updateTable() : void {
         let colorG = lerp(255, 240, r.expColorScaleRatio).toFixed(0);
         let colorB = lerp(255, 92, r.expColorScaleRatio).toFixed(0);
         cell.style.backgroundColor = "rgb(" + colorR + ", " + colorG + ", " + colorB + ")";
+        cell.style.borderTopWidth = "1px";
+        cell.style.borderBottomWidth = "1px";
       } else {
         cell.style.backgroundColor = "inherit";
       }
     }
-    /*
     // Gold/M
+/*
     {
       let cell = newRow.insertCell();
-      cell.innerText = r.finalGoldPerMotivation.toFixed(2);
+      cell.classList.add("final_gold_per_motivation");
+      cell.style.border = "none 1px #FFFFFF"
+      let text = "";
+      text += r.finalGoldPerMotivation.toFixed(2);
+      text += " ";
+      text += getBonusDayLetter(r.stageInfo.goldBonusDay);
+      cell.innerText = text;
     }
-    */
+*/
   }
 }
 

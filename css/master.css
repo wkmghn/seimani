@@ -32,6 +32,15 @@ td {
   border: solid 1px #e0e0e0;
 }
 
+thead td {
+  border: solid 1px #e0e0e0;
+}
+
+tbody td {
+  border-top-width: 0px;
+  border-bottom-width: 0px;
+}
+
 td.stage_name {
   font-weight: bold;
 }
@@ -97,6 +106,10 @@ td.inactive_mana_bonus {
 td.final_exp_per_motivation {
   text-align: right;
   font-weight: bold;
+}
+
+td.final_gold_per_motivation {
+  text-align: right;
 }
 
 dd {

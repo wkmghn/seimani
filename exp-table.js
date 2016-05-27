@@ -393,7 +393,7 @@ function updateTable() {
         new StageInfo("H 3-D", 40, 4323, 4350, 水, 火, UnitType.Magic),
         new StageInfo("H 3-E", 40, 4343, 4540, 木, 水, UnitType.Heavy),
         new StageInfo("H 3-5", 41, 4579, 4460, 金, 木, null),
-        new StageInfo("H 3-F", 37, 3928, 1, undefined, undefined, UnitType.Melee),
+        new StageInfo("H 3-F", 37, 3928, 1, undefined, 金, UnitType.Melee),
         new StageInfo("N 4-1", 25, 2966, 2740, 月, 木, UnitType.Magic),
         new StageInfo("N 4-2", 25, 3004, 2760, 火, 金, UnitType.Melee),
         new StageInfo("N 4-3", 25, 3062, 2770, 水, 土, UnitType.Ranged),
@@ -409,7 +409,7 @@ function updateTable() {
         new StageInfo("H 4-5", 42, 5535, 4830, 火, 金, UnitType.Heavy),
         new StageInfo("H 4-A", 41, 5234, 4780, 水, 土, UnitType.Ranged),
         new StageInfo("H 4-B", 41, 5229, 4900, 木, 日, UnitType.Magic),
-        new StageInfo("H 4-C", 41, 5272, 1, undefined, undefined, UnitType.Heavy),
+        new StageInfo("H 4-C", 41, 5272, 1, 金, undefined, UnitType.Heavy),
     ];
     var records = [];
     {
@@ -516,6 +516,8 @@ function updateTable() {
                 var colorG = lerp(255, 240, r.expColorScaleRatio).toFixed(0);
                 var colorB = lerp(255, 92, r.expColorScaleRatio).toFixed(0);
                 cell.style.backgroundColor = "rgb(" + colorR + ", " + colorG + ", " + colorB + ")";
+                cell.style.borderTopWidth = "1px";
+                cell.style.borderBottomWidth = "1px";
             }
             else {
                 cell.style.backgroundColor = "inherit";
