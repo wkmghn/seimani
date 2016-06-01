@@ -415,6 +415,7 @@ function updateTable() {
         new StageInfo("H 4-A", 41, 5234, 4780, 水, 土, UnitType.Ranged),
         new StageInfo("H 4-B", 41, 5229, 4900, 木, 日, UnitType.Magic),
         new StageInfo("H 4-C", 41, 5272, 4830, 金, 月, UnitType.Heavy),
+        new StageInfo("上級", 50, 5750, 9500, 無, 無, null, false),
     ];
     var records = [];
     {

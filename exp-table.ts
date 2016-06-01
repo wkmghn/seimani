@@ -468,6 +468,9 @@ function updateTable() : void {
     //new StageInfo("上級", 35, 3850, 6650, 無, 無, null, false),
     //new StageInfo("まつり", 40, 4400, 8000, 無, 無, null, false),
     //new StageInfo("ちまつり", 50, 5500, 9450, 無, 無, null, false),
+
+    // 第三次闘弌治宝戦挙
+    new StageInfo("上級", 50, 5750, 9500, 無, 無, null, false),
   ];
 
   // テーブルの行
