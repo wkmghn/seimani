@@ -88,8 +88,9 @@ function getExpBonusUnitTypeLetter(unitType) {
     }
 }
 var StageInfo = (function () {
-    function StageInfo(stageName, motivationConsumption, baseExp, baseGold, expBonusDay, goldBonusDay, expBonusUnitType, isManaBonusAllowed) {
+    function StageInfo(stageName, motivationConsumption, baseExp, baseGold, expBonusDay, goldBonusDay, expBonusUnitType, isManaBonusAllowed, isProtectionBonusAllowed) {
         if (isManaBonusAllowed === void 0) { isManaBonusAllowed = true; }
+        if (isProtectionBonusAllowed === void 0) { isProtectionBonusAllowed = false; }
         this._motivationConsumption = motivationConsumption;
         this._baseExp = baseExp;
         this._baseGold = baseGold;
@@ -97,6 +98,7 @@ var StageInfo = (function () {
         this._goldBonusDay = goldBonusDay;
         this._expBonusUnitType = expBonusUnitType;
         this._isManaBonusAllowed = isManaBonusAllowed;
+        this._isProtectionBonusAllowe = isProtectionBonusAllowed;
         if (5 == stageName.length && stageName[3] == "-") {
             this._districtLetter = stageName[2];
             this._stageLetter = stageName[4];
@@ -186,10 +188,15 @@ var StageInfo = (function () {
         enumerable: true,
         configurable: true
     });
+    Object.defineProperty(StageInfo.prototype, "isProtectionBonusAllowed", {
+        get: function () { return this._isProtectionBonusAllowe; },
+        enumerable: true,
+        configurable: true
+    });
     return StageInfo;
 }());
 var TableRecord = (function () {
-    function TableRecord(stageInfo, expBonusUnitType, dayOfWeek, useManaBonus, useDoubleExpBonus, useDefenseBonus) {
+    function TableRecord(stageInfo, expBonusUnitType, dayOfWeek, useManaBonus, useDoubleExpBonus, useProtectionBonus) {
         this._stageInfo = stageInfo;
         this._expBonusUnitType = expBonusUnitType;
         this._dayOfWeek = dayOfWeek;
@@ -239,7 +246,7 @@ var TableRecord = (function () {
             else {
                 this._isGoldBonusDay = false;
             }
-            if (useDefenseBonus) {
+            if (useProtectionBonus && this._stageInfo.isProtectionBonusAllowed) {
                 goldFactor *= 1.2;
             }
             this._finalGoldFactor = goldFactor;
@@ -415,7 +422,11 @@ function updateTable() {
         new StageInfo("H 4-A", 41, 5234, 4780, 水, 土, UnitType.Ranged),
         new StageInfo("H 4-B", 41, 5229, 4900, 木, 日, UnitType.Magic),
         new StageInfo("H 4-C", 41, 5272, 4830, 金, 月, UnitType.Heavy),
-        new StageInfo("上級", 50, 5750, 9500, 無, 無, null, false),
+        new StageInfo("初級", 30, 3210, 2100, 無, 無, null, false, false),
+        new StageInfo("中級", 40, 4480, 5600, 無, 無, null, false, false),
+        new StageInfo("上級", 50, 5750, 9500, 無, 無, null, false, false),
+        new StageInfo("まつり", 80, 9440, 16000, 無, 無, null, false, false),
+        new StageInfo("ちまつり", 100, 12500, 21000, 無, 無, null, false, false),
     ];
     var records = [];
     {
@@ -423,10 +434,10 @@ function updateTable() {
         var dayOfWeek = getSelectedDayOfWeek();
         var useManaBonus = true;
         var useDoubleExpBonus = (expBonusUnitType != null);
-        var useDefenseBonus = true;
+        var useProtectionBonus = true;
         for (var _i = 0, stages_1 = stages; _i < stages_1.length; _i++) {
             var stageInfo = stages_1[_i];
-            var r = new TableRecord(stageInfo, expBonusUnitType, dayOfWeek, useManaBonus, useDoubleExpBonus, useDefenseBonus);
+            var r = new TableRecord(stageInfo, expBonusUnitType, dayOfWeek, useManaBonus, useDoubleExpBonus, useProtectionBonus);
             records.push(r);
         }
     }

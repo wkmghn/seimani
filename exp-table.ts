@@ -124,6 +124,8 @@ class StageInfo
   private _expBonusUnitType: UnitType;
   // 残マナによる経験値ボーナスが可能なステージか
   private _isManaBonusAllowed: boolean;
+  // 地盤維持によるゴールドボーナスが可能なステージか
+  private _isProtectionBonusAllowe: boolean;
 
   //============================================================================
   // CONSTRUCTOR
@@ -138,7 +140,8 @@ class StageInfo
     expBonusDay: number,
     goldBonusDay: number,
     expBonusUnitType: UnitType,
-    isManaBonusAllowed: boolean = true)
+    isManaBonusAllowed: boolean = true,
+    isProtectionBonusAllowed: boolean = false)
   {
     this._motivationConsumption = motivationConsumption;
     this._baseExp = baseExp;
@@ -147,6 +150,7 @@ class StageInfo
     this._goldBonusDay = goldBonusDay;
     this._expBonusUnitType = expBonusUnitType;
     this._isManaBonusAllowed = isManaBonusAllowed;
+    this._isProtectionBonusAllowe = isProtectionBonusAllowed;
 
     if (5 == stageName.length && stageName[3] == "-") {
       this._districtLetter = stageName[2];
@@ -203,6 +207,7 @@ class StageInfo
   public get isManaBonusAllowed() : boolean { return this._isManaBonusAllowed; }
   public get baseGold() : number { return this._baseGold; }
   public get goldBonusDay() : number { return this._goldBonusDay; }
+  public get isProtectionBonusAllowed() : boolean { return this._isProtectionBonusAllowe; }
 
   //============================================================================
   // METHODS
@@ -233,7 +238,7 @@ class TableRecord
     dayOfWeek: number,
     useManaBonus: boolean,
     useDoubleExpBonus: boolean,
-    useDefenseBonus: boolean)
+    useProtectionBonus: boolean)
   {
     this._stageInfo = stageInfo;
     this._expBonusUnitType = expBonusUnitType;
@@ -294,8 +299,8 @@ class TableRecord
       } else {
         this._isGoldBonusDay = false;
       }
-      // 拠点防衛ボーナス
-      if (useDefenseBonus) {
+      // 地盤維持ボーナス
+      if (useProtectionBonus && this._stageInfo.isProtectionBonusAllowed) {
         goldFactor *= 1.2;
       }
       this._finalGoldFactor = goldFactor;
@@ -456,21 +461,25 @@ function updateTable() : void {
     new StageInfo("H 4-C", 41, 5272, 4830, 金, 月, UnitType.Heavy),
 
     // 第一次闘弌治宝戦挙
-    //new StageInfo("初級", 15, 1500, 1050, 無, 無, null, false),
-    //new StageInfo("中級", 25, 2625, 3500, 無, 無, null, false),
-    //new StageInfo("上級", 35, 3850, 6650, 無, 無, null, false),
-    //new StageInfo("まつり", 40, 4400, 8000, 無, 無, null, false),
-    //new StageInfo("ちまつり", 50, 5500, 9450, 無, 無, null, false),
+    //new StageInfo("初級", 15, 1500, 1050, 無, 無, null, false, false),
+    //new StageInfo("中級", 25, 2625, 3500, 無, 無, null, false, false),
+    //new StageInfo("上級", 35, 3850, 6650, 無, 無, null, false, false),
+    //new StageInfo("まつり", 40, 4400, 8000, 無, 無, null, false, false),
+    //new StageInfo("ちまつり", 50, 5500, 9450, 無, 無, null, false, false),
 
     // 第二次闘弌治宝戦挙
-    //new StageInfo("初級", 15, 1500, 1050, 無, 無, null, false),
-    //new StageInfo("中級", 25, 2625, 3500, 無, 無, null, false),
-    //new StageInfo("上級", 35, 3850, 6650, 無, 無, null, false),
-    //new StageInfo("まつり", 40, 4400, 8000, 無, 無, null, false),
-    //new StageInfo("ちまつり", 50, 5500, 9450, 無, 無, null, false),
+    //new StageInfo("初級", 15, 1500, 1050, 無, 無, null, false, false),
+    //new StageInfo("中級", 25, 2625, 3500, 無, 無, null, false, false),
+    //new StageInfo("上級", 35, 3850, 6650, 無, 無, null, false, false),
+    //new StageInfo("まつり", 40, 4400, 8000, 無, 無, null, false, false),
+    //new StageInfo("ちまつり", 50, 5500, 9450, 無, 無, null, false, false),
 
     // 第三次闘弌治宝戦挙
-    new StageInfo("上級", 50, 5750, 9500, 無, 無, null, false),
+    new StageInfo("初級", 30, 3210, 2100, 無, 無, null, false, false),
+    new StageInfo("中級", 40, 4480, 5600, 無, 無, null, false, false),
+    new StageInfo("上級", 50, 5750, 9500, 無, 無, null, false, false),
+    new StageInfo("まつり", 80, 9440, 16000, 無, 無, null, false, false),
+    new StageInfo("ちまつり", 100, 12500, 21000, 無, 無, null, false, false),
   ];
 
   // テーブルの行
@@ -480,9 +489,9 @@ function updateTable() : void {
     let dayOfWeek: number = getSelectedDayOfWeek();
     let useManaBonus: boolean = true;
     let useDoubleExpBonus: boolean = (expBonusUnitType != null);  // 総理ランクEXP計算時は2倍を適用しない
-    let useDefenseBonus: boolean = true;
+    let useProtectionBonus: boolean = true;
     for (let stageInfo of stages) {
-      let r = new TableRecord(stageInfo, expBonusUnitType, dayOfWeek, useManaBonus, useDoubleExpBonus, useDefenseBonus);
+      let r = new TableRecord(stageInfo, expBonusUnitType, dayOfWeek, useManaBonus, useDoubleExpBonus, useProtectionBonus);
       records.push(r);
     }
   }
