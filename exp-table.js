@@ -422,11 +422,9 @@ function updateTable() {
         new StageInfo("H 4-A", 41, 5234, 4780, 水, 土, UnitType.Ranged),
         new StageInfo("H 4-B", 41, 5229, 4900, 木, 日, UnitType.Magic),
         new StageInfo("H 4-C", 41, 5272, 4830, 金, 月, UnitType.Heavy),
-        new StageInfo("初級", 30, 3210, 2100, 無, 無, null, false, false),
-        new StageInfo("中級", 40, 4480, 5600, 無, 無, null, false, false),
-        new StageInfo("上級", 50, 5750, 9500, 無, 無, null, false, false),
-        new StageInfo("まつり", 80, 9440, 16000, 無, 無, null, false, false),
-        new StageInfo("ちまつり", 100, 12500, 21000, 無, 無, null, false, false),
+        new StageInfo("N 5-1", 26, 3550, 3120, 火, 金, UnitType.Ranged),
+        new StageInfo("N 5-2", 26, 3630, 3130, 水, 土, UnitType.Melee),
+        new StageInfo("N 5-3", 27, 3734, 3150, 木, 日, UnitType.Heavy),
     ];
     var records = [];
     {
