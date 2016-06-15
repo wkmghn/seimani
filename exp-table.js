@@ -425,6 +425,8 @@ function updateTable() {
         new StageInfo("N 5-1", 26, 3550, 3120, 火, 金, UnitType.Ranged),
         new StageInfo("N 5-2", 26, 3630, 3130, 水, 土, UnitType.Melee),
         new StageInfo("N 5-3", 27, 3734, 3150, 木, 日, UnitType.Heavy),
+        new StageInfo("上級", 50, 5750, 9500, 無, 無, null, false, false),
+        new StageInfo("まつり", 80, 9440, 16000, 無, 無, null, false, false),
     ];
     var records = [];
     {

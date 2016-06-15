@@ -485,6 +485,10 @@ function updateTable() : void {
     //new StageInfo("上級", 50, 5750, 9500, 無, 無, null, false, false),
     //new StageInfo("まつり", 80, 9440, 16000, 無, 無, null, false, false),
     //new StageInfo("ちまつり", 100, 12500, 21000, 無, 無, null, false, false),
+
+    // 異臣英雄伝
+    new StageInfo("上級", 50, 5750, 9500, 無, 無, null, false, false),
+    new StageInfo("まつり", 80, 9440, 16000, 無, 無, null, false, false),
   ];
 
   // テーブルの行
