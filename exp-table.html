@@ -27,6 +27,11 @@
     <input type="radio" name="exp_bonus_day" id="exp_bonus_day_radio_5" value="5" onclick="updateTable();"><span id="exp_bonus_day_5"></span>
     <input type="radio" name="exp_bonus_day" id="exp_bonus_day_radio_6" value="6" onclick="updateTable();"><span id="exp_bonus_day_6"></span>
   </p>
+  <p>
+    フィルタ:
+    <select id="difficulty" onchange="updateTable();"></select>
+    <input type="checkbox" id="only20" onclick="updateTable();">上位20ステージのみ
+  </p>
   <table id="stages" border="1">
     <thead style="text-align: center;">
       <tr>

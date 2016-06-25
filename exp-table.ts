@@ -1,3 +1,37 @@
+function getFromLocalStorage(name: string, notFoundValue: string = null) : string {
+  if (!localStorage) { return notFoundValue; }
+
+  let item = localStorage.getItem(name);
+  if (item) {
+    return item;
+  } else {
+    return notFoundValue;
+  }
+}
+
+function getBooleanFromLocalStorage(name: string, notFoundValue: boolean) : boolean {
+  let str = getFromLocalStorage(name);
+  if (str) {
+    return str == "0" ? false : true;
+  } else {
+    return notFoundValue;
+  }
+}
+
+function loadSettings() : void {
+  if (!localStorage) { return; }
+
+  (<HTMLSelectElement>document.getElementById("difficulty")).value = getFromLocalStorage("exp-table:Difficulty", "All");
+  (<HTMLInputElement>document.getElementById("only20")).checked = getBooleanFromLocalStorage("exp-table:OnlyTop20", true);
+}
+
+function saveSettings() : void {
+  if (!localStorage) { return; }
+
+  localStorage.setItem("exp-table:Difficulty", (<HTMLSelectElement>document.getElementById("difficulty")).value);
+  localStorage.setItem("exp-table:OnlyTop20", (<HTMLInputElement>document.getElementById("only20")).checked ? "1" : "0");
+}
+
 function getDayOfWeekLetter(dayOfWeek: number) : string {
   switch (dayOfWeek) {
     case 0: return "日";
@@ -212,6 +246,8 @@ class StageInfo
     }
   }
 
+  // 選挙区番号。イベントステージの場合は null。
+  public get district() : number { return this._districtLetter ? parseInt(this._districtLetter) : null; }
   public get mode() : StageMode { return this._mode; }
   public get motivationConsumption() : number { return this._motivationConsumption; }
   public get baseExp() : number { return this._baseExp; }
@@ -532,6 +568,39 @@ function updateTable() : void {
      return b.finalExpPerMotivation - a.finalExpPerMotivation;
   })
 
+  // 難易度によるフィルタを適用
+  {
+    let selectedDifficulty = (<HTMLSelectElement>document.getElementById("difficulty")).value;
+    if (selectedDifficulty == "All") {
+      // フィルタ不要
+    } else {
+      /*
+       * 難易度と選挙区の組みあせを適当な数値に変換し、その数値を比較してソートする。
+       */
+      let lhs = parseInt(selectedDifficulty[1]);
+      switch (selectedDifficulty[0]) {
+        case 'N': break;
+        case 'H': lhs += 0.5; break;
+        case 'T': lhs += 2.25; break;  // T2 が N4 と H4 の間に来る程度のオフセット
+      }
+      // フィルタ関数
+      let filter = function(element : TableRecord, index, array) {
+        let rhs = element.stageInfo.district;
+        if (rhs == null) {
+          return true;  // イベントステージの場合。フィルタを通しておく。
+        }
+        switch (element.stageInfo.mode) {
+          case StageMode.Normal: break;
+          case StageMode.Hard: rhs += 0.5; break;
+          case StageMode.Twist: rhs += 2.25; break;  // T2 が N4 と H4 の間に来る程度のオフセット
+        }
+        return lhs >= rhs;
+      }
+      // フィルタを適用
+      records = records.filter(filter);
+    }
+  }
+
   // カラースケール値を計算する
   {
     let maxFinalExpPerMotivation = records[0].finalExpPerMotivation;
@@ -544,6 +613,11 @@ function updateTable() : void {
         record.expColorScaleRatio = null;
       }
     }
+  }
+
+  // 必要なら件数を制限
+  if (20 < records.length && (<HTMLInputElement>document.getElementById("only20")).checked) {
+    records = records.slice(0, 20);
   }
 
   // table を作成
@@ -661,6 +735,18 @@ function updateTable() : void {
       }
     }
   }
+
+  // 難易度が All 以外なら、難易度選択コンボボックスの色を変えておく
+  {
+    let combo = <HTMLSelectElement>(document.getElementById("difficulty"));
+    if (combo.value == "All") {
+      combo.style.backgroundColor = null;
+    } else {
+      combo.style.backgroundColor = "#DDEEFF";
+    }
+  }
+
+  saveSettings();
 }
 
 function initializeExpTable(ev: Event): void {
@@ -678,6 +764,31 @@ function initializeExpTable(ev: Event): void {
     }
   }
 
+  // 難易度選択コンボボックス
+  {
+    let combo = <HTMLSelectElement>document.getElementById("difficulty");
+    let addOption = function(label: string, value: string, foreColor: string) {
+      let option = <HTMLOptionElement>combo.appendChild(document.createElement("option"));
+      option.innerText = label;
+      option.style.color = foreColor;
+      option.style.backgroundColor = "white";
+      let valueAttr = document.createAttribute("value");
+      valueAttr.value = value;
+      option.attributes.setNamedItem(valueAttr);
+    }
+    addOption("すべての難易度", "All", "inherit");
+    addOption("H5 まで (推奨Lv 61-65)", "H5", "#E08000");
+    addOption("N5 まで (推奨Lv 51-55)", "N5", "inherit");
+    addOption("H4 まで (推奨Lv 56-60)", "H4", "#E08000");
+    addOption("T2 まで (推奨Lv 45-53)", "T2", "#FF0040");
+    addOption("N4 まで (推奨Lv 46-50)", "N4", "inherit");
+    addOption("H3 まで (推奨Lv 45-55)", "H3", "#E08000");
+    addOption("N3 まで (推奨Lv 31-45)", "N3", "inherit");
+    addOption("H2 まで (推奨Lv 30-40)", "H2", "#E08000");
+    addOption("N2 まで (推奨Lv 15-30)", "N2", "inherit");
+  }
+
+  loadSettings();
   updateTable();
 }
 window.onload = initializeExpTable;

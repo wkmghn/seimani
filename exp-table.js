@@ -1,3 +1,39 @@
+function getFromLocalStorage(name, notFoundValue) {
+    if (notFoundValue === void 0) { notFoundValue = null; }
+    if (!localStorage) {
+        return notFoundValue;
+    }
+    var item = localStorage.getItem(name);
+    if (item) {
+        return item;
+    }
+    else {
+        return notFoundValue;
+    }
+}
+function getBooleanFromLocalStorage(name, notFoundValue) {
+    var str = getFromLocalStorage(name);
+    if (str) {
+        return str == "0" ? false : true;
+    }
+    else {
+        return notFoundValue;
+    }
+}
+function loadSettings() {
+    if (!localStorage) {
+        return;
+    }
+    document.getElementById("difficulty").value = getFromLocalStorage("exp-table:Difficulty", "All");
+    document.getElementById("only20").checked = getBooleanFromLocalStorage("exp-table:OnlyTop20", true);
+}
+function saveSettings() {
+    if (!localStorage) {
+        return;
+    }
+    localStorage.setItem("exp-table:Difficulty", document.getElementById("difficulty").value);
+    localStorage.setItem("exp-table:OnlyTop20", document.getElementById("only20").checked ? "1" : "0");
+}
 function getDayOfWeekLetter(dayOfWeek) {
     switch (dayOfWeek) {
         case 0: return "日";
@@ -145,6 +181,11 @@ var StageInfo = (function () {
                 return this._districtLetter + "-" + this._stageLetter;
             }
         },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(StageInfo.prototype, "district", {
+        get: function () { return this._districtLetter ? parseInt(this._districtLetter) : null; },
         enumerable: true,
         configurable: true
     });
@@ -453,6 +494,40 @@ function updateTable() {
         return b.finalExpPerMotivation - a.finalExpPerMotivation;
     });
     {
+        var selectedDifficulty = document.getElementById("difficulty").value;
+        if (selectedDifficulty == "All") {
+        }
+        else {
+            var lhs_1 = parseInt(selectedDifficulty[1]);
+            switch (selectedDifficulty[0]) {
+                case 'N': break;
+                case 'H':
+                    lhs_1 += 0.5;
+                    break;
+                case 'T':
+                    lhs_1 += 2.25;
+                    break;
+            }
+            var filter = function (element, index, array) {
+                var rhs = element.stageInfo.district;
+                if (rhs == null) {
+                    return true;
+                }
+                switch (element.stageInfo.mode) {
+                    case StageMode.Normal: break;
+                    case StageMode.Hard:
+                        rhs += 0.5;
+                        break;
+                    case StageMode.Twist:
+                        rhs += 2.25;
+                        break;
+                }
+                return lhs_1 >= rhs;
+            };
+            records = records.filter(filter);
+        }
+    }
+    {
         var maxFinalExpPerMotivation = records[0].finalExpPerMotivation;
         var minFinalExpPerMotivation = records[Math.min(10, records.length) - 1].finalExpPerMotivation;
         for (var _a = 0, records_1 = records; _a < records_1.length; _a++) {
@@ -465,6 +540,9 @@ function updateTable() {
                 record.expColorScaleRatio = null;
             }
         }
+    }
+    if (20 < records.length && document.getElementById("only20").checked) {
+        records = records.slice(0, 20);
     }
     var table = document.getElementById("stages");
     var table_body = document.getElementById("stages_body");
@@ -569,6 +647,16 @@ function updateTable() {
             }
         }
     }
+    {
+        var combo = (document.getElementById("difficulty"));
+        if (combo.value == "All") {
+            combo.style.backgroundColor = null;
+        }
+        else {
+            combo.style.backgroundColor = "#DDEEFF";
+        }
+    }
+    saveSettings();
 }
 function initializeExpTable(ev) {
     var now = new Date();
@@ -583,6 +671,29 @@ function initializeExpTable(ev) {
             radio.checked = true;
         }
     }
+    {
+        var combo_1 = document.getElementById("difficulty");
+        var addOption = function (label, value, foreColor) {
+            var option = combo_1.appendChild(document.createElement("option"));
+            option.innerText = label;
+            option.style.color = foreColor;
+            option.style.backgroundColor = "white";
+            var valueAttr = document.createAttribute("value");
+            valueAttr.value = value;
+            option.attributes.setNamedItem(valueAttr);
+        };
+        addOption("すべての難易度", "All", "inherit");
+        addOption("H5 まで (推奨Lv 61-65)", "H5", "#E08000");
+        addOption("N5 まで (推奨Lv 51-55)", "N5", "inherit");
+        addOption("H4 まで (推奨Lv 56-60)", "H4", "#E08000");
+        addOption("T2 まで (推奨Lv 45-53)", "T2", "#FF0040");
+        addOption("N4 まで (推奨Lv 46-50)", "N4", "inherit");
+        addOption("H3 まで (推奨Lv 45-55)", "H3", "#E08000");
+        addOption("N3 まで (推奨Lv 31-45)", "N3", "inherit");
+        addOption("H2 まで (推奨Lv 30-40)", "H2", "#E08000");
+        addOption("N2 まで (推奨Lv 15-30)", "N2", "inherit");
+    }
+    loadSettings();
     updateTable();
 }
 window.onload = initializeExpTable;
