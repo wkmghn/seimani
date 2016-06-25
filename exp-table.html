@@ -11,26 +11,26 @@
   <h1>政剣マニフェスティア 経験値効率テーブル</h1>
   <p>
     ユニット種別:
-    <input type="radio" name="exp_bonus_unit_type" value="Melee" onclick="updateTable();" checked>近接
-    <input type="radio" name="exp_bonus_unit_type" value="Ranged" onclick="updateTable();">射撃
-    <input type="radio" name="exp_bonus_unit_type" value="Magic" onclick="updateTable();">魔法
-    <input type="radio" name="exp_bonus_unit_type" value="Heavy" onclick="updateTable();">重装
-    <input type="radio" name="exp_bonus_unit_type" value="Souri" onclick="updateTable();">総理
+    <label><input type="radio" name="exp_bonus_unit_type" value="Melee" onclick="updateTable();" checked>近接</label>
+    <label><input type="radio" name="exp_bonus_unit_type" value="Ranged" onclick="updateTable();">射撃</label>
+    <label><input type="radio" name="exp_bonus_unit_type" value="Magic" onclick="updateTable();">魔法</label>
+    <label><input type="radio" name="exp_bonus_unit_type" value="Heavy" onclick="updateTable();">重装</label>
+    <label><input type="radio" name="exp_bonus_unit_type" value="Souri" onclick="updateTable();">総理</label>
   </p>
   <p>
     曜日:
-    <input type="radio" name="exp_bonus_day" id="exp_bonus_day_radio_0" value="0" onclick="updateTable();"><span id="exp_bonus_day_0"></span>
-    <input type="radio" name="exp_bonus_day" id="exp_bonus_day_radio_1" value="1" onclick="updateTable();"><span id="exp_bonus_day_1"></span>
-    <input type="radio" name="exp_bonus_day" id="exp_bonus_day_radio_2" value="2" onclick="updateTable();"><span id="exp_bonus_day_2"></span>
-    <input type="radio" name="exp_bonus_day" id="exp_bonus_day_radio_3" value="3" onclick="updateTable();"><span id="exp_bonus_day_3"></span>
-    <input type="radio" name="exp_bonus_day" id="exp_bonus_day_radio_4" value="4" onclick="updateTable();"><span id="exp_bonus_day_4"></span>
-    <input type="radio" name="exp_bonus_day" id="exp_bonus_day_radio_5" value="5" onclick="updateTable();"><span id="exp_bonus_day_5"></span>
-    <input type="radio" name="exp_bonus_day" id="exp_bonus_day_radio_6" value="6" onclick="updateTable();"><span id="exp_bonus_day_6"></span>
+    <input type="radio" name="exp_bonus_day" id="exp_bonus_day_radio_0" value="0" onclick="updateTable();"><label for="exp_bonus_day_radio_0" id="exp_bonus_day_0"></label>
+    <input type="radio" name="exp_bonus_day" id="exp_bonus_day_radio_1" value="1" onclick="updateTable();"><label for="exp_bonus_day_radio_1" id="exp_bonus_day_1"></label>
+    <input type="radio" name="exp_bonus_day" id="exp_bonus_day_radio_2" value="2" onclick="updateTable();"><label for="exp_bonus_day_radio_2" id="exp_bonus_day_2"></label>
+    <input type="radio" name="exp_bonus_day" id="exp_bonus_day_radio_3" value="3" onclick="updateTable();"><label for="exp_bonus_day_radio_3" id="exp_bonus_day_3"></label>
+    <input type="radio" name="exp_bonus_day" id="exp_bonus_day_radio_4" value="4" onclick="updateTable();"><label for="exp_bonus_day_radio_4" id="exp_bonus_day_4"></label>
+    <input type="radio" name="exp_bonus_day" id="exp_bonus_day_radio_5" value="5" onclick="updateTable();"><label for="exp_bonus_day_radio_5" id="exp_bonus_day_5"></label>
+    <input type="radio" name="exp_bonus_day" id="exp_bonus_day_radio_6" value="6" onclick="updateTable();"><label for="exp_bonus_day_radio_6" id="exp_bonus_day_6"></label>
   </p>
   <p>
     フィルタ:
     <select id="difficulty" onchange="updateTable();"></select>
-    <input type="checkbox" id="only20" onclick="updateTable();">上位20ステージのみ
+    <label><input type="checkbox" id="only20" onclick="updateTable();">上位20ステージのみ</label>
   </p>
   <table id="stages" border="1">
     <thead style="text-align: center;">
