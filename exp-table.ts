@@ -1,15 +1,28 @@
-function getDayOfWeekName(dayOfWeek: number) : string {
+function getDayOfWeekLetter(dayOfWeek: number) : string {
   switch (dayOfWeek) {
-    case 0: return "日曜日";
-    case 1: return "月曜日";
-    case 2: return "火曜日";
-    case 3: return "水曜日";
-    case 4: return "木曜日";
-    case 5: return "金曜日";
-    case 6: return "土曜日";
+    case 0: return "日";
+    case 1: return "月";
+    case 2: return "火";
+    case 3: return "水";
+    case 4: return "木";
+    case 5: return "金";
+    case 6: return "土";
   }
-  return "？曜日";
+  return "？";
 }
+
+// function getDayOfWeekName(dayOfWeek: number) : string {
+//   switch (dayOfWeek) {
+//     case 0: return "日曜日";
+//     case 1: return "月曜日";
+//     case 2: return "火曜日";
+//     case 3: return "水曜日";
+//     case 4: return "木曜日";
+//     case 5: return "金曜日";
+//     case 6: return "土曜日";
+//   }
+//   return "？曜日";
+// }
 
 function getBonusDayLetter(dayOfWeek: number) : string {
   if (dayOfWeek === undefined) {
@@ -341,17 +354,15 @@ function getSelectedExpBonusUnitType() : UnitType {
 function getSelectedDayOfWeek() : number {
   let now: Date = new Date();
   let radios = document.getElementsByName("exp_bonus_day");
-  let radio = <HTMLInputElement>radios[0];
-
-  // 今日
-  if (radio.value == "Today" && radio.checked) {
-    return now.getDay();
+  for (let index in radios) {
+    let radio = <HTMLInputElement>(radios[index]);
+    if (radio.checked) {
+      return parseInt(radio.value);
+    }
   }
 
-  // 今日じゃないなら明日
-  let tomorrow: Date = now;
-  tomorrow.setDate(now.getDate() + 1);
-  return tomorrow.getDay();
+  // 曜日が選択されていない。テキトウな値を返す。
+  return 0;
 }
 
 function updateTable() : void {
@@ -653,18 +664,18 @@ function updateTable() : void {
 }
 
 function initializeExpTable(ev: Event): void {
+  // 曜日選択ラジオボタンの初期化
   let now: Date = new Date();
-
-  {
-    let todayRadio = <HTMLInputElement>document.getElementById("exp_bonus_day_today");
-    todayRadio.innerText = "今日(" + getDayOfWeekName(now.getDay()) + ")";
-  }
-
-  {
-    let tomorrowRadio = <HTMLInputElement>document.getElementById("exp_bonus_day_tomorrow");
-    let tomorrow: Date = now;
-    tomorrow.setDate(now.getDate() + 1);
-    tomorrowRadio.innerText = "明日(" + getDayOfWeekName(tomorrow.getDay()) + ")";
+  for (let i = 0; i < 7; ++i) {
+    let labelNodeID = "exp_bonus_day_" + i;
+    let labelNode = document.getElementById(labelNodeID);
+    labelNode.innerText = getDayOfWeekLetter(i);
+    if (i == now.getDay()) {
+      labelNode.innerText += "(今日)";
+      labelNode.style.fontWeight = "bold";
+      let radio = <HTMLInputElement>document.getElementById("exp_bonus_day_radio_" + i);
+      radio.checked = true;
+    }
   }
 
   updateTable();

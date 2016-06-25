@@ -1,14 +1,14 @@
-function getDayOfWeekName(dayOfWeek) {
+function getDayOfWeekLetter(dayOfWeek) {
     switch (dayOfWeek) {
-        case 0: return "日曜日";
-        case 1: return "月曜日";
-        case 2: return "火曜日";
-        case 3: return "水曜日";
-        case 4: return "木曜日";
-        case 5: return "金曜日";
-        case 6: return "土曜日";
+        case 0: return "日";
+        case 1: return "月";
+        case 2: return "火";
+        case 3: return "水";
+        case 4: return "木";
+        case 5: return "金";
+        case 6: return "土";
     }
-    return "？曜日";
+    return "？";
 }
 function getBonusDayLetter(dayOfWeek) {
     if (dayOfWeek === undefined) {
@@ -323,13 +323,13 @@ function getSelectedExpBonusUnitType() {
 function getSelectedDayOfWeek() {
     var now = new Date();
     var radios = document.getElementsByName("exp_bonus_day");
-    var radio = radios[0];
-    if (radio.value == "Today" && radio.checked) {
-        return now.getDay();
+    for (var index in radios) {
+        var radio = (radios[index]);
+        if (radio.checked) {
+            return parseInt(radio.value);
+        }
     }
-    var tomorrow = now;
-    tomorrow.setDate(now.getDate() + 1);
-    return tomorrow.getDay();
+    return 0;
 }
 function updateTable() {
     var 日 = 0;
@@ -572,15 +572,16 @@ function updateTable() {
 }
 function initializeExpTable(ev) {
     var now = new Date();
-    {
-        var todayRadio = document.getElementById("exp_bonus_day_today");
-        todayRadio.innerText = "今日(" + getDayOfWeekName(now.getDay()) + ")";
-    }
-    {
-        var tomorrowRadio = document.getElementById("exp_bonus_day_tomorrow");
-        var tomorrow = now;
-        tomorrow.setDate(now.getDate() + 1);
-        tomorrowRadio.innerText = "明日(" + getDayOfWeekName(tomorrow.getDay()) + ")";
+    for (var i = 0; i < 7; ++i) {
+        var labelNodeID = "exp_bonus_day_" + i;
+        var labelNode = document.getElementById(labelNodeID);
+        labelNode.innerText = getDayOfWeekLetter(i);
+        if (i == now.getDay()) {
+            labelNode.innerText += "(今日)";
+            labelNode.style.fontWeight = "bold";
+            var radio = document.getElementById("exp_bonus_day_radio_" + i);
+            radio.checked = true;
+        }
     }
     updateTable();
 }
