@@ -401,6 +401,23 @@ function getSelectedDayOfWeek() : number {
   return 0;
 }
 
+// 曜日選択ラジオボタンのラベルを設定する。
+// "(今日)" の位置を更新するために、初期化時以外にも呼び出される。
+function setDayOfWeekSelectorLabels() : void {
+  let now: Date = new Date();
+  for (let i = 0; i < 7; ++i) {
+    let labelNodeID = "exp_bonus_day_" + i;
+    let labelNode = document.getElementById(labelNodeID);
+    labelNode.innerText = getDayOfWeekLetter(i);
+    if (i == now.getDay()) {
+      labelNode.innerText += "(今日)";
+      labelNode.style.fontWeight = "bold";
+    } else {
+      labelNode.style.fontWeight = "inherit";
+    }
+  }
+}
+
 function updateTable() : void {
   var 日: number = 0;
   var 月: number = 1;
@@ -746,22 +763,19 @@ function updateTable() : void {
     }
   }
 
+  // ページ表示時と曜日が変わっているかもしれないので、ラベルを再設定する
+  setDayOfWeekSelectorLabels();
   saveSettings();
 }
 
 function initializeExpTable(ev: Event): void {
   // 曜日選択ラジオボタンの初期化
-  let now: Date = new Date();
-  for (let i = 0; i < 7; ++i) {
-    let labelNodeID = "exp_bonus_day_" + i;
-    let labelNode = document.getElementById(labelNodeID);
-    labelNode.innerText = getDayOfWeekLetter(i);
-    if (i == now.getDay()) {
-      labelNode.innerText += "(今日)";
-      labelNode.style.fontWeight = "bold";
-      let radio = <HTMLInputElement>document.getElementById("exp_bonus_day_radio_" + i);
-      radio.checked = true;
-    }
+  setDayOfWeekSelectorLabels();
+  // 今日の曜日を選択状態にする
+  {
+    let now = new Date();
+    let radio = <HTMLInputElement>document.getElementById("exp_bonus_day_radio_" + now.getDay());
+    radio.checked = true;
   }
 
   // 難易度選択コンボボックス

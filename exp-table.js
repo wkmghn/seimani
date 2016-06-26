@@ -372,6 +372,21 @@ function getSelectedDayOfWeek() {
     }
     return 0;
 }
+function setDayOfWeekSelectorLabels() {
+    var now = new Date();
+    for (var i = 0; i < 7; ++i) {
+        var labelNodeID = "exp_bonus_day_" + i;
+        var labelNode = document.getElementById(labelNodeID);
+        labelNode.innerText = getDayOfWeekLetter(i);
+        if (i == now.getDay()) {
+            labelNode.innerText += "(今日)";
+            labelNode.style.fontWeight = "bold";
+        }
+        else {
+            labelNode.style.fontWeight = "inherit";
+        }
+    }
+}
 function updateTable() {
     var 日 = 0;
     var 月 = 1;
@@ -656,20 +671,15 @@ function updateTable() {
             combo.style.backgroundColor = "#DDEEFF";
         }
     }
+    setDayOfWeekSelectorLabels();
     saveSettings();
 }
 function initializeExpTable(ev) {
-    var now = new Date();
-    for (var i = 0; i < 7; ++i) {
-        var labelNodeID = "exp_bonus_day_" + i;
-        var labelNode = document.getElementById(labelNodeID);
-        labelNode.innerText = getDayOfWeekLetter(i);
-        if (i == now.getDay()) {
-            labelNode.innerText += "(今日)";
-            labelNode.style.fontWeight = "bold";
-            var radio = document.getElementById("exp_bonus_day_radio_" + i);
-            radio.checked = true;
-        }
+    setDayOfWeekSelectorLabels();
+    {
+        var now = new Date();
+        var radio = document.getElementById("exp_bonus_day_radio_" + now.getDay());
+        radio.checked = true;
     }
     {
         var combo_1 = document.getElementById("difficulty");
