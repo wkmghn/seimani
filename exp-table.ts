@@ -512,15 +512,15 @@ function updateTable() : void {
     new StageInfo("N 5-1", 26, 3550, 3120, 火, 金, UnitType.Ranged),
     new StageInfo("N 5-2", 26, 3630, 3130, 水, 土, UnitType.Melee),
     new StageInfo("N 5-3", 27, 3734, 3150, 木, 日, UnitType.Heavy),
-    new StageInfo("N 5-4", 27, 3808, 3110, 金, undefined, UnitType.Magic),
-    new StageInfo("N 5-5", 27, 3835, 3090, 土, undefined, UnitType.Ranged),
+    new StageInfo("N 5-4", 27, 3808, 3110, 金, 月, UnitType.Magic),
+    new StageInfo("N 5-5", 27, 3835, 3090, 土, 火, UnitType.Ranged),
     new StageInfo("N 5-A", 26, 3515, 3040, 日, 水, UnitType.Magic),
 
     // H 5
-    new StageInfo("H 5-1", 42, 6017, 5300, 土, undefined, UnitType.Ranged),
+    new StageInfo("H 5-1", 42, 6017, 5300, 土, 火, UnitType.Ranged),
     new StageInfo("H 5-2", 42, 6065, 5050, 日, 水, UnitType.Heavy),
-    new StageInfo("H 5-3", 42, 6129, 5110, undefined, 木, UnitType.Ranged),
-    new StageInfo("H 5-4", 42, 6181, 5300, undefined, 金, UnitType.Melee),
+    new StageInfo("H 5-3", 42, 6129, 5110, 月, 木, UnitType.Ranged),
+    new StageInfo("H 5-4", 42, 6181, 5300, 火, 金, UnitType.Melee),
     new StageInfo("H 5-5", 43, 6409, 5270, 水, 土, UnitType.Heavy),
     new StageInfo("H 5-A", 42, 6030, 5300, 木, 日, UnitType.Magic),
 
