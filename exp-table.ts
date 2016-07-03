@@ -23,6 +23,7 @@ function loadSettings() : void {
 
   (<HTMLSelectElement>document.getElementById("difficulty")).value = getFromLocalStorage("exp-table:Difficulty", "All");
   (<HTMLInputElement>document.getElementById("only20")).checked = getBooleanFromLocalStorage("exp-table:OnlyTop20", true);
+  (<HTMLInputElement>document.getElementById("separateEventStage")).checked = getBooleanFromLocalStorage("exp-table:SeparateEventStage", false);
 }
 
 function saveSettings() : void {
@@ -30,6 +31,7 @@ function saveSettings() : void {
 
   localStorage.setItem("exp-table:Difficulty", (<HTMLSelectElement>document.getElementById("difficulty")).value);
   localStorage.setItem("exp-table:OnlyTop20", (<HTMLInputElement>document.getElementById("only20")).checked ? "1" : "0");
+  localStorage.setItem("exp-table:SeparateEventStage", (<HTMLInputElement>document.getElementById("separateEventStage")).checked ? "1" : "0");
 }
 
 function getDayOfWeekLetter(dayOfWeek: number) : string {
@@ -257,6 +259,7 @@ class StageInfo
   public get baseGold() : number { return this._baseGold; }
   public get goldBonusDay() : number { return this._goldBonusDay; }
   public get isProtectionBonusAllowed() : boolean { return this._isProtectionBonusAllowe; }
+  public get isEventStage() : boolean { return this._eventStageName != null; }
 
   //============================================================================
   // METHODS
@@ -418,7 +421,8 @@ function setDayOfWeekSelectorLabels() : void {
   }
 }
 
-function updateTable() : void {
+var stages: StageInfo[];
+function initializeStageList() {
   var 日: number = 0;
   var 月: number = 1;
   var 火: number = 2;
@@ -428,7 +432,7 @@ function updateTable() : void {
   var 土: number = 6;
   var 無: number = null;
   // 全ステージのリスト
-  let stages: StageInfo[] = [
+  stages = [
     // N 2
     new StageInfo("N 2-1", 12,  523,  630, 月, 木, UnitType.Magic),
     new StageInfo("N 2-F", 12,  775,  580, 水, 月, UnitType.Magic),
@@ -573,7 +577,9 @@ function updateTable() : void {
     new StageInfo("まつり", 80, 9440, 16000, 無, 無, null, false, false),
     new StageInfo("ちまつり", 100, 12500, 21000, 無, 無, null, false, false),
   ];
+}
 
+function updateTable() : void {
   // テーブルの行
   let records: TableRecord[] = [];
   {
@@ -591,6 +597,16 @@ function updateTable() : void {
   records.sort(function (a: TableRecord, b: TableRecord) {
      return b.finalExpPerMotivation - a.finalExpPerMotivation;
   })
+
+  // イベントステージを分ける
+  let separatedEventStageRecords: TableRecord[] = [];
+  {
+    let separateEventStages: boolean = (<HTMLInputElement>document.getElementById("separateEventStage")).checked;
+    if (separateEventStages) {
+      separatedEventStageRecords = records.filter(function(item, index) { return item.stageInfo.isEventStage; });
+      //records = records.filter(function(item, index) { return !item.stageInfo.isEventStage; })
+    }
+  }
 
   // 難易度によるフィルタを適用
   {
@@ -653,7 +669,7 @@ function updateTable() : void {
   let tBody = table.createTBody();
   tBody.id = "stages_body";
   tBody.classList.add("stripe")
-  for (let r of records) {
+  let insertRow = function(r: TableRecord): HTMLTableRowElement {
     let newRow = tBody.insertRow();
     // ステージ名
     {
@@ -758,6 +774,25 @@ function updateTable() : void {
         cell.innerText = getBonusDayLetter(r.stageInfo.goldBonusDay);
       }
     }
+    return newRow;
+  }
+
+  // イベントステージの分離表示が有効なら、先に出力
+  if (separatedEventStageRecords) {
+    for (let r of separatedEventStageRecords) {
+      let row = insertRow(r);
+      // 分離されたイベントステージと他のステージの境目に線を引く
+      if (separatedEventStageRecords[separatedEventStageRecords.length - 1] == r) {
+        for (let i = 0; i < row.cells.length; ++i) {
+          let cell = row.cells.item(i);
+          cell.style.borderBottom = "solid 2px #c0c0c0";
+        }
+      }
+    }
+  }
+  // 全行を出力
+  for (let r of records) {
+    insertRow(r);
   }
 
   // 難易度が All 以外なら、難易度選択コンボボックスの色を変えておく
@@ -776,6 +811,8 @@ function updateTable() : void {
 }
 
 function initializeExpTable(ev: Event): void {
+  initializeStageList();
+
   // 曜日選択ラジオボタンの初期化
   setDayOfWeekSelectorLabels();
   // 今日の曜日を選択状態にする
@@ -807,6 +844,25 @@ function initializeExpTable(ev: Event): void {
     addOption("N3 まで (推奨Lv 31-45)", "N3", "inherit");
     addOption("H2 まで (推奨Lv 30-40)", "H2", "#E08000");
     addOption("N2 まで (推奨Lv 15-30)", "N2", "inherit");
+  }
+
+  // 『イベントステージを分離表示』チェックボックス
+  {
+    // イベントステージがあるか？
+    let existsEventStage = false;
+    for (let stageInfo of stages) {
+      if (stageInfo.isEventStage) {
+        existsEventStage = true;
+        break;
+      }
+    }
+    // イベントステージが無いなら非表示にする
+    if (!existsEventStage) {
+      let checkBox = <HTMLInputElement>document.getElementById("separateEventStage");
+      let parentLabel = checkBox.parentElement;
+      checkBox.style.visibility = "hidden";
+      parentLabel.style.visibility = "hidden";
+    }
   }
 
   loadSettings();

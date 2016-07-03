@@ -26,6 +26,7 @@ function loadSettings() {
     }
     document.getElementById("difficulty").value = getFromLocalStorage("exp-table:Difficulty", "All");
     document.getElementById("only20").checked = getBooleanFromLocalStorage("exp-table:OnlyTop20", true);
+    document.getElementById("separateEventStage").checked = getBooleanFromLocalStorage("exp-table:SeparateEventStage", false);
 }
 function saveSettings() {
     if (!localStorage) {
@@ -33,6 +34,7 @@ function saveSettings() {
     }
     localStorage.setItem("exp-table:Difficulty", document.getElementById("difficulty").value);
     localStorage.setItem("exp-table:OnlyTop20", document.getElementById("only20").checked ? "1" : "0");
+    localStorage.setItem("exp-table:SeparateEventStage", document.getElementById("separateEventStage").checked ? "1" : "0");
 }
 function getDayOfWeekLetter(dayOfWeek) {
     switch (dayOfWeek) {
@@ -234,6 +236,11 @@ var StageInfo = (function () {
         enumerable: true,
         configurable: true
     });
+    Object.defineProperty(StageInfo.prototype, "isEventStage", {
+        get: function () { return this._eventStageName != null; },
+        enumerable: true,
+        configurable: true
+    });
     return StageInfo;
 }());
 var TableRecord = (function () {
@@ -387,7 +394,8 @@ function setDayOfWeekSelectorLabels() {
         }
     }
 }
-function updateTable() {
+var stages;
+function initializeStageList() {
     var 日 = 0;
     var 月 = 1;
     var 火 = 2;
@@ -396,7 +404,7 @@ function updateTable() {
     var 金 = 5;
     var 土 = 6;
     var 無 = null;
-    var stages = [
+    stages = [
         new StageInfo("N 2-1", 12, 523, 630, 月, 木, UnitType.Magic),
         new StageInfo("N 2-F", 12, 775, 580, 水, 月, UnitType.Magic),
         new StageInfo("N 2-G", 12, 802, 490, 木, 火, UnitType.Ranged),
@@ -497,6 +505,8 @@ function updateTable() {
         new StageInfo("まつり", 80, 9440, 16000, 無, 無, null, false, false),
         new StageInfo("ちまつり", 100, 12500, 21000, 無, 無, null, false, false),
     ];
+}
+function updateTable() {
     var records = [];
     {
         var expBonusUnitType = getSelectedExpBonusUnitType();
@@ -513,6 +523,13 @@ function updateTable() {
     records.sort(function (a, b) {
         return b.finalExpPerMotivation - a.finalExpPerMotivation;
     });
+    var separatedEventStageRecords = [];
+    {
+        var separateEventStages = document.getElementById("separateEventStage").checked;
+        if (separateEventStages) {
+            separatedEventStageRecords = records.filter(function (item, index) { return item.stageInfo.isEventStage; });
+        }
+    }
     {
         var selectedDifficulty = document.getElementById("difficulty").value;
         if (selectedDifficulty == "All") {
@@ -572,8 +589,7 @@ function updateTable() {
     var tBody = table.createTBody();
     tBody.id = "stages_body";
     tBody.classList.add("stripe");
-    for (var _b = 0, records_2 = records; _b < records_2.length; _b++) {
-        var r = records_2[_b];
+    var insertRow = function (r) {
         var newRow = tBody.insertRow();
         {
             var cell = newRow.insertCell();
@@ -666,6 +682,23 @@ function updateTable() {
                 cell.innerText = getBonusDayLetter(r.stageInfo.goldBonusDay);
             }
         }
+        return newRow;
+    };
+    if (separatedEventStageRecords) {
+        for (var _b = 0, separatedEventStageRecords_1 = separatedEventStageRecords; _b < separatedEventStageRecords_1.length; _b++) {
+            var r = separatedEventStageRecords_1[_b];
+            var row = insertRow(r);
+            if (separatedEventStageRecords[separatedEventStageRecords.length - 1] == r) {
+                for (var i = 0; i < row.cells.length; ++i) {
+                    var cell = row.cells.item(i);
+                    cell.style.borderBottom = "solid 2px #c0c0c0";
+                }
+            }
+        }
+    }
+    for (var _c = 0, records_2 = records; _c < records_2.length; _c++) {
+        var r = records_2[_c];
+        insertRow(r);
     }
     {
         var combo = (document.getElementById("difficulty"));
@@ -680,6 +713,7 @@ function updateTable() {
     saveSettings();
 }
 function initializeExpTable(ev) {
+    initializeStageList();
     setDayOfWeekSelectorLabels();
     {
         var now = new Date();
@@ -707,6 +741,22 @@ function initializeExpTable(ev) {
         addOption("N3 まで (推奨Lv 31-45)", "N3", "inherit");
         addOption("H2 まで (推奨Lv 30-40)", "H2", "#E08000");
         addOption("N2 まで (推奨Lv 15-30)", "N2", "inherit");
+    }
+    {
+        var existsEventStage = false;
+        for (var _i = 0, stages_2 = stages; _i < stages_2.length; _i++) {
+            var stageInfo = stages_2[_i];
+            if (stageInfo.isEventStage) {
+                existsEventStage = true;
+                break;
+            }
+        }
+        if (!existsEventStage) {
+            var checkBox = document.getElementById("separateEventStage");
+            var parentLabel = checkBox.parentElement;
+            checkBox.style.visibility = "hidden";
+            parentLabel.style.visibility = "hidden";
+        }
     }
     loadSettings();
     updateTable();
