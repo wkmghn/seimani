@@ -597,6 +597,7 @@ function initializeStageList() {
     //new StageInfo("ちまつり", 100, 12500, 21000, 無, 無, null, false, false),
 
     // 異臣英雄伝 改 退散の妖刀編
+    // 暴闘海産狩超戦挙
     new StageInfo("初級", 30, 3210, 2100, 無, 無, null, false, false),
     new StageInfo("中級", 40, 4480, 5600, 無, 無, null, false, false),
     new StageInfo("上級", 50, 5750, 9500, 無, 無, null, false, false),
