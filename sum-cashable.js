@@ -103,7 +103,7 @@ function initializeSumCashable(ev) {
             input_1.id = cashable.numberBoxId;
             input_1.value = loadNumCashable(cashable).toString();
             input_1.min = "0";
-            input_1.max = "99";
+            input_1.max = "999";
             input_1.style.textAlign = "right";
             input_1.style.width = "3em";
             input_1.onchange = input_1.onkeyup = input_1.onmouseup = function (ev) {
@@ -116,7 +116,7 @@ function initializeSumCashable(ev) {
                     ev.preventDefault();
                 }
                 else if (ev.deltaY < 0) {
-                    input_1.value = Math.min(parseInt(input_1.value) + 1, 99).toString();
+                    input_1.value = Math.min(parseInt(input_1.value) + 1, 999).toString();
                     ev.preventDefault();
                 }
                 console.log(ev);
