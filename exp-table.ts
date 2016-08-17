@@ -481,9 +481,11 @@ function initializeStageList() {
     new StageInfo("T 2-C", 40, 4338, 4260, 木, 水, UnitType.Melee),
     new StageInfo("T 2-I", 40, 4308, 4260, 木, 水, UnitType.Magic),
     new StageInfo("T 2-4", 40, 4373, 4320, 金, 木, UnitType.Ranged),
+    new StageInfo("T 2-D", 40, 4397, 0, undefined, undefined, UnitType.Magic),
     new StageInfo("T 2-E", 40, 4407, 0, 日, 土, UnitType.Ranged),
     new StageInfo("T 2-J", 40, 4387, 4350, 金, 木, UnitType.Heavy),
     new StageInfo("T 2-K", 40, 4564, 4450, 土, 金, UnitType.Heavy),
+    new StageInfo("T 2-5", 41, 4600, 0, undefined, undefined, UnitType.Magic),
 
     // N 3
     new StageInfo("N 3-1", 19, 1799, 1940, 日, 金, UnitType.Ranged),
@@ -511,6 +513,9 @@ function initializeStageList() {
     new StageInfo("H 3-5", 41, 4579, 4460, 金, 木, null),
     new StageInfo("H 3-F", 37, 3928, 4250, 土, 金, UnitType.Melee),
 
+    // T 3
+    new StageInfo("T 3-1", 41, 3920, 4600, undefined, 木, UnitType.Melee),
+    new StageInfo("T 3-2", 41, 3914, 0, undefined, undefined, UnitType.Ranged),
     // N 4
     new StageInfo("N 4-1", 25, 2966, 2740, 月, 木, UnitType.Magic),
     new StageInfo("N 4-2", 25, 3004, 2760, 火, 金, UnitType.Melee),
@@ -863,9 +868,10 @@ function initializeExpTable(ev: Event): void {
     }
     addOption("すべての難易度", "All", "inherit");
     addOption("H5 まで (推奨Lv 61-65)", "H5", "#E08000");
+    addOption("T3 まで (推奨Lv 55-57)", "T3", "#FF0040");
     addOption("N5 まで (推奨Lv 51-55)", "N5", "inherit");
     addOption("H4 まで (推奨Lv 56-60)", "H4", "#E08000");
-    addOption("T2 まで (推奨Lv 45-53)", "T2", "#FF0040");
+    addOption("T2 まで (推奨Lv 45-55)", "T2", "#FF0040");
     addOption("N4 まで (推奨Lv 46-50)", "N4", "inherit");
     addOption("H3 まで (推奨Lv 45-55)", "H3", "#E08000");
     addOption("N3 まで (推奨Lv 31-45)", "N3", "inherit");
