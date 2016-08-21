@@ -485,7 +485,7 @@ function initializeStageList() {
     new StageInfo("T 2-E", 40, 4407, 0, 日, 土, UnitType.Ranged),
     new StageInfo("T 2-J", 40, 4387, 4350, 金, 木, UnitType.Heavy),
     new StageInfo("T 2-K", 40, 4564, 4450, 土, 金, UnitType.Heavy),
-    new StageInfo("T 2-5", 41, 4600, 0, undefined, 土, UnitType.Magic),
+    new StageInfo("T 2-5", 41, 4600, 0, 日, 土, UnitType.Magic),
 
     // N 3
     new StageInfo("N 3-1", 19, 1799, 1940, 日, 金, UnitType.Ranged),
