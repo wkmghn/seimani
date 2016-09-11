@@ -477,6 +477,7 @@ function initializeStageList() {
         new StageInfo("H 3-F", 37, 3928, 4250, 土, 金, UnitType.Melee),
         new StageInfo("T 3-1", 41, 4890, 4600, 金, 木, UnitType.Melee),
         new StageInfo("T 3-2", 41, 5022, 0, 土, 金, UnitType.Ranged),
+        new StageInfo("T 3-A", 41, 4933, 0, undefined, undefined, UnitType.Magic),
         new StageInfo("N 4-1", 25, 2966, 2740, 月, 木, UnitType.Magic),
         new StageInfo("N 4-2", 25, 3004, 2760, 火, 金, UnitType.Melee),
         new StageInfo("N 4-3", 25, 3062, 2770, 水, 土, UnitType.Ranged),
