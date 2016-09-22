@@ -565,6 +565,11 @@ function initializeStageList() {
     new StageInfo("H 5-D", 43, 6383, 5330, 日, 水, UnitType.Melee),
     new StageInfo("H 5-E", 42, 6037, 5060, 月, 木, UnitType.Magic),
 
+    // N 6
+    new StageInfo("N 6-1", 27, 4139, 3190, 水, undefined, UnitType.Heavy),
+    new StageInfo("N 6-2", 27, 4244, 3410, 木, undefined, UnitType.Melee),
+    new StageInfo("N 6-3", 27, 4282, 3400, undefined, undefined, UnitType.Magic),
+
     // 第一次闘弌治宝戦挙
     //new StageInfo("初級", 15, 1500, 1050, 無, 無, null, false, false),
     //new StageInfo("中級", 25, 2625, 3500, 無, 無, null, false, false),
@@ -606,6 +611,8 @@ function initializeStageList() {
 
     // 異臣英雄伝 改 退散の妖刀編
     // 暴闘海産狩超戦挙
+    // 第四次闘弌治宝戦挙
+    // 悪閃狩超戦挙
     new StageInfo("初級", 30, 3210, 2100, 無, 無, null, false, false),
     new StageInfo("中級", 40, 4480, 5600, 無, 無, null, false, false),
     new StageInfo("上級", 50, 5750, 9500, 無, 無, null, false, false),
