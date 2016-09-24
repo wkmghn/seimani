@@ -566,7 +566,7 @@ function initializeStageList() {
     new StageInfo("H 5-E", 42, 6037, 5060, 月, 木, UnitType.Magic),
 
     // N 6
-    new StageInfo("N 6-1", 27, 4139, 3190, 水, undefined, UnitType.Heavy),
+    new StageInfo("N 6-1", 27, 4139, 3190, 水, 土, UnitType.Heavy),
     new StageInfo("N 6-2", 27, 4244, 3410, 木, undefined, UnitType.Melee),
     new StageInfo("N 6-3", 27, 4282, 3400, 金, undefined, UnitType.Magic),
 
