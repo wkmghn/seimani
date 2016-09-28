@@ -521,14 +521,14 @@ function initializeStageList() {
         new StageInfo("N 6-1", 27, 4139, 3190, 水, 土, UnitType.Heavy),
         new StageInfo("N 6-2", 27, 4244, 3410, 木, 日, UnitType.Melee),
         new StageInfo("N 6-3", 27, 4282, 3400, 金, 月, UnitType.Magic),
-        new StageInfo("初級", 30, 3210, 2100, 無, 無, null, false, false),
-        new StageInfo("中級", 40, 4480, 5600, 無, 無, null, false, false),
-        new StageInfo("上級", 50, 5750, 9500, 無, 無, null, false, false),
-        new StageInfo("まつり", 80, 9440, 16000, 無, 無, null, false, false),
-        new StageInfo("ちまつり", 100, 12500, 21000, 無, 無, null, false, false),
+        new StageInfo("小地獄", 30, 2000, 2400, 無, 無, null, false, false),
+        new StageInfo("中地獄", 50, 3500, 7000, 無, 無, null, false, false),
+        new StageInfo("大地獄", 80, 6000, 16000, 無, 無, null, false, false),
+        new StageInfo("天国", 0, 5000, 1, 無, 無, null, false, false),
     ];
 }
 function updateTable() {
+    var separateEventStages = document.getElementById("separateEventStage").checked;
     var records = [];
     {
         var expBonusUnitType = getSelectedExpBonusUnitType();
@@ -546,12 +546,10 @@ function updateTable() {
         return b.finalExpPerMotivation - a.finalExpPerMotivation;
     });
     var separatedEventStageRecords = [];
-    {
-        var separateEventStages = document.getElementById("separateEventStage").checked;
-        if (separateEventStages) {
-            separatedEventStageRecords = records.filter(function (item, index) { return item.stageInfo.isEventStage; });
-        }
+    if (separateEventStages) {
+        separatedEventStageRecords = records.filter(function (item, index) { return item.stageInfo.isEventStage; });
     }
+    records = records.filter(function (item, index) { return 0 < item.stageInfo.motivationConsumption; });
     {
         var selectedDifficulty = document.getElementById("difficulty").value;
         if (selectedDifficulty == "All") {
@@ -669,7 +667,12 @@ function updateTable() {
         }
         {
             var cell = newRow.insertCell();
-            cell.innerText = r.finalExpPerMotivation.toFixed(2);
+            if (isFinite(r.finalExpPerMotivation)) {
+                cell.innerText = r.finalExpPerMotivation.toFixed(2);
+            }
+            else {
+                cell.innerText = "Infinity";
+            }
             cell.classList.add("final_exp_per_motivation");
             if (r.expColorScaleRatio != null) {
                 function lerp(a, b, t) { return a * (1 - t) + b * t; }
@@ -690,7 +693,12 @@ function updateTable() {
                 cell.classList.add("final_gold_per_motivation");
                 cell.style.borderRightWidth = "0px";
                 if (0 < r.finalGoldPerMotivation) {
-                    cell.innerText = r.finalGoldPerMotivation.toFixed(2);
+                    if (isFinite(r.finalGoldPerMotivation)) {
+                        cell.innerText = r.finalGoldPerMotivation.toFixed(2);
+                    }
+                    else {
+                        cell.innerText = "Infinity";
+                    }
                 }
                 else {
                     cell.innerText = "？";

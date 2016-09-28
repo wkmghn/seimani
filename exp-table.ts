@@ -613,15 +613,24 @@ function initializeStageList() {
     // 暴闘海産狩超戦挙
     // 第四次闘弌治宝戦挙
     // 悪閃狩超戦挙
-    new StageInfo("初級", 30, 3210, 2100, 無, 無, null, false, false),
-    new StageInfo("中級", 40, 4480, 5600, 無, 無, null, false, false),
-    new StageInfo("上級", 50, 5750, 9500, 無, 無, null, false, false),
-    new StageInfo("まつり", 80, 9440, 16000, 無, 無, null, false, false),
-    new StageInfo("ちまつり", 100, 12500, 21000, 無, 無, null, false, false),
+    //new StageInfo("初級", 30, 3210, 2100, 無, 無, null, false, false),
+    //new StageInfo("中級", 40, 4480, 5600, 無, 無, null, false, false),
+    //new StageInfo("上級", 50, 5750, 9500, 無, 無, null, false, false),
+    //new StageInfo("まつり", 80, 9440, 16000, 無, 無, null, false, false),
+    //new StageInfo("ちまつり", 100, 12500, 21000, 無, 無, null, false, false),
+
+    // 害貨獲得戦挙
+    new StageInfo("小地獄", 30, 2000, 2400, 無, 無, null, false, false),
+    new StageInfo("中地獄", 50, 3500, 7000, 無, 無, null, false, false),
+    new StageInfo("大地獄", 80, 6000, 16000, 無, 無, null, false, false),
+    // 天国の獲得ゴールドは不定だが、Gold/M を Infinity 表示にしたいので 1 ってことで。
+    new StageInfo("天国", 0, 5000, 1, 無, 無, null, false, false),
   ];
 }
 
 function updateTable() : void {
+  // イベントステージを分離表示するか？
+  let separateEventStages: boolean = (<HTMLInputElement>document.getElementById("separateEventStage")).checked;
   // テーブルの行
   let records: TableRecord[] = [];
   {
@@ -642,13 +651,14 @@ function updateTable() : void {
 
   // イベントステージを分ける
   let separatedEventStageRecords: TableRecord[] = [];
-  {
-    let separateEventStages: boolean = (<HTMLInputElement>document.getElementById("separateEventStage")).checked;
-    if (separateEventStages) {
-      separatedEventStageRecords = records.filter(function(item, index) { return item.stageInfo.isEventStage; });
-      //records = records.filter(function(item, index) { return !item.stageInfo.isEventStage; })
-    }
+  if (separateEventStages) {
+    separatedEventStageRecords = records.filter(function(item, index) { return item.stageInfo.isEventStage; });
+    //records = records.filter(function(item, index) { return !item.stageInfo.isEventStage; })
   }
+
+  // 消費モチベがゼロのステージを除外する
+  // (EXP/Mが無限大になって常に表示されて邪魔なので。イベントステージの分離表示に含まれる分には構わない。)
+  records = records.filter(function(item, index) { return 0 < item.stageInfo.motivationConsumption; })
 
   // 難易度によるフィルタを適用
   {
@@ -781,7 +791,11 @@ function updateTable() : void {
     // EXP/M
     {
       let cell = newRow.insertCell();
-      cell.innerText = r.finalExpPerMotivation.toFixed(2);
+      if (isFinite(r.finalExpPerMotivation)) {
+        cell.innerText = r.finalExpPerMotivation.toFixed(2);
+      } else {
+        cell.innerText = "Infinity";
+      }
       cell.classList.add("final_exp_per_motivation");
       // カラースケール
       if (r.expColorScaleRatio != null) {
@@ -803,7 +817,11 @@ function updateTable() : void {
         cell.classList.add("final_gold_per_motivation");
         cell.style.borderRightWidth = "0px";
         if (0 < r.finalGoldPerMotivation) {
-          cell.innerText = r.finalGoldPerMotivation.toFixed(2);
+          if (isFinite(r.finalGoldPerMotivation)) {
+            cell.innerText = r.finalGoldPerMotivation.toFixed(2);
+          } else {
+            cell.innerText = "Infinity";
+          }
         } else {
           cell.innerText = "？";
         }
