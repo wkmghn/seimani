@@ -569,6 +569,8 @@ function initializeStageList() {
     new StageInfo("N 6-1", 27, 4139, 3190, 水, 土, UnitType.Heavy),
     new StageInfo("N 6-2", 27, 4244, 3410, 木, 日, UnitType.Melee),
     new StageInfo("N 6-3", 27, 4282, 3400, 金, 月, UnitType.Magic),
+    new StageInfo("N 6-4", 27, 4324, 3200, undefined, undefined, UnitType.Magic),
+    new StageInfo("N 6-5", 28, 4522, 3420, undefined, 水, UnitType.Ranged),
 
     // 第一次闘弌治宝戦挙
     //new StageInfo("初級", 15, 1500, 1050, 無, 無, null, false, false),
@@ -868,6 +870,8 @@ function updateTable() : void {
   // ページ表示時と曜日が変わっているかもしれないので、ラベルを再設定する
   setDayOfWeekSelectorLabels();
   saveSettings();
+
+  (<HTMLElement>document.getElementById("")).clientWidth
 }
 
 function initializeExpTable(ev: Event): void {
