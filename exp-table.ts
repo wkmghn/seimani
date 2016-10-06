@@ -572,6 +572,12 @@ function initializeStageList() {
     new StageInfo("N 6-4", 27, 4324, 3200, undefined, undefined, UnitType.Magic),
     new StageInfo("N 6-5", 28, 4522, 3420, undefined, 水, UnitType.Ranged),
 
+    new StageInfo("H 6-1", 43, 6964, 5370, undefined, undefined, UnitType.Magic),
+    new StageInfo("H 6-2", 43, 6956, 5390, undefined, 木, UnitType.Melee),
+    new StageInfo("H 6-3", 43, 6979, 5330, undefined, undefined, UnitType.Ranged),
+    new StageInfo("H 6-4", 43, 7117, 5360, undefined, undefined, UnitType.Heavy),
+    new StageInfo("H 6-5", 44, 7265, 5500, 木, undefined, UnitType.Heavy),
+
     // 第一次闘弌治宝戦挙
     //new StageInfo("初級", 15, 1500, 1050, 無, 無, null, false, false),
     //new StageInfo("中級", 25, 2625, 3500, 無, 無, null, false, false),
