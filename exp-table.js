@@ -528,10 +528,11 @@ function initializeStageList() {
         new StageInfo("H 6-3", 43, 6979, 5330, 火, 金, UnitType.Ranged),
         new StageInfo("H 6-4", 43, 7117, 5360, 水, 土, UnitType.Heavy),
         new StageInfo("H 6-5", 44, 7265, 5500, 木, 日, UnitType.Heavy),
-        new StageInfo("小地獄", 30, 2000, 2400, 無, 無, null, false, false),
-        new StageInfo("中地獄", 50, 3500, 7000, 無, 無, null, false, false),
-        new StageInfo("大地獄", 80, 6000, 16000, 無, 無, null, false, false),
-        new StageInfo("天国", 0, 5000, 1, 無, 無, null, false, false),
+        new StageInfo("初級", 30, 3210, 2100, 無, 無, null, false, false),
+        new StageInfo("中級", 40, 4480, 5600, 無, 無, null, false, false),
+        new StageInfo("上級", 50, 5750, 9500, 無, 無, null, false, false),
+        new StageInfo("まつり", 80, 9440, 16000, 無, 無, null, false, false),
+        new StageInfo("ちまつり", 100, 12500, 21000, 無, 無, null, false, false),
     ];
 }
 function updateTable() {
@@ -748,7 +749,6 @@ function updateTable() {
     }
     setDayOfWeekSelectorLabels();
     saveSettings();
-    document.getElementById("").clientWidth;
 }
 function initializeExpTable(ev) {
     initializeStageList();

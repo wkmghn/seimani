@@ -621,18 +621,19 @@ function initializeStageList() {
     // 暴闘海産狩超戦挙
     // 第四次闘弌治宝戦挙
     // 悪閃狩超戦挙
-    //new StageInfo("初級", 30, 3210, 2100, 無, 無, null, false, false),
-    //new StageInfo("中級", 40, 4480, 5600, 無, 無, null, false, false),
-    //new StageInfo("上級", 50, 5750, 9500, 無, 無, null, false, false),
-    //new StageInfo("まつり", 80, 9440, 16000, 無, 無, null, false, false),
-    //new StageInfo("ちまつり", 100, 12500, 21000, 無, 無, null, false, false),
+    // 晩秋の刻制戦挙
+    new StageInfo("初級", 30, 3210, 2100, 無, 無, null, false, false),
+    new StageInfo("中級", 40, 4480, 5600, 無, 無, null, false, false),
+    new StageInfo("上級", 50, 5750, 9500, 無, 無, null, false, false),
+    new StageInfo("まつり", 80, 9440, 16000, 無, 無, null, false, false),
+    new StageInfo("ちまつり", 100, 12500, 21000, 無, 無, null, false, false),
 
     // 害貨獲得戦挙
-    new StageInfo("小地獄", 30, 2000, 2400, 無, 無, null, false, false),
-    new StageInfo("中地獄", 50, 3500, 7000, 無, 無, null, false, false),
-    new StageInfo("大地獄", 80, 6000, 16000, 無, 無, null, false, false),
+    //new StageInfo("小地獄", 30, 2000, 2400, 無, 無, null, false, false),
+    //new StageInfo("中地獄", 50, 3500, 7000, 無, 無, null, false, false),
+    //new StageInfo("大地獄", 80, 6000, 16000, 無, 無, null, false, false),
     // 天国の獲得ゴールドは不定だが、Gold/M を Infinity 表示にしたいので 1 ってことで。
-    new StageInfo("天国", 0, 5000, 1, 無, 無, null, false, false),
+    //new StageInfo("天国", 0, 5000, 1, 無, 無, null, false, false),
   ];
 }
 
@@ -876,8 +877,6 @@ function updateTable() : void {
   // ページ表示時と曜日が変わっているかもしれないので、ラベルを再設定する
   setDayOfWeekSelectorLabels();
   saveSettings();
-
-  (<HTMLElement>document.getElementById("")).clientWidth
 }
 
 function initializeExpTable(ev: Event): void {
