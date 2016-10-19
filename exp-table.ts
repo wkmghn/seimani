@@ -571,12 +571,16 @@ function initializeStageList() {
     new StageInfo("N 6-3", 27, 4282, 3400, 金, 月, UnitType.Magic),
     new StageInfo("N 6-4", 27, 4324, 3200, 土, 火, UnitType.Magic),
     new StageInfo("N 6-5", 28, 4522, 3420, 日, 水, UnitType.Ranged),
+    new StageInfo("N 6-A", 27, 4201, 0, undefined, undefined, UnitType.Heavy),
+    new StageInfo("N 6-B", 27, 4177, 0, undefined, undefined, UnitType.Melee),
 
     new StageInfo("H 6-1", 43, 6964, 5370, 日, 水, UnitType.Magic),
     new StageInfo("H 6-2", 43, 6956, 5390, 月, 木, UnitType.Melee),
     new StageInfo("H 6-3", 43, 6979, 5330, 火, 金, UnitType.Ranged),
     new StageInfo("H 6-4", 43, 7117, 5360, 水, 土, UnitType.Heavy),
     new StageInfo("H 6-5", 44, 7265, 5500, 木, 日, UnitType.Heavy),
+    new StageInfo("H 6-A", 43, 6882, 0, undefined, undefined, UnitType.Ranged),
+    new StageInfo("H 6-B", 43, 6999, 0, undefined, undefined, UnitType.Magic),
 
     // 第一次闘弌治宝戦挙
     //new StageInfo("初級", 15, 1500, 1050, 無, 無, null, false, false),
