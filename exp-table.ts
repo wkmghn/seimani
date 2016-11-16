@@ -519,6 +519,8 @@ function initializeStageList() {
     new StageInfo("T 3-1", 41, 4890, 4600, 金, 木, UnitType.Melee),
     new StageInfo("T 3-2", 41, 5022, 4640, 土, 金, UnitType.Ranged),
     new StageInfo("T 3-A", 41, 4933, 4570, undefined, undefined, UnitType.Magic),
+    new StageInfo("T 3-F", 41, 4955, 0, undefined, undefined, UnitType.Magic),
+
     // N 4
     new StageInfo("N 4-1", 25, 2966, 2740, 月, 木, UnitType.Magic),
     new StageInfo("N 4-2", 25, 3004, 2760, 火, 金, UnitType.Melee),
@@ -576,6 +578,7 @@ function initializeStageList() {
     new StageInfo("N 6-A", 27, 4201, 3270, 月, 木, UnitType.Heavy),
     new StageInfo("N 6-B", 27, 4177, 3210, 火, 金, UnitType.Melee),
     new StageInfo("N 6-C", 27, 4301, 3390, 水, 土, UnitType.Ranged),
+    new StageInfo("N 6-D", 28, 4436, 3550, 木, 日, UnitType.Melee),
 
     new StageInfo("H 6-1", 43, 6964, 5370, 日, 水, UnitType.Magic),
     new StageInfo("H 6-2", 43, 6956, 5390, 月, 木, UnitType.Melee),
@@ -585,6 +588,7 @@ function initializeStageList() {
     new StageInfo("H 6-A", 43, 6882, 5360, 金, 月, UnitType.Ranged),
     new StageInfo("H 6-B", 43, 6999, 5390, 土, 火, UnitType.Magic),
     new StageInfo("H 6-C", 43, 7047, 5370, 日, 水, UnitType.Melee),
+    new StageInfo("H 6-D", 44, 7213, 5470, 月, 木, UnitType.Magic),
 
     // 第一次闘弌治宝戦挙
     //new StageInfo("初級", 15, 1500, 1050, 無, 無, null, false, false),
@@ -642,6 +646,7 @@ function initializeStageList() {
     new StageInfo("小地獄", 30, 2000, 2400, 無, 無, null, false, false),
     new StageInfo("中地獄", 50, 3500, 7000, 無, 無, null, false, false),
     new StageInfo("大地獄", 80, 6000, 16000, 無, 無, null, false, false),
+    new StageInfo("超地獄", 150, 15000, 33000, 無, 無, null, false, false),
     // 天国の獲得ゴールドは不定だが、Gold/M を Infinity 表示にしたいので 1 ってことで。
     new StageInfo("天国", 0, 5000, 1, 無, 無, null, false, false),
   ];
