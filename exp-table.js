@@ -252,7 +252,7 @@ var TableRecord = (function () {
         {
             var factors = [];
             if (this._stageInfo.expBonusDay != null && this._stageInfo.expBonusDay == this._dayOfWeek) {
-                factors.push(1.2);
+                factors.push(1.3);
                 this._isExpBonusDay = true;
             }
             else {
@@ -269,7 +269,7 @@ var TableRecord = (function () {
                 factors.push(2.0);
             }
             if ((this._expBonusUnitType != null) && (this._stageInfo.expBonusUnitType == this._expBonusUnitType)) {
-                factors.push(1.2);
+                factors.push(1.3);
                 this._isUnitTypeExpBonusApplied = true;
             }
             else {
@@ -288,7 +288,7 @@ var TableRecord = (function () {
         {
             var goldFactor = 1.0;
             if (this._stageInfo.goldBonusDay != null && this._stageInfo.goldBonusDay == this._dayOfWeek) {
-                goldFactor *= 1.2;
+                goldFactor *= 1.3;
                 this._isGoldBonusDay = true;
             }
             else {
@@ -543,11 +543,11 @@ function initializeStageList() {
         new StageInfo("H 6-C", 43, 7047, 5370, 日, 水, UnitType.Melee),
         new StageInfo("H 6-D", 44, 7213, 5470, 月, 木, UnitType.Magic),
         new StageInfo("H 6-E", 43, 6997, 5350, 火, 金, UnitType.Melee),
-        new StageInfo("小地獄", 30, 2000, 2400, 無, 無, null, false, false),
-        new StageInfo("中地獄", 50, 3500, 7000, 無, 無, null, false, false),
-        new StageInfo("大地獄", 80, 6000, 16000, 無, 無, null, false, false),
-        new StageInfo("超地獄", 150, 15000, 33000, 無, 無, null, false, false),
-        new StageInfo("天国", 0, 5000, 1, 無, 無, null, false, false),
+        new StageInfo("初級", 30, 3500, 2100, 無, 無, null, false, false),
+        new StageInfo("中級", 40, 4900, 5600, 無, 無, null, false, false),
+        new StageInfo("上級", 50, 6400, 9500, 無, 無, null, false, false),
+        new StageInfo("まつり", 80, 10600, 16000, 無, 無, null, false, false),
+        new StageInfo("ちまつり", 100, 14000, 21000, 無, 無, null, false, false),
     ];
 }
 function updateTable() {
@@ -653,7 +653,7 @@ function updateTable() {
         {
             var cell = newRow.insertCell();
             cell.innerText = getBonusDayLetter(r.stageInfo.expBonusDay);
-            cell.innerText += r.isExpBonusDay ? " x1.2" : " ";
+            cell.innerText += r.isExpBonusDay ? " x1.3" : " ";
             cell.classList.add(r.isExpBonusDay ? "active_exp_bonus_day" : "inactive_exp_bonus_day");
         }
         {
@@ -663,7 +663,7 @@ function updateTable() {
             unitTypeElement.innerText = getExpBonusUnitTypeLetter(r.stageInfo.expBonusUnitType);
             unitTypeElement.classList.add(getExpBonusUnitTypeClassName(r.stageInfo.expBonusUnitType));
             unitTypeElement.classList.add(r.isUnitTypeExpBonnusApplied ? "active_exp_bonus_unit_type" : "inactive_exp_bonus_unit_type");
-            cell.innerHTML += r.isUnitTypeExpBonnusApplied ? " x1.2" : "";
+            cell.innerHTML += r.isUnitTypeExpBonnusApplied ? " x1.3" : "";
         }
         {
             var cell = newRow.insertCell();
