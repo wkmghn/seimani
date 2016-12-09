@@ -597,8 +597,8 @@ function initializeStageList() {
 
     // N 7
     new StageInfo("N 7-1", 28, 4765, 3470, 木, undefined, UnitType.Ranged),
-    new StageInfo("N 7-2", 28, 4864, 3460, undefined, undefined, UnitType.Melee),
-    new StageInfo("N 7-3", 28, 4947, 0, undefined, undefined, UnitType.Heavy),
+    new StageInfo("N 7-2", 28, 4864, 3460, 金, undefined, UnitType.Melee),
+    new StageInfo("N 7-3", 28, 4947, 0, 土, undefined, UnitType.Heavy),
 
     // 第一次闘弌治宝戦挙
     //new StageInfo("初級", 15, 1500, 1050, 無, 無, null, false, false),
