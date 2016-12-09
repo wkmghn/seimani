@@ -545,7 +545,7 @@ function initializeStageList() {
         new StageInfo("H 6-E", 43, 6997, 5350, 火, 金, UnitType.Melee),
         new StageInfo("N 7-1", 28, 4765, 3470, 木, undefined, UnitType.Ranged),
         new StageInfo("N 7-2", 28, 4864, 3460, 金, undefined, UnitType.Melee),
-        new StageInfo("N 7-3", 28, 4947, 0, 土, undefined, UnitType.Heavy),
+        new StageInfo("N 7-3", 28, 4947, 3540, 土, undefined, UnitType.Heavy),
         new StageInfo("初級", 30, 3500, 2100, 無, 無, null, false, false),
         new StageInfo("中級", 40, 4900, 5600, 無, 無, null, false, false),
         new StageInfo("上級", 50, 6400, 9500, 無, 無, null, false, false),
