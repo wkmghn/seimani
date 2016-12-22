@@ -918,6 +918,7 @@ function initializeExpTable(ev: Event): void {
       option.attributes.setNamedItem(valueAttr);
     }
     addOption("すべての難易度", "All", "inherit");
+    addOption("N7 まで (推奨Lv 61-65)", "N7", "inherit");
     addOption("H6 まで (推奨Lv 66-70)", "H6", "#E08000");
     addOption("N6 まで (推奨Lv 56-60)", "N6", "inherit");
     addOption("H5 まで (推奨Lv 61-65)", "H5", "#E08000");
