@@ -599,14 +599,10 @@ function initializeStageList() {
     new StageInfo("N 7-1", 28, 4765, 3470, 木, 日, UnitType.Ranged),
     new StageInfo("N 7-2", 28, 4864, 3460, 金, 月, UnitType.Melee),
     new StageInfo("N 7-3", 28, 4947, 3540, 土, 火, UnitType.Heavy),
+    new StageInfo("N 7-4", 28, 4966, 3490, 日, 水, UnitType.Magic),
+    new StageInfo("N 7-5", 28, 5016, 3520, 月, 木, UnitType.Melee),
 
     // 第一次闘弌治宝戦挙
-    //new StageInfo("初級", 15, 1500, 1050, 無, 無, null, false, false),
-    //new StageInfo("中級", 25, 2625, 3500, 無, 無, null, false, false),
-    //new StageInfo("上級", 35, 3850, 6650, 無, 無, null, false, false),
-    //new StageInfo("まつり", 40, 4400, 8000, 無, 無, null, false, false),
-    //new StageInfo("ちまつり", 50, 5500, 9450, 無, 無, null, false, false),
-
     // 第二次闘弌治宝戦挙
     //new StageInfo("初級", 15, 1500, 1050, 無, 無, null, false, false),
     //new StageInfo("中級", 25, 2625, 3500, 無, 無, null, false, false),
@@ -615,30 +611,9 @@ function initializeStageList() {
     //new StageInfo("ちまつり", 50, 5500, 9450, 無, 無, null, false, false),
 
     // 第三次闘弌治宝戦挙
-    //new StageInfo("初級", 30, 3210, 2100, 無, 無, null, false, false),
-    //new StageInfo("中級", 40, 4480, 5600, 無, 無, null, false, false),
-    //new StageInfo("上級", 50, 5750, 9500, 無, 無, null, false, false),
-    //new StageInfo("まつり", 80, 9440, 16000, 無, 無, null, false, false),
-    //new StageInfo("ちまつり", 100, 12500, 21000, 無, 無, null, false, false),
-
     // 異臣英雄伝
-    //new StageInfo("上級", 50, 5750, 9500, 無, 無, null, false, false),
-    //new StageInfo("まつり", 80, 9440, 16000, 無, 無, null, false, false),
-
     // 異臣英雄伝 改
-    //new StageInfo("初級", 30, 3210, 2100, 無, 無, null, false, false),
-    //new StageInfo("中級", 40, 4480, 5600, 無, 無, null, false, false),
-    //new StageInfo("上級", 50, 5750, 9500, 無, 無, null, false, false),
-    //new StageInfo("まつり", 80, 9440, 16000, 無, 無, null, false, false),
-    //new StageInfo("ちまつり", 100, 12500, 21000, 無, 無, null, false, false),
-
     // 戦慄の狩超戦挙
-    //new StageInfo("初級", 30, 3210, 2100, 無, 無, null, false, false),
-    //new StageInfo("中級", 40, 4480, 5600, 無, 無, null, false, false),
-    //new StageInfo("上級", 50, 5750, 9500, 無, 無, null, false, false),
-    //new StageInfo("まつり", 80, 9440, 16000, 無, 無, null, false, false),
-    //new StageInfo("ちまつり", 100, 12500, 21000, 無, 無, null, false, false),
-
     // 異臣英雄伝 改 退散の妖刀編
     // 暴闘海産狩超戦挙
     // 第四次闘弌治宝戦挙
