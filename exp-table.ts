@@ -601,8 +601,8 @@ function initializeStageList() {
     new StageInfo("N 7-3", 28, 4947, 3540, 土, 火, UnitType.Heavy),
     new StageInfo("N 7-4", 28, 4966, 3490, 日, 水, UnitType.Magic),
     new StageInfo("N 7-5", 28, 5016, 3520, 月, 木, UnitType.Melee),
-    new StageInfo("N 7-A", 28, 4826, 0, 火, 金, UnitType.Heavy),
-    new StageInfo("N 7-B", 28, 4885, 0, 水, 土, UnitType.Ranged),
+    new StageInfo("N 7-A", 28, 4826, 3490, 火, 金, UnitType.Heavy),
+    new StageInfo("N 7-B", 28, 4885, 3520, 水, 土, UnitType.Ranged),
 
     // H 7
     new StageInfo("H 7-1", 44, 7983, 0, 月, 木, UnitType.Melee),
@@ -647,6 +647,7 @@ function initializeStageList() {
     //new StageInfo("天国", 0, 5000, 1, 無, 無, null, false, false),
 
     // 混沌の大狩超選挙
+    // 新年の刻制戦挙
     new StageInfo("初級", 30, 3500, 2100, 無, 無, null, false, false),
     new StageInfo("中級", 40, 4900, 5600, 無, 無, null, false, false),
     new StageInfo("上級", 50, 6400, 9500, 無, 無, null, false, false),
