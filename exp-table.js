@@ -136,7 +136,7 @@ var StageInfo = (function () {
         this._goldBonusDay = goldBonusDay;
         this._expBonusUnitType = expBonusUnitType;
         this._isManaBonusAllowed = isManaBonusAllowed;
-        this._isProtectionBonusAllowe = isProtectionBonusAllowed;
+        this._isProtectionBonusAllowed = isProtectionBonusAllowed;
         if (5 == stageName.length && stageName[3] == "-") {
             this._districtLetter = stageName[2];
             this._stageLetter = stageName[4];
@@ -160,6 +160,10 @@ var StageInfo = (function () {
             this._mode = null;
             this._eventStageName = stageName;
             this._isEventStage = true;
+        }
+        this._isNumberedStage = false;
+        if (this._stageLetter != null && !isNaN(parseInt(this._stageLetter, 10))) {
+            this._isNumberedStage = true;
         }
     }
     Object.defineProperty(StageInfo.prototype, "fullName", {
@@ -232,7 +236,12 @@ var StageInfo = (function () {
         configurable: true
     });
     Object.defineProperty(StageInfo.prototype, "isProtectionBonusAllowed", {
-        get: function () { return this._isProtectionBonusAllowe; },
+        get: function () { return this._isProtectionBonusAllowed; },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(StageInfo.prototype, "isNumberedStage", {
+        get: function () { return this._isNumberedStage; },
         enumerable: true,
         configurable: true
     });
@@ -251,7 +260,12 @@ var TableRecord = (function () {
         this._isDoubleExpBonusApplied = useDoubleExpBonus;
         {
             var factors = [];
-            if (this._stageInfo.expBonusDay != null && this._stageInfo.expBonusDay == this._dayOfWeek) {
+            if (this._stageInfo.isNumberedStage && this._stageInfo.mode == StageMode.Normal) {
+                factors.push(1.3);
+                this._isExpBonusDay = true;
+                this._isSpecialExpBonusDay = true;
+            }
+            else if (this._stageInfo.expBonusDay != null && this._stageInfo.expBonusDay == this._dayOfWeek) {
                 factors.push(1.3);
                 this._isExpBonusDay = true;
             }
@@ -313,6 +327,11 @@ var TableRecord = (function () {
     });
     Object.defineProperty(TableRecord.prototype, "isExpBonusDay", {
         get: function () { return this._isExpBonusDay; },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(TableRecord.prototype, "isSpecialExpBonusDay", {
+        get: function () { return this._isSpecialExpBonusDay; },
         enumerable: true,
         configurable: true
     });
@@ -670,9 +689,15 @@ function updateTable() {
         }
         {
             var cell = newRow.insertCell();
-            cell.innerText = getBonusDayLetter(r.stageInfo.expBonusDay);
-            cell.innerText += r.isExpBonusDay ? " x1.3" : " ";
-            cell.classList.add(r.isExpBonusDay ? "active_exp_bonus_day" : "inactive_exp_bonus_day");
+            if (r.isSpecialExpBonusDay) {
+                cell.innerText = "特 x1.3";
+                cell.classList.add("special_exp_bonus_day");
+            }
+            else {
+                cell.innerText = getBonusDayLetter(r.stageInfo.expBonusDay);
+                cell.innerText += r.isExpBonusDay ? " x1.3" : " ";
+                cell.classList.add(r.isExpBonusDay ? "active_exp_bonus_day" : "inactive_exp_bonus_day");
+            }
         }
         {
             var cell = newRow.insertCell();

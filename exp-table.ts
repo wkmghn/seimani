@@ -79,6 +79,7 @@ function getBonusDayLetter(dayOfWeek: number) : string {
   return "？";
 }
 
+// ステージ難易度
 enum StageMode
 {
   Normal,
@@ -103,6 +104,7 @@ function getStageModeClassName(mode: StageMode) : string {
   }
 }
 
+// ユニット種別
 enum UnitType
 {
   Melee,
@@ -157,6 +159,7 @@ class StageInfo
   // 1, 2, 3, A, B, C, ...
   // イベントステージの場合は null
   private _stageLetter: string;
+  private _isNumberedStage: boolean;
   // イベントステージの場合は null
   private _mode: StageMode;
   // イベントステージ以外では null
@@ -174,7 +177,7 @@ class StageInfo
   // 残マナによる経験値ボーナスが可能なステージか
   private _isManaBonusAllowed: boolean;
   // 地盤維持によるゴールドボーナスが可能なステージか
-  private _isProtectionBonusAllowe: boolean;
+  private _isProtectionBonusAllowed: boolean;
 
   //============================================================================
   // CONSTRUCTOR
@@ -199,7 +202,7 @@ class StageInfo
     this._goldBonusDay = goldBonusDay;
     this._expBonusUnitType = expBonusUnitType;
     this._isManaBonusAllowed = isManaBonusAllowed;
-    this._isProtectionBonusAllowe = isProtectionBonusAllowed;
+    this._isProtectionBonusAllowed = isProtectionBonusAllowed;
 
     if (5 == stageName.length && stageName[3] == "-") {
       this._districtLetter = stageName[2];
@@ -223,6 +226,11 @@ class StageInfo
       this._mode = null;
       this._eventStageName = stageName;
       this._isEventStage = true;
+    }
+    
+    this._isNumberedStage = false;
+    if (this._stageLetter != null && !isNaN(parseInt(this._stageLetter, 10))) {
+      this._isNumberedStage = true;
     }
   }
 
@@ -258,7 +266,8 @@ class StageInfo
   public get isManaBonusAllowed() : boolean { return this._isManaBonusAllowed; }
   public get baseGold() : number { return this._baseGold; }
   public get goldBonusDay() : number { return this._goldBonusDay; }
-  public get isProtectionBonusAllowed() : boolean { return this._isProtectionBonusAllowe; }
+  public get isProtectionBonusAllowed() : boolean { return this._isProtectionBonusAllowed; }
+  public get isNumberedStage() : boolean { return this._isNumberedStage; }
   public get isEventStage() : boolean { return this._eventStageName != null; }
 
   //============================================================================
@@ -276,6 +285,8 @@ class TableRecord
 
   private _isUnitTypeExpBonusApplied: boolean;
   private _isExpBonusDay: boolean;
+  // 育成キャンペーンによる経験値 1.3 倍対象か？曜日合致で 1.3 倍の場合は false。
+  private _isSpecialExpBonusDay: boolean;
   private _isDoubleExpBonusApplied: boolean;
   private _finalExpFactor: number;
   private _finalExp: number;
@@ -304,7 +315,14 @@ class TableRecord
       let factors: number[] = [];
 
       // 曜日によるボーナス
-      if (this._stageInfo.expBonusDay != null && this._stageInfo.expBonusDay == this._dayOfWeek) {
+      if (this._stageInfo.isNumberedStage && this._stageInfo.mode == StageMode.Normal) {
+        // 週替わり育成キャンペーン対応。
+        // 難易度ノーマルのナンバリングステージは常に経験値 1.3 倍。
+        factors.push(1.3);
+        this._isExpBonusDay = true;
+        this._isSpecialExpBonusDay = true;
+      } else if (this._stageInfo.expBonusDay != null && this._stageInfo.expBonusDay == this._dayOfWeek) {
+        // 曜日合致による普通の経験値 1.3 倍
         factors.push(1.3);
         this._isExpBonusDay = true;
       } else {
@@ -364,6 +382,7 @@ class TableRecord
   public get stageInfo() : StageInfo { return this._stageInfo; }
   public get isUnitTypeExpBonnusApplied() : boolean { return this._isUnitTypeExpBonusApplied; }
   public get isExpBonusDay() : boolean { return this._isExpBonusDay; }
+  public get isSpecialExpBonusDay() : boolean { return this._isSpecialExpBonusDay; }
   public get isManaBonusApplied() : boolean { return this._isManaBonusApplied; }
   public get isExpDoubleBonusApplied() : boolean { return this._isDoubleExpBonusApplied; }
   public get finalExpFactor() : number { return this._finalExpFactor; }
@@ -777,9 +796,14 @@ function updateTable() : void {
     // 曜日ボーナス
     {
       let cell = newRow.insertCell();
-      cell.innerText = getBonusDayLetter(r.stageInfo.expBonusDay);
-      cell.innerText += r.isExpBonusDay ? " x1.3" : " ";
-      cell.classList.add(r.isExpBonusDay ? "active_exp_bonus_day" : "inactive_exp_bonus_day")
+      if (r.isSpecialExpBonusDay) {
+        cell.innerText = "特 x1.3";
+        cell.classList.add("special_exp_bonus_day")
+      } else {
+        cell.innerText = getBonusDayLetter(r.stageInfo.expBonusDay);
+        cell.innerText += r.isExpBonusDay ? " x1.3" : " ";
+        cell.classList.add(r.isExpBonusDay ? "active_exp_bonus_day" : "inactive_exp_bonus_day")
+      }
     }
     // ユニット種別ボーナス
     {
