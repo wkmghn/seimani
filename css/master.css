@@ -99,6 +99,11 @@ td.inactive_exp_bonus_day {
   color: silver;
 }
 
+td.special_exp_bonus_day {
+  text-align: left;
+  color: #004488;
+}
+
 td.inactive_mana_bonus {
   color: silver;
 }
