@@ -260,12 +260,7 @@ var TableRecord = (function () {
         this._isDoubleExpBonusApplied = useDoubleExpBonus;
         {
             var factors = [];
-            if (this._stageInfo.isNumberedStage && this._stageInfo.mode == StageMode.Normal) {
-                factors.push(1.3);
-                this._isExpBonusDay = true;
-                this._isSpecialExpBonusDay = true;
-            }
-            else if (this._stageInfo.expBonusDay != null && this._stageInfo.expBonusDay == this._dayOfWeek) {
+            if (this._stageInfo.expBonusDay != null && this._stageInfo.expBonusDay == this._dayOfWeek) {
                 factors.push(1.3);
                 this._isExpBonusDay = true;
             }

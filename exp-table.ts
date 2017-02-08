@@ -315,13 +315,7 @@ class TableRecord
       let factors: number[] = [];
 
       // 曜日によるボーナス
-      if (this._stageInfo.isNumberedStage && this._stageInfo.mode == StageMode.Normal) {
-        // 週替わり育成キャンペーン対応。
-        // 難易度ノーマルのナンバリングステージは常に経験値 1.3 倍。
-        factors.push(1.3);
-        this._isExpBonusDay = true;
-        this._isSpecialExpBonusDay = true;
-      } else if (this._stageInfo.expBonusDay != null && this._stageInfo.expBonusDay == this._dayOfWeek) {
+      if (this._stageInfo.expBonusDay != null && this._stageInfo.expBonusDay == this._dayOfWeek) {
         // 曜日合致による普通の経験値 1.3 倍
         factors.push(1.3);
         this._isExpBonusDay = true;
