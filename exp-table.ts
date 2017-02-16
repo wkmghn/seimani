@@ -672,11 +672,18 @@ function initializeStageList() {
 
     // 混沌の大狩超選挙
     // 新年の刻制戦挙
-    new StageInfo("初級", 30, 3500, 2100, 無, 無, null, false, false),
-    new StageInfo("中級", 40, 4900, 5600, 無, 無, null, false, false),
-    new StageInfo("上級", 50, 6400, 9500, 無, 無, null, false, false),
-    new StageInfo("まつり", 80, 10600, 16000, 無, 無, null, false, false),
-    new StageInfo("ちまつり", 100, 14000, 21000, 無, 無, null, false, false),
+    //new StageInfo("初級", 30, 3500, 2100, 無, 無, null, false, false),
+    //new StageInfo("中級", 40, 4900, 5600, 無, 無, null, false, false),
+    //new StageInfo("上級", 50, 6400, 9500, 無, 無, null, false, false),
+    //new StageInfo("まつり", 80, 10600, 16000, 無, 無, null, false, false),
+    //new StageInfo("ちまつり", 100, 14000, 21000, 無, 無, null, false, false),
+
+    // 害貨獲得戦挙III
+    new StageInfo("小地獄", 30, 2400, 2400, 無, 無, null, false, false),
+    new StageInfo("中地獄", 50, 3900, 7000, 無, 無, null, false, false),
+    new StageInfo("大地獄", 80, 6600, 16000, 無, 無, null, false, false),
+    // 天国の獲得ゴールドは不定だが、Gold/M を Infinity 表示にしたいので 1 ってことで。
+    new StageInfo("天国", 0, 5000, 1, 無, 無, null, false, false),
   ];
 }
 

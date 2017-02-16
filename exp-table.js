@@ -580,11 +580,10 @@ function initializeStageList() {
         new StageInfo("N 8-1", 28, 5593, 3630, 金, 月, UnitType.Heavy),
         new StageInfo("N 8-2", 28, 5693, 3640, 土, 火, UnitType.Magic),
         new StageInfo("N 8-3", 29, 5940, 3770, 日, 水, UnitType.Ranged),
-        new StageInfo("初級", 30, 3500, 2100, 無, 無, null, false, false),
-        new StageInfo("中級", 40, 4900, 5600, 無, 無, null, false, false),
-        new StageInfo("上級", 50, 6400, 9500, 無, 無, null, false, false),
-        new StageInfo("まつり", 80, 10600, 16000, 無, 無, null, false, false),
-        new StageInfo("ちまつり", 100, 14000, 21000, 無, 無, null, false, false),
+        new StageInfo("小地獄", 30, 2400, 2400, 無, 無, null, false, false),
+        new StageInfo("中地獄", 50, 3900, 7000, 無, 無, null, false, false),
+        new StageInfo("大地獄", 80, 6600, 16000, 無, 無, null, false, false),
+        new StageInfo("天国", 0, 5000, 1, 無, 無, null, false, false),
     ];
 }
 function updateTable() {
