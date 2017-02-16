@@ -633,9 +633,9 @@ function initializeStageList() {
     new StageInfo("H 7-E", 44, 8009, 5740, 水, 土, UnitType.Magic),
 
     // N 7
-    new StageInfo("N 8-1", 28, 5593, 3630, undefined, undefined, UnitType.Heavy),
-    new StageInfo("N 8-2", 28, 5693, 3640, undefined, undefined, UnitType.Magic),
-    new StageInfo("N 8-3", 29, 5940, 3770, undefined, 水, UnitType.Ranged),
+    new StageInfo("N 8-1", 28, 5593, 3630, 金, 月, UnitType.Heavy),
+    new StageInfo("N 8-2", 28, 5693, 3640, 土, 火, UnitType.Magic),
+    new StageInfo("N 8-3", 29, 5940, 3770, 日, 水, UnitType.Ranged),
 
     // 第一次闘弌治宝戦挙
     // 第二次闘弌治宝戦挙
