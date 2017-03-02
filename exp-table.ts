@@ -632,10 +632,21 @@ function initializeStageList() {
     new StageInfo("H 7-D", 45, 8332, 5870, 火, 金, UnitType.Melee),
     new StageInfo("H 7-E", 44, 8009, 5740, 水, 土, UnitType.Magic),
 
-    // N 7
+    // N 8
     new StageInfo("N 8-1", 28, 5593, 3630, 金, 月, UnitType.Heavy),
     new StageInfo("N 8-2", 28, 5693, 3640, 土, 火, UnitType.Magic),
     new StageInfo("N 8-3", 29, 5940, 3770, 日, 水, UnitType.Ranged),
+    new StageInfo("N 8-4", 29, 6073, 3780, 月, 木, UnitType.Heavy),
+    new StageInfo("N 8-5", 29, 6069, 3790, 火, 金, UnitType.Melee),
+    new StageInfo("N 8-6", 30, 6119, 3850, undefined, undefined, null),
+
+    // H 8
+    new StageInfo("H 8-1", 45, 9474, 6030, undefined, undefined, UnitType.Magic),
+    new StageInfo("H 8-2", 45, 9580, 6080, undefined, undefined, UnitType.Ranged),
+    new StageInfo("H 8-3", 45, 9577, 6110, 木, undefined, UnitType.Heavy),
+    new StageInfo("H 8-4", 45, 9590, 6080, undefined, undefined, UnitType.Melee),
+    new StageInfo("H 8-5", 46, 9917, 6220, undefined, undefined, UnitType.Magic),
+    new StageInfo("H 8-6", 47, 10000, 6280, undefined, undefined, UnitType.Heavy),
 
     // 第一次闘弌治宝戦挙
     // 第二次闘弌治宝戦挙
@@ -679,11 +690,11 @@ function initializeStageList() {
     //new StageInfo("ちまつり", 100, 14000, 21000, 無, 無, null, false, false),
 
     // 害貨獲得戦挙III
-    new StageInfo("小地獄", 30, 2400, 2400, 無, 無, null, false, false),
-    new StageInfo("中地獄", 50, 3900, 7000, 無, 無, null, false, false),
-    new StageInfo("大地獄", 80, 6600, 16000, 無, 無, null, false, false),
+    //new StageInfo("小地獄", 30, 2400, 2400, 無, 無, null, false, false),
+    //new StageInfo("中地獄", 50, 3900, 7000, 無, 無, null, false, false),
+    //new StageInfo("大地獄", 80, 6600, 16000, 無, 無, null, false, false),
     // 天国の獲得ゴールドは不定だが、Gold/M を Infinity 表示にしたいので 1 ってことで。
-    new StageInfo("天国", 0, 5000, 1, 無, 無, null, false, false),
+    //new StageInfo("天国", 0, 5000, 1, 無, 無, null, false, false),
   ];
 }
 
