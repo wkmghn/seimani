@@ -641,11 +641,11 @@ function initializeStageList() {
     new StageInfo("N 8-6", 30, 6119, 3850, undefined, undefined, null),
 
     // H 8
-    new StageInfo("H 8-1", 45, 9474, 6030, undefined, undefined, UnitType.Magic),
-    new StageInfo("H 8-2", 45, 9580, 6080, undefined, undefined, UnitType.Ranged),
-    new StageInfo("H 8-3", 45, 9577, 6110, 木, undefined, UnitType.Heavy),
-    new StageInfo("H 8-4", 45, 9590, 6080, undefined, undefined, UnitType.Melee),
-    new StageInfo("H 8-5", 46, 9917, 6220, undefined, undefined, UnitType.Magic),
+    new StageInfo("H 8-1", 45, 9474, 6030, 火, 金, UnitType.Magic),
+    new StageInfo("H 8-2", 45, 9580, 6080, 水, 土, UnitType.Ranged),
+    new StageInfo("H 8-3", 45, 9577, 6110, 木, 日, UnitType.Heavy),
+    new StageInfo("H 8-4", 45, 9590, 6080, 金, 月, UnitType.Melee),
+    new StageInfo("H 8-5", 46, 9917, 6220, 土, 火, UnitType.Magic),
     new StageInfo("H 8-6", 47, 10000, 6280, undefined, undefined, UnitType.Heavy),
 
     // 第一次闘弌治宝戦挙
