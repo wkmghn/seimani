@@ -582,13 +582,17 @@ function initializeStageList() {
         new StageInfo("N 8-3", 29, 5940, 3770, 日, 水, UnitType.Ranged),
         new StageInfo("N 8-4", 29, 6073, 3780, 月, 木, UnitType.Heavy),
         new StageInfo("N 8-5", 29, 6069, 3790, 火, 金, UnitType.Melee),
-        new StageInfo("N 8-6", 30, 6119, 3850, undefined, undefined, null),
+        new StageInfo("N 8-A", 28, 5692, 3630, 水, 土, UnitType.Ranged),
+        new StageInfo("N 8-B", 28, 5980, 3810, undefined, undefined, UnitType.Melee),
+        new StageInfo("N 8-6", 30, 6119, 3850, null, null, null),
         new StageInfo("H 8-1", 45, 9474, 6030, 火, 金, UnitType.Magic),
         new StageInfo("H 8-2", 45, 9580, 6080, 水, 土, UnitType.Ranged),
         new StageInfo("H 8-3", 45, 9577, 6110, 木, 日, UnitType.Heavy),
         new StageInfo("H 8-4", 45, 9590, 6080, 金, 月, UnitType.Melee),
         new StageInfo("H 8-5", 46, 9917, 6220, 土, 火, UnitType.Magic),
-        new StageInfo("H 8-6", 47, 10000, 6280, undefined, undefined, UnitType.Heavy),
+        new StageInfo("H 8-A", 45, 9531, 6080, 日, 水, UnitType.Ranged),
+        new StageInfo("H 8-B", 45, 9520, 6090, undefined, undefined, UnitType.Melee),
+        new StageInfo("H 8-6", 47, 10000, 6280, 水, 土, UnitType.Heavy),
     ];
 }
 function updateTable() {
@@ -790,7 +794,7 @@ function updateTable() {
             var row = insertRow(r);
             if (separatedEventStageRecords[separatedEventStageRecords.length - 1] == r) {
                 for (var i = 0; i < row.cells.length; ++i) {
-                    var cell = row.cells.item(i);
+                    var cell = (row.cells.item(i));
                     cell.style.borderBottom = "solid 2px #c0c0c0";
                 }
             }
@@ -832,6 +836,7 @@ function initializeExpTable(ev) {
             option.attributes.setNamedItem(valueAttr);
         };
         addOption("すべての難易度", "All", "inherit");
+        addOption("H7 まで (推奨Lv 71-75)", "H7", "#E08000");
         addOption("N7 まで (推奨Lv 61-65)", "N7", "inherit");
         addOption("H6 まで (推奨Lv 66-70)", "H6", "#E08000");
         addOption("N6 まで (推奨Lv 56-60)", "N6", "inherit");
