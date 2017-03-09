@@ -639,7 +639,7 @@ function initializeStageList() {
     new StageInfo("N 8-4", 29, 6073, 3780, 月, 木, UnitType.Heavy),
     new StageInfo("N 8-5", 29, 6069, 3790, 火, 金, UnitType.Melee),
     new StageInfo("N 8-A", 28, 5692, 3630, 水, 土, UnitType.Ranged),
-    new StageInfo("N 8-B", 28, 5980, 3810, 木, 日, UnitType.Melee),
+    new StageInfo("N 8-B", 29, 5980, 3810, 木, 日, UnitType.Melee),
     new StageInfo("N 8-6", 30, 6119, 3850, null, null, null),
 
     // H 8
