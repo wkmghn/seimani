@@ -593,6 +593,11 @@ function initializeStageList() {
         new StageInfo("H 8-A", 45, 9531, 6080, 日, 水, UnitType.Ranged),
         new StageInfo("H 8-B", 45, 9520, 6090, 月, 木, UnitType.Melee),
         new StageInfo("H 8-6", 47, 10000, 6280, 水, 土, UnitType.Heavy),
+        new StageInfo("初級", 30, 3500, 4200, 無, 無, null, false, false),
+        new StageInfo("中級", 40, 4900, 5600, 無, 無, null, false, false),
+        new StageInfo("上級", 50, 6400, 9500, 無, 無, null, false, false),
+        new StageInfo("まつり", 80, 10600, 16000, 無, 無, null, false, false),
+        new StageInfo("ちまつり", 100, 14000, 21000, 無, 無, null, false, false),
     ];
 }
 function updateTable() {
