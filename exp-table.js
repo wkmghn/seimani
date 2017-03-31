@@ -585,6 +585,8 @@ function initializeStageList() {
         new StageInfo("N 8-A", 28, 5692, 3630, 水, 土, UnitType.Ranged),
         new StageInfo("N 8-B", 29, 5980, 3810, 木, 日, UnitType.Melee),
         new StageInfo("N 8-C", 29, 6007, 3780, 金, 月, UnitType.Magic),
+        new StageInfo("N 8-D", 29, 6098, 3720, 土, 火, UnitType.Melee),
+        new StageInfo("N 8-E", 28, 5705, 3590, 日, 水, UnitType.Ranged),
         new StageInfo("N 8-6", 30, 6119, 3850, null, null, null),
         new StageInfo("H 8-1", 45, 9474, 6030, 火, 金, UnitType.Magic),
         new StageInfo("H 8-2", 45, 9580, 6080, 水, 土, UnitType.Ranged),
@@ -594,12 +596,9 @@ function initializeStageList() {
         new StageInfo("H 8-A", 45, 9531, 6080, 日, 水, UnitType.Ranged),
         new StageInfo("H 8-B", 45, 9520, 6090, 月, 木, UnitType.Melee),
         new StageInfo("H 8-C", 45, 9583, 6060, 火, 金, UnitType.Heavy),
+        new StageInfo("H 8-D", 46, 9832, 6210, 水, 土, UnitType.Magic),
+        new StageInfo("H 8-E", 45, 9490, 6070, 木, 日, UnitType.Melee),
         new StageInfo("H 8-6", 47, 10000, 6280, 水, 土, UnitType.Heavy),
-        new StageInfo("初級", 30, 3500, 4200, 無, 無, null, false, false),
-        new StageInfo("中級", 40, 4900, 5600, 無, 無, null, false, false),
-        new StageInfo("上級", 50, 6400, 9500, 無, 無, null, false, false),
-        new StageInfo("まつり", 80, 10600, 16000, 無, 無, null, false, false),
-        new StageInfo("ちまつり", 100, 14000, 21000, 無, 無, null, false, false),
     ];
 }
 function updateTable() {
