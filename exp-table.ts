@@ -712,6 +712,13 @@ function initializeStageList() {
     //new StageInfo("上級", 50, 6400, 9500, 無, 無, null, false, false),
     //new StageInfo("まつり", 80, 10600, 16000, 無, 無, null, false, false),
     //new StageInfo("ちまつり", 100, 14000, 21000, 無, 無, null, false, false),
+
+    // 新緑の刻制戦挙
+    new StageInfo("初級", 30, 3500, 2100, 無, 無, null, false, false),
+    new StageInfo("中級", 40, 4900, 5600, 無, 無, null, false, false),
+    new StageInfo("上級", 50, 6400, 9500, 無, 無, null, false, false),
+    new StageInfo("まつり", 80, 10600, 16000, 無, 無, null, false, false),
+    new StageInfo("ちまつり", 100, 14000, 21000, 無, 無, null, false, false),
   ];
 }
 
