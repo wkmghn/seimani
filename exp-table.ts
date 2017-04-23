@@ -514,6 +514,7 @@ function initializeStageList() {
     new StageInfo("N 3-F", 19, 1810, 2000, 水, 月, UnitType.Heavy),
     new StageInfo("N 3-G", 21, 2081, 2170, 木, 火, UnitType.Ranged),
     new StageInfo("N 3-H", 19, 1925, 1980, 金, 水, UnitType.Melee),
+    new StageInfo("N 3-I", 21, 2199, 2220, 土, 木, UnitType.Melee),
 
     // H 3
     new StageInfo("H 3-1", 37, 3920, 4070, 水, 月, UnitType.Melee),
@@ -529,6 +530,7 @@ function initializeStageList() {
     new StageInfo("H 3-F", 37, 3928, 4250, 土, 金, UnitType.Melee),
     new StageInfo("H 3-G", 40, 4307, 4450, 日, 土, UnitType.Magic),
     new StageInfo("H 3-H", 37, 4210, 4110, 月, 日, UnitType.Melee),
+    new StageInfo("H 3-I", 40, 4628, 4390, 火, 月, UnitType.Ranged),
 
     // T 3
     new StageInfo("T 3-1", 41, 4890, 4600, 金, 木, UnitType.Melee),
@@ -621,6 +623,7 @@ function initializeStageList() {
     new StageInfo("N 7-C", 28, 4943, 3490, 木, 日, UnitType.Magic),
     new StageInfo("N 7-D", 28, 4988, 3530, 金, 月, UnitType.Ranged),
     new StageInfo("N 7-E", 28, 4860, 3510, 土, 火, UnitType.Melee),
+    new StageInfo("N 7-F", 28, 4872, 3550, 日, 水, UnitType.Ranged),
 
     // H 7
     new StageInfo("H 7-1", 44, 7983, 5710, 月, 木, UnitType.Melee),
@@ -633,6 +636,7 @@ function initializeStageList() {
     new StageInfo("H 7-C", 44, 8071, 5680, 月, 木, UnitType.Heavy),
     new StageInfo("H 7-D", 45, 8332, 5870, 火, 金, UnitType.Melee),
     new StageInfo("H 7-E", 44, 8009, 5740, 水, 土, UnitType.Magic),
+    new StageInfo("H 7-F", 44, 8019, 5730, 木, 日, UnitType.Ranged),
 
     // N 8
     new StageInfo("N 8-1", 28, 5593, 3630, 金, 月, UnitType.Heavy),
@@ -716,11 +720,11 @@ function initializeStageList() {
     //new StageInfo("ちまつり", 100, 14000, 21000, 無, 無, null, false, false),
 
     // 新緑の刻制戦挙
-    new StageInfo("初級", 30, 3500, 2100, 無, 無, null, false, false),
-    new StageInfo("中級", 40, 4900, 5600, 無, 無, null, false, false),
-    new StageInfo("上級", 50, 6400, 9500, 無, 無, null, false, false),
-    new StageInfo("まつり", 80, 10600, 16000, 無, 無, null, false, false),
-    new StageInfo("ちまつり", 100, 14000, 21000, 無, 無, null, false, false),
+    //new StageInfo("初級", 30, 3500, 2100, 無, 無, null, false, false),
+    //new StageInfo("中級", 40, 4900, 5600, 無, 無, null, false, false),
+    //new StageInfo("上級", 50, 6400, 9500, 無, 無, null, false, false),
+    //new StageInfo("まつり", 80, 10600, 16000, 無, 無, null, false, false),
+    //new StageInfo("ちまつり", 100, 14000, 21000, 無, 無, null, false, false),
   ];
 }
 
