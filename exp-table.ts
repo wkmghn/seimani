@@ -315,7 +315,13 @@ class TableRecord
       let factors: number[] = [];
 
       // 曜日によるボーナス
-      if (this._stageInfo.expBonusDay != null && this._stageInfo.expBonusDay == this._dayOfWeek) {
+      if (this._stageInfo.isNumberedStage && this._stageInfo.district <= 7) {
+        // GWキャンペーン＜第二弾＞対応。
+        // 通常選挙区7までのナンバリングステージは常に経験値 1.3 倍。
+        factors.push(1.3);
+        this._isExpBonusDay = true;
+        this._isSpecialExpBonusDay = true;
+      } else if (this._stageInfo.expBonusDay != null && this._stageInfo.expBonusDay == this._dayOfWeek) {
         // 曜日合致による普通の経験値 1.3 倍
         factors.push(1.3);
         this._isExpBonusDay = true;
@@ -550,6 +556,7 @@ function initializeStageList() {
     new StageInfo("N 4-D", 26, 3211, 2950, 火, 金, UnitType.Melee),
     new StageInfo("N 4-E", 25, 2982, 2720, 水, 土, UnitType.Ranged),
     new StageInfo("N 4-F", 25, 3050, 2750, 木, 日, UnitType.Ranged),
+    new StageInfo("N 4-G", 26, 3205, 2870, 金, 月, UnitType.Heavy),
 
     // H 4
     new StageInfo("H 4-1", 41, 5186, 4790, 金, 月, UnitType.Ranged),
@@ -563,6 +570,7 @@ function initializeStageList() {
     new StageInfo("H 4-D", 42, 5454, 4770, 土, 火, UnitType.Magic),
     new StageInfo("H 4-E", 41, 5218, 4840, 日, 水, UnitType.Melee),
     new StageInfo("H 4-F", 41, 5248, 4820, 月, 木, UnitType.Ranged),
+    new StageInfo("H 4-G", 41, 5300, 4710, 火, 金, UnitType.Melee),
 
     // N 5
     new StageInfo("N 5-1", 26, 3550, 3120, 火, 金, UnitType.Ranged),

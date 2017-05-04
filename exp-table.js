@@ -260,7 +260,12 @@ var TableRecord = (function () {
         this._isDoubleExpBonusApplied = useDoubleExpBonus;
         {
             var factors = [];
-            if (this._stageInfo.expBonusDay != null && this._stageInfo.expBonusDay == this._dayOfWeek) {
+            if (this._stageInfo.isNumberedStage && this._stageInfo.district <= 7) {
+                factors.push(1.3);
+                this._isExpBonusDay = true;
+                this._isSpecialExpBonusDay = true;
+            }
+            else if (this._stageInfo.expBonusDay != null && this._stageInfo.expBonusDay == this._dayOfWeek) {
                 factors.push(1.3);
                 this._isExpBonusDay = true;
             }
@@ -510,6 +515,7 @@ function initializeStageList() {
         new StageInfo("N 4-D", 26, 3211, 2950, 火, 金, UnitType.Melee),
         new StageInfo("N 4-E", 25, 2982, 2720, 水, 土, UnitType.Ranged),
         new StageInfo("N 4-F", 25, 3050, 2750, 木, 日, UnitType.Ranged),
+        new StageInfo("N 4-G", 26, 3205, 2870, 金, 月, UnitType.Heavy),
         new StageInfo("H 4-1", 41, 5186, 4790, 金, 月, UnitType.Ranged),
         new StageInfo("H 4-2", 41, 5236, 4840, 土, 火, UnitType.Melee),
         new StageInfo("H 4-3", 41, 5250, 4740, 日, 水, UnitType.Magic),
@@ -521,6 +527,7 @@ function initializeStageList() {
         new StageInfo("H 4-D", 42, 5454, 4770, 土, 火, UnitType.Magic),
         new StageInfo("H 4-E", 41, 5218, 4840, 日, 水, UnitType.Melee),
         new StageInfo("H 4-F", 41, 5248, 4820, 月, 木, UnitType.Ranged),
+        new StageInfo("H 4-G", 41, 5300, 4710, 火, 金, UnitType.Melee),
         new StageInfo("N 5-1", 26, 3550, 3120, 火, 金, UnitType.Ranged),
         new StageInfo("N 5-2", 26, 3630, 3130, 水, 土, UnitType.Melee),
         new StageInfo("N 5-3", 27, 3734, 3150, 木, 日, UnitType.Heavy),
