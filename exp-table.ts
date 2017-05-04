@@ -315,9 +315,9 @@ class TableRecord
       let factors: number[] = [];
 
       // 曜日によるボーナス
-      if (this._stageInfo.isNumberedStage && this._stageInfo.district <= 7) {
+      if (this._stageInfo.isNumberedStage && this._stageInfo.district <= 7 && this._stageInfo.mode == StageMode.Normal) {
         // GWキャンペーン＜第二弾＞対応。
-        // 通常選挙区7までのナンバリングステージは常に経験値 1.3 倍。
+        // 通常選挙区7までの難易度ノーマルのナンバリングステージは常に経験値 1.3 倍。
         factors.push(1.3);
         this._isExpBonusDay = true;
         this._isSpecialExpBonusDay = true;

@@ -260,7 +260,7 @@ var TableRecord = (function () {
         this._isDoubleExpBonusApplied = useDoubleExpBonus;
         {
             var factors = [];
-            if (this._stageInfo.isNumberedStage && this._stageInfo.district <= 7) {
+            if (this._stageInfo.isNumberedStage && this._stageInfo.district <= 7 && this._stageInfo.mode == StageMode.Normal) {
                 factors.push(1.3);
                 this._isExpBonusDay = true;
                 this._isSpecialExpBonusDay = true;
