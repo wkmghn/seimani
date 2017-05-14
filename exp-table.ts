@@ -315,13 +315,7 @@ class TableRecord
       let factors: number[] = [];
 
       // 曜日によるボーナス
-      if (this._stageInfo.isNumberedStage && this._stageInfo.district <= 7 && this._stageInfo.mode == StageMode.Normal) {
-        // GWキャンペーン＜第二弾＞対応。
-        // 通常選挙区7までの難易度ノーマルのナンバリングステージは常に経験値 1.3 倍。
-        factors.push(1.3);
-        this._isExpBonusDay = true;
-        this._isSpecialExpBonusDay = true;
-      } else if (this._stageInfo.expBonusDay != null && this._stageInfo.expBonusDay == this._dayOfWeek) {
+      if (this._stageInfo.expBonusDay != null && this._stageInfo.expBonusDay == this._dayOfWeek) {
         // 曜日合致による普通の経験値 1.3 倍
         factors.push(1.3);
         this._isExpBonusDay = true;
@@ -733,6 +727,13 @@ function initializeStageList() {
     //new StageInfo("上級", 50, 6400, 9500, 無, 無, null, false, false),
     //new StageInfo("まつり", 80, 10600, 16000, 無, 無, null, false, false),
     //new StageInfo("ちまつり", 100, 14000, 21000, 無, 無, null, false, false),
+
+    // 害貨獲得戦挙Ⅳ
+    new StageInfo("小地獄", 30, 2000, 2400, 無, 無, null, false, false),
+    new StageInfo("中地獄", 50, 3500, 7000, 無, 無, null, false, false),
+    new StageInfo("大地獄", 80, 6000, 16000, 無, 無, null, false, false),
+    // 天国の獲得ゴールドは不定だが、Gold/M を Infinity 表示にしたいので 1 ってことで。
+    new StageInfo("天国", 0, 5000, 1, 無, 無, null, false, false),
   ];
 }
 

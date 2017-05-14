@@ -260,12 +260,7 @@ var TableRecord = (function () {
         this._isDoubleExpBonusApplied = useDoubleExpBonus;
         {
             var factors = [];
-            if (this._stageInfo.isNumberedStage && this._stageInfo.district <= 7 && this._stageInfo.mode == StageMode.Normal) {
-                factors.push(1.3);
-                this._isExpBonusDay = true;
-                this._isSpecialExpBonusDay = true;
-            }
-            else if (this._stageInfo.expBonusDay != null && this._stageInfo.expBonusDay == this._dayOfWeek) {
+            if (this._stageInfo.expBonusDay != null && this._stageInfo.expBonusDay == this._dayOfWeek) {
                 factors.push(1.3);
                 this._isExpBonusDay = true;
             }
@@ -612,6 +607,10 @@ function initializeStageList() {
         new StageInfo("H 8-D", 46, 9832, 6210, 水, 土, UnitType.Magic),
         new StageInfo("H 8-E", 45, 9490, 6070, 木, 日, UnitType.Melee),
         new StageInfo("H 8-6", 47, 10000, 6280, 水, 土, UnitType.Heavy),
+        new StageInfo("小地獄", 30, 2000, 2400, 無, 無, null, false, false),
+        new StageInfo("中地獄", 50, 3500, 7000, 無, 無, null, false, false),
+        new StageInfo("大地獄", 80, 6000, 16000, 無, 無, null, false, false),
+        new StageInfo("天国", 0, 5000, 1, 無, 無, null, false, false),
     ];
 }
 function updateTable() {
