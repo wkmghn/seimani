@@ -25,6 +25,7 @@ const cashables: CashableInfo[] = [
   new CashableInfo("山吹色の菓子", 5000),
   new CashableInfo("弾丸", 8000),
   new CashableInfo("社交場の入場券", 20000),
+  new CashableInfo("インサイダー", 40000),
 ];
 
 function toCommaSeparatedString(n: number) : string {
