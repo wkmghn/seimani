@@ -22,6 +22,7 @@ function loadSettings() : void {
   if (!localStorage) { return; }
 
   (<HTMLSelectElement>document.getElementById("difficulty")).value = getFromLocalStorage("exp-table:Difficulty", "All");
+  (<HTMLInputElement>document.getElementById("includeExtraStage")).checked = getBooleanFromLocalStorage("exp-table:IncludeExtraStage", true);
   (<HTMLInputElement>document.getElementById("only20")).checked = getBooleanFromLocalStorage("exp-table:OnlyTop20", true);
   (<HTMLInputElement>document.getElementById("separateEventStage")).checked = getBooleanFromLocalStorage("exp-table:SeparateEventStage", false);
 }
@@ -30,6 +31,7 @@ function saveSettings() : void {
   if (!localStorage) { return; }
 
   localStorage.setItem("exp-table:Difficulty", (<HTMLSelectElement>document.getElementById("difficulty")).value);
+  localStorage.setItem("exp-table:IncludeExtraStage", (<HTMLInputElement>document.getElementById("includeExtraStage")).checked ? "1" : "0");
   localStorage.setItem("exp-table:OnlyTop20", (<HTMLInputElement>document.getElementById("only20")).checked ? "1" : "0");
   localStorage.setItem("exp-table:SeparateEventStage", (<HTMLInputElement>document.getElementById("separateEventStage")).checked ? "1" : "0");
 }
@@ -104,6 +106,15 @@ function getStageModeClassName(mode: StageMode) : string {
   }
 }
 
+// ステージカテゴリ
+enum StageCategory
+{
+  Numbered,
+  Alphabetical,
+  Extra,
+  Event,
+}
+
 // ユニット種別
 enum UnitType
 {
@@ -156,15 +167,19 @@ class StageInfo
   // 1, 2, 3, 4, ...
   // イベントステージの場合は null
   private _districtLetter: string;
+  // 難易度部分を含まない名前。
+  // 1-1, 2-A, 3-EX1, まつり級, ...
+  private _name: string;
   // 1, 2, 3, A, B, C, ...
   // イベントステージの場合は null
-  private _stageLetter: string;
-  private _isNumberedStage: boolean;
+  //private _stageLetter: string;
+  private _category: StageCategory;
+  //private _isNumberedStage: boolean;
   // イベントステージの場合は null
   private _mode: StageMode;
   // イベントステージ以外では null
-  private _eventStageName: string;
-  private _isEventStage: boolean;
+  //private _eventStageName: string;
+  //private _isEventStage: boolean;
   private _motivationConsumption: number;
   private _baseExp: number;
   private _baseGold: number;
@@ -204,33 +219,34 @@ class StageInfo
     this._isManaBonusAllowed = isManaBonusAllowed;
     this._isProtectionBonusAllowed = isProtectionBonusAllowed;
 
-    if (5 == stageName.length && stageName[3] == "-") {
+    if (0 <= ["N", "H", "T"].indexOf(stageName[0])) {
+      // Numbered, Alphabetical or Extra
       this._districtLetter = stageName[2];
-      this._stageLetter = stageName[4];
       switch (stageName[0]) {
-        case "N":
-          this._mode = StageMode.Normal;
-          break;
-        case "H":
-          this._mode = StageMode.Hard;
-          break;
-        case "T":
-          this._mode = StageMode.Twist;
-          break;
+        case "N": this._mode = StageMode.Normal; break;
+        case "H": this._mode = StageMode.Hard; break;
+        case "T": this._mode = StageMode.Twist; break;
       }
-      this._eventStageName = null;
-      this._isEventStage = false;
+      if (stageName.length == 5) {
+        // Numbered or Alphabetical
+        if (isNaN(parseInt(stageName[4], 10))) {
+          this._category = StageCategory.Alphabetical;
+        } else {
+          this._category = StageCategory.Numbered;
+        }
+      }
+      else {
+        // Extra
+        this._category = StageCategory.Extra;
+      }
+      // "N " などを切り落とす
+      this._name = stageName.slice(2);
     } else {
+      // Event
       this._districtLetter = null;
-      this._stageLetter = null;
       this._mode = null;
-      this._eventStageName = stageName;
-      this._isEventStage = true;
-    }
-    
-    this._isNumberedStage = false;
-    if (this._stageLetter != null && !isNaN(parseInt(this._stageLetter, 10))) {
-      this._isNumberedStage = true;
+      this._category = StageCategory.Event;
+      this._name = stageName;
     }
   }
 
@@ -240,24 +256,25 @@ class StageInfo
 
   // N 1-1 形式
   public get fullName() : string {
-    if (this._isEventStage) {
-      return this._eventStageName;
+    if (this._category == StageCategory.Event) {
+      return this._name;
     } else {
-      return getStageModeLetter(this._mode) + " " + this._districtLetter + "-" + this._stageLetter;
+      return getStageModeLetter(this._mode) + " " + this._name;
     }
   }
 
   // 1-1 形式 (難易度部分を含まない)
   public get shortName() : string {
-    if (this._isEventStage) {
-      return this._eventStageName;
+    if (this._category == StageCategory.Event) {
+      return this._name;
     } else {
-      return this._districtLetter + "-" + this._stageLetter;
+      return this._name;
     }
   }
 
   // 選挙区番号。イベントステージの場合は null。
   public get district() : number { return this._districtLetter ? parseInt(this._districtLetter) : null; }
+  public get category() : StageCategory { return this._category; }
   public get mode() : StageMode { return this._mode; }
   public get motivationConsumption() : number { return this._motivationConsumption; }
   public get baseExp() : number { return this._baseExp; }
@@ -267,8 +284,8 @@ class StageInfo
   public get baseGold() : number { return this._baseGold; }
   public get goldBonusDay() : number { return this._goldBonusDay; }
   public get isProtectionBonusAllowed() : boolean { return this._isProtectionBonusAllowed; }
-  public get isNumberedStage() : boolean { return this._isNumberedStage; }
-  public get isEventStage() : boolean { return this._eventStageName != null; }
+  public get isNumberedStage() : boolean { return this._category == StageCategory.Numbered; }
+  public get isEventStage() : boolean { return this._category == StageCategory.Event; }
 
   //============================================================================
   // METHODS
@@ -551,7 +568,7 @@ function initializeStageList() {
     new StageInfo("N 4-E", 25, 2982, 2720, 水, 土, UnitType.Ranged),
     new StageInfo("N 4-F", 25, 3050, 2750, 木, 日, UnitType.Ranged),
     new StageInfo("N 4-G", 26, 3205, 2870, 金, 月, UnitType.Heavy),
-    new StageInfo("N 4-H", 26, 3237, 0, 土, 火, UnitType.Melee),
+    new StageInfo("N 4-H", 26, 3237, 2920, 土, 火, UnitType.Melee),
 
     // H 4
     new StageInfo("H 4-1", 41, 5186, 4790, 金, 月, UnitType.Ranged),
@@ -566,7 +583,7 @@ function initializeStageList() {
     new StageInfo("H 4-E", 41, 5218, 4840, 日, 水, UnitType.Melee),
     new StageInfo("H 4-F", 41, 5248, 4820, 月, 木, UnitType.Ranged),
     new StageInfo("H 4-G", 41, 5300, 4710, 火, 金, UnitType.Melee),
-    new StageInfo("H 4-H", 42, 5473, 0, 水, 土, UnitType.Ranged),
+    new StageInfo("H 4-H", 42, 5473, 4810, 水, 土, UnitType.Ranged),
 
     // N 5
     new StageInfo("N 5-1", 26, 3550, 3120, 火, 金, UnitType.Ranged),
@@ -628,6 +645,7 @@ function initializeStageList() {
     new StageInfo("N 7-D", 28, 4988, 3530, 金, 月, UnitType.Ranged),
     new StageInfo("N 7-E", 28, 4860, 3510, 土, 火, UnitType.Melee),
     new StageInfo("N 7-F", 28, 4872, 3550, 日, 水, UnitType.Ranged),
+    new StageInfo("N 7-EX1", 35, 7539, 4730, 月, 木, UnitType.Heavy),
 
     // H 7
     new StageInfo("H 7-1", 44, 7983, 5710, 月, 木, UnitType.Melee),
@@ -641,6 +659,7 @@ function initializeStageList() {
     new StageInfo("H 7-D", 45, 8332, 5870, 火, 金, UnitType.Melee),
     new StageInfo("H 7-E", 44, 8009, 5740, 水, 土, UnitType.Magic),
     new StageInfo("H 7-F", 44, 8019, 5730, 木, 日, UnitType.Ranged),
+    new StageInfo("H 7-EX1", 55, 12092, 7740, 金, 月, UnitType.Melee),
 
     // N 8
     new StageInfo("N 8-1", 28, 5593, 3630, 金, 月, UnitType.Heavy),
@@ -653,6 +672,7 @@ function initializeStageList() {
     new StageInfo("N 8-C", 29, 6007, 3780, 金, 月, UnitType.Magic),
     new StageInfo("N 8-D", 29, 6098, 3720, 土, 火, UnitType.Melee),
     new StageInfo("N 8-E", 28, 5705, 3590, 日, 水, UnitType.Ranged),
+    new StageInfo("N 8-EX1", 35, 7525, 4790, undefined, 木, UnitType.Ranged),
     new StageInfo("N 8-6", 30, 6119, 3850, null, null, null),
 
     // H 8
@@ -666,6 +686,7 @@ function initializeStageList() {
     new StageInfo("H 8-C", 45, 9583, 6060, 火, 金, UnitType.Heavy),
     new StageInfo("H 8-D", 46, 9832, 6210, 水, 土, UnitType.Magic),
     new StageInfo("H 8-E", 45, 9490, 6070, 木, 日, UnitType.Melee),
+    new StageInfo("H 8-EX1", 55, 12111, 7680, 金, undefined, UnitType.Ranged),
     new StageInfo("H 8-6", 47, 10000, 6280, 水, 土, UnitType.Heavy),
 
     // 第一次闘弌治宝戦挙
@@ -731,11 +752,11 @@ function initializeStageList() {
     //new StageInfo("ちまつり", 100, 14000, 21000, 無, 無, null, false, false),
 
     // 害貨獲得戦挙Ⅳ
-    new StageInfo("小地獄", 30, 2000, 2400, 無, 無, null, false, false),
-    new StageInfo("中地獄", 50, 3500, 7000, 無, 無, null, false, false),
-    new StageInfo("大地獄", 80, 6000, 16000, 無, 無, null, false, false),
+    //new StageInfo("小地獄", 30, 2000, 2400, 無, 無, null, false, false),
+    //new StageInfo("中地獄", 50, 3500, 7000, 無, 無, null, false, false),
+    //new StageInfo("大地獄", 80, 6000, 16000, 無, 無, null, false, false),
     // 天国の獲得ゴールドは不定だが、Gold/M を Infinity 表示にしたいので 1 ってことで。
-    new StageInfo("天国", 0, 5000, 1, 無, 無, null, false, false),
+    //new StageInfo("天国", 0, 5000, 1, 無, 無, null, false, false),
   ];
 }
 
@@ -769,7 +790,12 @@ function updateTable() : void {
 
   // 消費モチベがゼロのステージを除外する
   // (EXP/Mが無限大になって常に表示されて邪魔なので。イベントステージの分離表示に含まれる分には構わない。)
-  records = records.filter(function(item, index) { return 0 < item.stageInfo.motivationConsumption; })
+  records = records.filter(function(item, index) { return 0 < item.stageInfo.motivationConsumption; });
+
+  // EX ステージを除外
+  if (!(<HTMLInputElement>document.getElementById("includeExtraStage")).checked) {
+    records = records.filter(function(item, index) { return item.stageInfo.category != StageCategory.Extra; });
+  }
 
   // 難易度によるフィルタを適用
   {

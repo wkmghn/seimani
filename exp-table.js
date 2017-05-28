@@ -25,6 +25,7 @@ function loadSettings() {
         return;
     }
     document.getElementById("difficulty").value = getFromLocalStorage("exp-table:Difficulty", "All");
+    document.getElementById("includeExtraStage").checked = getBooleanFromLocalStorage("exp-table:IncludeExtraStage", true);
     document.getElementById("only20").checked = getBooleanFromLocalStorage("exp-table:OnlyTop20", true);
     document.getElementById("separateEventStage").checked = getBooleanFromLocalStorage("exp-table:SeparateEventStage", false);
 }
@@ -33,6 +34,7 @@ function saveSettings() {
         return;
     }
     localStorage.setItem("exp-table:Difficulty", document.getElementById("difficulty").value);
+    localStorage.setItem("exp-table:IncludeExtraStage", document.getElementById("includeExtraStage").checked ? "1" : "0");
     localStorage.setItem("exp-table:OnlyTop20", document.getElementById("only20").checked ? "1" : "0");
     localStorage.setItem("exp-table:SeparateEventStage", document.getElementById("separateEventStage").checked ? "1" : "0");
 }
@@ -87,6 +89,13 @@ function getStageModeClassName(mode) {
         case StageMode.Twist: return "stage_mode_twist";
     }
 }
+var StageCategory;
+(function (StageCategory) {
+    StageCategory[StageCategory["Numbered"] = 0] = "Numbered";
+    StageCategory[StageCategory["Alphabetical"] = 1] = "Alphabetical";
+    StageCategory[StageCategory["Extra"] = 2] = "Extra";
+    StageCategory[StageCategory["Event"] = 3] = "Event";
+})(StageCategory || (StageCategory = {}));
 var UnitType;
 (function (UnitType) {
     UnitType[UnitType["Melee"] = 0] = "Melee";
@@ -137,9 +146,8 @@ var StageInfo = (function () {
         this._expBonusUnitType = expBonusUnitType;
         this._isManaBonusAllowed = isManaBonusAllowed;
         this._isProtectionBonusAllowed = isProtectionBonusAllowed;
-        if (5 == stageName.length && stageName[3] == "-") {
+        if (0 <= ["N", "H", "T"].indexOf(stageName[0])) {
             this._districtLetter = stageName[2];
-            this._stageLetter = stageName[4];
             switch (stageName[0]) {
                 case "N":
                     this._mode = StageMode.Normal;
@@ -151,28 +159,33 @@ var StageInfo = (function () {
                     this._mode = StageMode.Twist;
                     break;
             }
-            this._eventStageName = null;
-            this._isEventStage = false;
+            if (stageName.length == 5) {
+                if (isNaN(parseInt(stageName[4], 10))) {
+                    this._category = StageCategory.Alphabetical;
+                }
+                else {
+                    this._category = StageCategory.Numbered;
+                }
+            }
+            else {
+                this._category = StageCategory.Extra;
+            }
+            this._name = stageName.slice(2);
         }
         else {
             this._districtLetter = null;
-            this._stageLetter = null;
             this._mode = null;
-            this._eventStageName = stageName;
-            this._isEventStage = true;
-        }
-        this._isNumberedStage = false;
-        if (this._stageLetter != null && !isNaN(parseInt(this._stageLetter, 10))) {
-            this._isNumberedStage = true;
+            this._category = StageCategory.Event;
+            this._name = stageName;
         }
     }
     Object.defineProperty(StageInfo.prototype, "fullName", {
         get: function () {
-            if (this._isEventStage) {
-                return this._eventStageName;
+            if (this._category == StageCategory.Event) {
+                return this._name;
             }
             else {
-                return getStageModeLetter(this._mode) + " " + this._districtLetter + "-" + this._stageLetter;
+                return getStageModeLetter(this._mode) + " " + this._name;
             }
         },
         enumerable: true,
@@ -180,11 +193,11 @@ var StageInfo = (function () {
     });
     Object.defineProperty(StageInfo.prototype, "shortName", {
         get: function () {
-            if (this._isEventStage) {
-                return this._eventStageName;
+            if (this._category == StageCategory.Event) {
+                return this._name;
             }
             else {
-                return this._districtLetter + "-" + this._stageLetter;
+                return this._name;
             }
         },
         enumerable: true,
@@ -192,6 +205,11 @@ var StageInfo = (function () {
     });
     Object.defineProperty(StageInfo.prototype, "district", {
         get: function () { return this._districtLetter ? parseInt(this._districtLetter) : null; },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(StageInfo.prototype, "category", {
+        get: function () { return this._category; },
         enumerable: true,
         configurable: true
     });
@@ -241,12 +259,12 @@ var StageInfo = (function () {
         configurable: true
     });
     Object.defineProperty(StageInfo.prototype, "isNumberedStage", {
-        get: function () { return this._isNumberedStage; },
+        get: function () { return this._category == StageCategory.Numbered; },
         enumerable: true,
         configurable: true
     });
     Object.defineProperty(StageInfo.prototype, "isEventStage", {
-        get: function () { return this._eventStageName != null; },
+        get: function () { return this._category == StageCategory.Event; },
         enumerable: true,
         configurable: true
     });
@@ -511,7 +529,7 @@ function initializeStageList() {
         new StageInfo("N 4-E", 25, 2982, 2720, 水, 土, UnitType.Ranged),
         new StageInfo("N 4-F", 25, 3050, 2750, 木, 日, UnitType.Ranged),
         new StageInfo("N 4-G", 26, 3205, 2870, 金, 月, UnitType.Heavy),
-        new StageInfo("N 4-H", 26, 3237, 0, 土, 火, UnitType.Melee),
+        new StageInfo("N 4-H", 26, 3237, 2920, 土, 火, UnitType.Melee),
         new StageInfo("H 4-1", 41, 5186, 4790, 金, 月, UnitType.Ranged),
         new StageInfo("H 4-2", 41, 5236, 4840, 土, 火, UnitType.Melee),
         new StageInfo("H 4-3", 41, 5250, 4740, 日, 水, UnitType.Magic),
@@ -524,7 +542,7 @@ function initializeStageList() {
         new StageInfo("H 4-E", 41, 5218, 4840, 日, 水, UnitType.Melee),
         new StageInfo("H 4-F", 41, 5248, 4820, 月, 木, UnitType.Ranged),
         new StageInfo("H 4-G", 41, 5300, 4710, 火, 金, UnitType.Melee),
-        new StageInfo("H 4-H", 42, 5473, 0, 水, 土, UnitType.Ranged),
+        new StageInfo("H 4-H", 42, 5473, 4810, 水, 土, UnitType.Ranged),
         new StageInfo("N 5-1", 26, 3550, 3120, 火, 金, UnitType.Ranged),
         new StageInfo("N 5-2", 26, 3630, 3130, 水, 土, UnitType.Melee),
         new StageInfo("N 5-3", 27, 3734, 3150, 木, 日, UnitType.Heavy),
@@ -576,6 +594,7 @@ function initializeStageList() {
         new StageInfo("N 7-D", 28, 4988, 3530, 金, 月, UnitType.Ranged),
         new StageInfo("N 7-E", 28, 4860, 3510, 土, 火, UnitType.Melee),
         new StageInfo("N 7-F", 28, 4872, 3550, 日, 水, UnitType.Ranged),
+        new StageInfo("N 7-EX1", 35, 7539, 4730, 月, 木, UnitType.Heavy),
         new StageInfo("H 7-1", 44, 7983, 5710, 月, 木, UnitType.Melee),
         new StageInfo("H 7-2", 44, 8037, 5700, 火, 金, UnitType.Magic),
         new StageInfo("H 7-3", 44, 8034, 5720, 水, 土, UnitType.Ranged),
@@ -587,6 +606,7 @@ function initializeStageList() {
         new StageInfo("H 7-D", 45, 8332, 5870, 火, 金, UnitType.Melee),
         new StageInfo("H 7-E", 44, 8009, 5740, 水, 土, UnitType.Magic),
         new StageInfo("H 7-F", 44, 8019, 5730, 木, 日, UnitType.Ranged),
+        new StageInfo("H 7-EX1", 55, 12092, 7740, 金, 月, UnitType.Melee),
         new StageInfo("N 8-1", 28, 5593, 3630, 金, 月, UnitType.Heavy),
         new StageInfo("N 8-2", 28, 5693, 3640, 土, 火, UnitType.Magic),
         new StageInfo("N 8-3", 29, 5940, 3770, 日, 水, UnitType.Ranged),
@@ -597,6 +617,7 @@ function initializeStageList() {
         new StageInfo("N 8-C", 29, 6007, 3780, 金, 月, UnitType.Magic),
         new StageInfo("N 8-D", 29, 6098, 3720, 土, 火, UnitType.Melee),
         new StageInfo("N 8-E", 28, 5705, 3590, 日, 水, UnitType.Ranged),
+        new StageInfo("N 8-EX1", 35, 7525, 4790, undefined, 木, UnitType.Ranged),
         new StageInfo("N 8-6", 30, 6119, 3850, null, null, null),
         new StageInfo("H 8-1", 45, 9474, 6030, 火, 金, UnitType.Magic),
         new StageInfo("H 8-2", 45, 9580, 6080, 水, 土, UnitType.Ranged),
@@ -608,11 +629,8 @@ function initializeStageList() {
         new StageInfo("H 8-C", 45, 9583, 6060, 火, 金, UnitType.Heavy),
         new StageInfo("H 8-D", 46, 9832, 6210, 水, 土, UnitType.Magic),
         new StageInfo("H 8-E", 45, 9490, 6070, 木, 日, UnitType.Melee),
+        new StageInfo("H 8-EX1", 55, 12111, 7680, 金, undefined, UnitType.Ranged),
         new StageInfo("H 8-6", 47, 10000, 6280, 水, 土, UnitType.Heavy),
-        new StageInfo("小地獄", 30, 2000, 2400, 無, 無, null, false, false),
-        new StageInfo("中地獄", 50, 3500, 7000, 無, 無, null, false, false),
-        new StageInfo("大地獄", 80, 6000, 16000, 無, 無, null, false, false),
-        new StageInfo("天国", 0, 5000, 1, 無, 無, null, false, false),
     ];
 }
 function updateTable() {
@@ -638,6 +656,9 @@ function updateTable() {
         separatedEventStageRecords = records.filter(function (item, index) { return item.stageInfo.isEventStage; });
     }
     records = records.filter(function (item, index) { return 0 < item.stageInfo.motivationConsumption; });
+    if (!document.getElementById("includeExtraStage").checked) {
+        records = records.filter(function (item, index) { return item.stageInfo.category != StageCategory.Extra; });
+    }
     {
         var selectedDifficulty = document.getElementById("difficulty").value;
         if (selectedDifficulty == "All") {
