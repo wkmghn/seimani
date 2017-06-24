@@ -646,6 +646,7 @@ function initializeStageList() {
     new StageInfo("N 7-E", 28, 4860, 3510, 土, 火, UnitType.Melee),
     new StageInfo("N 7-F", 28, 4872, 3550, 日, 水, UnitType.Ranged),
     new StageInfo("N 7-EX1", 35, 7539, 4730, 月, 木, UnitType.Heavy),
+    new StageInfo("N 7-EX2", 35, 7535, 4740, 火, 金, UnitType.Melee),
 
     // H 7
     new StageInfo("H 7-1", 44, 7983, 5710, 月, 木, UnitType.Melee),
@@ -660,6 +661,7 @@ function initializeStageList() {
     new StageInfo("H 7-E", 44, 8009, 5740, 水, 土, UnitType.Magic),
     new StageInfo("H 7-F", 44, 8019, 5730, 木, 日, UnitType.Ranged),
     new StageInfo("H 7-EX1", 55, 12092, 7740, 金, 月, UnitType.Melee),
+    new StageInfo("H 7-EX2", 55, 12120, 7690, 土, 火, UnitType.Ranged),
 
     // N 8
     new StageInfo("N 8-1", 28, 5593, 3630, 金, 月, UnitType.Heavy),
@@ -672,7 +674,8 @@ function initializeStageList() {
     new StageInfo("N 8-C", 29, 6007, 3780, 金, 月, UnitType.Magic),
     new StageInfo("N 8-D", 29, 6098, 3720, 土, 火, UnitType.Melee),
     new StageInfo("N 8-E", 28, 5705, 3590, 日, 水, UnitType.Ranged),
-    new StageInfo("N 8-EX1", 35, 7525, 4790, undefined, 木, UnitType.Ranged),
+    new StageInfo("N 8-EX1", 35, 7525, 4790, 月, 木, UnitType.Ranged),
+    new StageInfo("N 8-EX2", 35, 7531, 4770, 火, 金, UnitType.Heavy),
     new StageInfo("N 8-6", 30, 6119, 3850, null, null, null),
 
     // H 8
@@ -686,7 +689,8 @@ function initializeStageList() {
     new StageInfo("H 8-C", 45, 9583, 6060, 火, 金, UnitType.Heavy),
     new StageInfo("H 8-D", 46, 9832, 6210, 水, 土, UnitType.Magic),
     new StageInfo("H 8-E", 45, 9490, 6070, 木, 日, UnitType.Melee),
-    new StageInfo("H 8-EX1", 55, 12111, 7680, 金, undefined, UnitType.Ranged),
+    new StageInfo("H 8-EX1", 55, 12111, 7680, 金, 月, UnitType.Ranged),
+    new StageInfo("H 8-EX2", 55, 12134, 7700, 土, 火, UnitType.Magic),
     new StageInfo("H 8-6", 47, 10000, 6280, 水, 土, UnitType.Heavy),
 
     // 第一次闘弌治宝戦挙
@@ -746,6 +750,7 @@ function initializeStageList() {
 
     // 新緑の刻制戦挙
     // 荒梅雨の狩超戦挙
+    // 緋色の刻制戦挙
     new StageInfo("初級", 30, 3500, 2100, 無, 無, null, false, false),
     new StageInfo("中級", 40, 4900, 5600, 無, 無, null, false, false),
     new StageInfo("上級", 50, 6400, 9500, 無, 無, null, false, false),
