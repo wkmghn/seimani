@@ -90,12 +90,12 @@ td.base_exp, td.final_exp {
   text-align: center;
 }
 
-td.active_exp_bonus_day {
-  text-align: left;
+.active_exp_bonus_day {
+  /* text-align: left; */
 }
 
-td.inactive_exp_bonus_day {
-  text-align: left;
+.inactive_exp_bonus_day {
+  /* text-align: left; */
   color: silver;
 }
 
