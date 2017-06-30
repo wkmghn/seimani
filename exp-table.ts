@@ -479,7 +479,7 @@ function initializeStageList() {
     new StageInfo("N 2-E", 18, 2912,  800, [火,木], 金, UnitType.Heavy),
     new StageInfo("N 2-J", 17, 2769, 1140, [日,木], 金, UnitType.Magic),
     new StageInfo("N 2-K", 17, 2763, 1100, [火], 日, UnitType.Magic),
-    new StageInfo("N 2-5", 20, 3293, 1110, [水], 土, null),
+    new StageInfo("N 2-5", 20, 3293, 1110, [水], 土, UnitType.Melee),
 
     // H 2
     new StageInfo("H 2-1", 22, 3690, 1730, [日,金], 水, UnitType.Heavy),
@@ -497,7 +497,7 @@ function initializeStageList() {
     new StageInfo("H 2-E", 36, 6086, 1860, [水], 木, UnitType.Magic),
     new StageInfo("H 2-J", 34, 5792, 3020, [水,金], 無, UnitType.Ranged),
     new StageInfo("H 2-K", 35, 5980, 3120, [水,土], 無, UnitType.Melee),
-    new StageInfo("H 2-5", 36, 6105, 2430, [木], 金, null),
+    new StageInfo("H 2-5", 36, 6105, 2430, [木], 金, UnitType.Magic),
 
     // T 2
     new StageInfo("T 2-1", 37, 6121, 4130, [土], 金, UnitType.Heavy),
@@ -527,7 +527,7 @@ function initializeStageList() {
     new StageInfo("N 3-4", 22, 3737, 2300, [水,土], 木, UnitType.Magic),
     new StageInfo("N 3-D", 22, 3752, 2200, [日,木], 金, UnitType.Heavy),
     new StageInfo("N 3-E", 23, 3949, 2440, [月], 土, UnitType.Ranged),
-    new StageInfo("N 3-5", 24, 4238, 2530, [火,金], 日, null),
+    new StageInfo("N 3-5", 24, 4238, 2530, [火,金], 日, UnitType.Magic),
     new StageInfo("N 3-F", 19, 3127, 2000, [水], 月, UnitType.Heavy),
     new StageInfo("N 3-G", 21, 3599, 2170, [木], 火, UnitType.Ranged),
     new StageInfo("N 3-H", 19, 3137, 1980, [金], 水, UnitType.Melee),
@@ -543,7 +543,7 @@ function initializeStageList() {
     new StageInfo("H 3-4", 40, 7027, 4370, [火,水], 日, UnitType.Heavy),
     new StageInfo("H 3-D", 40, 6985, 4350, [水], 火, UnitType.Magic),
     new StageInfo("H 3-E", 40, 7018, 4540, [木], 水, UnitType.Heavy),
-    new StageInfo("H 3-5", 41, 7397, 4460, [金], 木, null),
+    new StageInfo("H 3-5", 41, 7397, 4460, [金], 木, UnitType.Heavy),
     new StageInfo("H 3-F", 37, 6346, 4250, [土], 金, UnitType.Melee),
     new StageInfo("H 3-G", 40, 6959, 4450, [日,木], 土, UnitType.Magic),
     new StageInfo("H 3-H", 37, 6357, 4110, [月,木], 日, UnitType.Melee),
