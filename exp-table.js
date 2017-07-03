@@ -624,7 +624,7 @@ function initializeStageList() {
         new StageInfo("N 8-EX1", 35, 7525, 4790, [月, 金], 木, UnitType.Ranged),
         new StageInfo("N 8-EX2", 35, 7531, 4770, [火, 木], 金, UnitType.Heavy),
         new StageInfo("N 8-EX3", 35, 7560, 0, [水, 金], undefined, UnitType.Magic),
-        new StageInfo("N 8-6", 30, 6119, 3850, null, null, null),
+        new StageInfo("N 8-6", 30, 6119, 3850, [], null, null),
         new StageInfo("H 8-1", 45, 9474, 6030, [火, 木], 金, UnitType.Magic),
         new StageInfo("H 8-2", 45, 9580, 6080, [水, 金], 土, UnitType.Ranged),
         new StageInfo("H 8-3", 45, 9577, 6110, [木, 土], 日, UnitType.Heavy),
