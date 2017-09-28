@@ -639,11 +639,11 @@ function initializeStageList() {
         new StageInfo("H 8-EX2", 55, 12134, 7700, [日, 土], 火, UnitType.Magic),
         new StageInfo("H 8-EX3", 55, 12155, 7760, [日, 金], 水, UnitType.Heavy),
         new StageInfo("H 8-6", 47, 10000, 6280, [日, 水], 土, UnitType.Heavy),
-        new StageInfo("初級", 30, 3500, 2100, [無], 無, null, false, false),
-        new StageInfo("中級", 40, 4900, 5600, [無], 無, null, false, false),
-        new StageInfo("上級", 50, 6400, 9500, [無], 無, null, false, false),
-        new StageInfo("まつり", 80, 10600, 16000, [無], 無, null, false, false),
-        new StageInfo("ちまつり", 100, 14000, 21000, [無], 無, null, false, false),
+        new StageInfo("初級", 30, 4500, 2100, [無], 無, null, false, false),
+        new StageInfo("中級", 40, 6200, 5600, [無], 無, null, false, false),
+        new StageInfo("上級", 50, 8000, 9500, [無], 無, null, false, false),
+        new StageInfo("まつり", 80, 13200, 16000, [無], 無, null, false, false),
+        new StageInfo("ちまつり", 100, 17000, 21000, [無], 無, null, false, false),
     ];
 }
 function updateTable() {
