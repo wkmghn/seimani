@@ -621,6 +621,10 @@ function initializeStageList() {
     new StageInfo("N 6-D", 28, 5190, 3550, [水,木], 日, UnitType.Melee),
     new StageInfo("N 6-E", 27, 4935, 3430, [金,土], 月, UnitType.Ranged),
     new StageInfo("N 6-EX1", 35, 7503, 4760, [日,土], 火, UnitType.Ranged),
+    new StageInfo("N 6-EX2", 35, 7508, 4750, [日,木], 水, UnitType.Magic),
+    new StageInfo("N 6-EX3", 35, 7515, 4760, [金,土], 木, UnitType.Heavy),
+    new StageInfo("N 6-EX4", 35, 7520, 4740, [月,火], 金, UnitType.Magic),
+    new StageInfo("N 6-EX5", 35, 7511, 4760, [日,水], 土, UnitType.Heavy),
 
     // H 6
     new StageInfo("H 6-1", 43, 8008, 5370, [日,木], 水, UnitType.Magic),
@@ -634,6 +638,10 @@ function initializeStageList() {
     new StageInfo("H 6-D", 44, 8294, 5470, [月,金], 木, UnitType.Magic),
     new StageInfo("H 6-E", 43, 8046, 5350, [火,土], 金, UnitType.Melee),
     new StageInfo("H 6-EX1", 55, 12067, 7710, [月,水], 土, UnitType.Ranged),
+    new StageInfo("H 6-EX2", 55, 12080, 7730, [水,木], 日, UnitType.Heavy),
+    new StageInfo("H 6-EX3", 55, 12096, 7700, [日,土], 月, UnitType.Melee),
+    new StageInfo("H 6-EX4", 55, 12102, 7710, [水,土], 火, UnitType.Magic),
+    new StageInfo("H 6-EX5", 55, 12111, 7720, [日,火], 水, UnitType.Heavy),
 
     // N 7
     new StageInfo("N 7-1", 28, 5193, 3470, [月,木], 日, UnitType.Ranged),
@@ -649,6 +657,9 @@ function initializeStageList() {
     new StageInfo("N 7-F", 28, 5310, 3550, [日,土], 水, UnitType.Ranged),
     new StageInfo("N 7-EX1", 35, 7539, 4730, [月,水], 木, UnitType.Heavy),
     new StageInfo("N 7-EX2", 35, 7535, 4740, [火,土], 金, UnitType.Melee),
+    new StageInfo("N 7-EX3", 35, 7540, 4720, [火,水], 土, UnitType.Ranged),
+    new StageInfo("N 7-EX4", 35, 7530, 4760, [日,木], 月, UnitType.Melee),
+    new StageInfo("N 7-EX5", 35, 7536, 4780, [金,土], 日, UnitType.Magic),
 
     // H 7
     new StageInfo("H 7-1", 44, 8541, 5710, [月,金], 木, UnitType.Melee),
@@ -664,6 +675,9 @@ function initializeStageList() {
     new StageInfo("H 7-F", 44, 8580, 5730, [月,木], 日, UnitType.Ranged),
     new StageInfo("H 7-EX1", 55, 12092, 7740, [月,金], 月, UnitType.Melee),
     new StageInfo("H 7-EX2", 55, 12120, 7690, [火,土], 火, UnitType.Ranged),
+    new StageInfo("H 7-EX3", 55, 12116, 7720, [火,木], 月, UnitType.Magic),
+    new StageInfo("H 7-EX4", 55, 12131, 7700, [月,土], 金, UnitType.Heavy),
+    new StageInfo("H 7-EX5", 55, 12133, 7730, [水,木], 土, UnitType.Melee),
 
     // N 8
     new StageInfo("N 8-1", 28, 5593, 3630, [火,金], 月, UnitType.Heavy),
@@ -769,11 +783,17 @@ function initializeStageList() {
     //new StageInfo("天国", 0, 5000, 1, 無, 無, null, false, false),
 
     // 籠の中の三羽ガラス　第三羽　コルネ・イノウエ編
-    new StageInfo("初級", 30, 4500, 2100, [無], 無, null, false, false),
-    new StageInfo("中級", 40, 6200, 5600, [無], 無, null, false, false),
-    new StageInfo("上級", 50, 8000, 9500, [無], 無, null, false, false),
-    new StageInfo("まつり", 80, 13200, 16000, [無], 無, null, false, false),
-    new StageInfo("ちまつり", 100, 17000, 21000, [無], 無, null, false, false),
+    //new StageInfo("初級", 30, 4500, 2100, [無], 無, null, false, false),
+    //new StageInfo("中級", 40, 6200, 5600, [無], 無, null, false, false),
+    //new StageInfo("上級", 50, 8000, 9500, [無], 無, null, false, false),
+    //new StageInfo("まつり", 80, 13200, 16000, [無], 無, null, false, false),
+    //new StageInfo("ちまつり", 100, 17000, 21000, [無], 無, null, false, false),
+
+    // アリシアの懐刀
+    new StageInfo("小地獄", 30, 3500, 2400, [無], 無, null, false, false),
+    new StageInfo("中地獄", 50, 6000, 7000, [無], 無, null, false, false),
+    new StageInfo("大地獄", 80, 10000, 16000, [無], 無, null, false, false),
+    new StageInfo("天国", 0, 5000, 70000, [無], 無, null, false, false),
   ];
 }
 
