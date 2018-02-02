@@ -552,6 +552,7 @@ function initializeStageList() {
     // T 3
     new StageInfo("T 3-1", 41, 7090, 4600, [火,金], 木, UnitType.Melee),
     new StageInfo("T 3-2", 41, 7281, 4640, [水,土], 金, UnitType.Ranged),
+    new StageInfo("T 3-3", 41, 7435, 0, [月, 金], 日, UnitType.Heavy),
     new StageInfo("T 3-A", 41, 7152, 4570, [日,木], 土, UnitType.Magic),
     new StageInfo("T 3-F", 41, 7184, 4780, [月,土], 日, UnitType.Magic),
 
@@ -692,7 +693,9 @@ function initializeStageList() {
     new StageInfo("N 8-E", 28, 5705, 3590, [日,木], 水, UnitType.Ranged),
     new StageInfo("N 8-EX1", 35, 7525, 4790, [月,金], 木, UnitType.Ranged),
     new StageInfo("N 8-EX2", 35, 7531, 4770, [火,木], 金, UnitType.Heavy),
-    new StageInfo("N 8-EX3", 35, 7560, 0, [水,金], undefined, UnitType.Magic),
+    new StageInfo("N 8-EX3", 35, 7560, 0, [水, 金], 土, UnitType.Magic),
+    new StageInfo("N 8-EX4", 35, 7566, 0, [月, 木], 日, UnitType.Melee),
+    new StageInfo("N 8-EX5", 35, 7562, 0, [水, 金], 月, UnitType.Melee),
     new StageInfo("N 8-6", 30, 6119, 3850, [], null, null),
 
     // H 8
@@ -709,6 +712,8 @@ function initializeStageList() {
     new StageInfo("H 8-EX1", 55, 12111, 7680, [木,金], 月, UnitType.Ranged),
     new StageInfo("H 8-EX2", 55, 12134, 7700, [日,土], 火, UnitType.Magic),
     new StageInfo("H 8-EX3", 55, 12155, 7760, [日,金], 水, UnitType.Heavy),
+    new StageInfo("H 8-EX4", 55, 12170, 0, [月, 火], 木, UnitType.Melee),
+    new StageInfo("H 8-EX5", 55, 12165, 0, [日, 火], 金, UnitType.Ranged),
     new StageInfo("H 8-6", 47, 10000, 6280, [日,水], 土, UnitType.Heavy),
 
     // 第一次闘弌治宝戦挙
@@ -790,10 +795,10 @@ function initializeStageList() {
     //new StageInfo("ちまつり", 100, 17000, 21000, [無], 無, null, false, false),
 
     // アリシアの懐刀
-    new StageInfo("小地獄", 30, 3500, 2400, [無], 無, null, false, false),
-    new StageInfo("中地獄", 50, 6000, 7000, [無], 無, null, false, false),
-    new StageInfo("大地獄", 80, 10000, 16000, [無], 無, null, false, false),
-    new StageInfo("天国", 0, 5000, 70000, [無], 無, null, false, false),
+    //new StageInfo("小地獄", 30, 3500, 2400, [無], 無, null, false, false),
+    //new StageInfo("中地獄", 50, 6000, 7000, [無], 無, null, false, false),
+    //new StageInfo("大地獄", 80, 10000, 16000, [無], 無, null, false, false),
+    //new StageInfo("天国", 0, 5000, 70000, [無], 無, null, false, false),
   ];
 }
 
