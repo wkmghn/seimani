@@ -73,12 +73,14 @@ var StageMode;
     StageMode[StageMode["Normal"] = 0] = "Normal";
     StageMode[StageMode["Hard"] = 1] = "Hard";
     StageMode[StageMode["Twist"] = 2] = "Twist";
+    StageMode[StageMode["Space"] = 3] = "Space";
 })(StageMode || (StageMode = {}));
 function getStageModeLetter(mode) {
     switch (mode) {
         case StageMode.Normal: return "N";
         case StageMode.Hard: return "H";
         case StageMode.Twist: return "T";
+        case StageMode.Space: return "S";
     }
     return "?";
 }
@@ -146,7 +148,7 @@ var StageInfo = (function () {
         this._expBonusUnitType = expBonusUnitType;
         this._isManaBonusAllowed = isManaBonusAllowed;
         this._isProtectionBonusAllowed = isProtectionBonusAllowed;
-        if (0 <= ["N", "H", "T"].indexOf(stageName[0])) {
+        if (0 <= ["N", "H", "T", "S"].indexOf(stageName[0])) {
             this._districtLetter = stageName[2];
             switch (stageName[0]) {
                 case "N":
@@ -157,6 +159,9 @@ var StageInfo = (function () {
                     break;
                 case "T":
                     this._mode = StageMode.Twist;
+                    break;
+                case "S":
+                    this._mode = StageMode.Space;
                     break;
             }
             if (stageName.length == 5) {
@@ -658,6 +663,14 @@ function initializeStageList() {
         new StageInfo("H 8-EX4", 55, 12170, 0, [月, 火], 木, UnitType.Melee),
         new StageInfo("H 8-EX5", 55, 12165, 0, [日, 火], 金, UnitType.Ranged),
         new StageInfo("H 8-6", 47, 10000, 6280, [日, 水], 土, UnitType.Heavy),
+        new StageInfo("S 1-1", 33, 7257, 4420, [月, 金], 水, UnitType.Magic),
+        new StageInfo("S 1-2", 34, 7538, 4600, [火, 土], 木, UnitType.Melee),
+        new StageInfo("S 1-3", 35, 7765, 4730, [日, 水], 金, UnitType.Heavy),
+        new StageInfo("S 1-A", 33, 7283, 4470, [木, 土], 月, UnitType.Melee),
+        new StageInfo("S 2-1", 33, 7245, 4410, [火, 土], 木, UnitType.Ranged),
+        new StageInfo("S 2-2", 34, 7506, 4620, [日, 水], 金, UnitType.Magic),
+        new StageInfo("S 2-3", 35, 7804, 4690, [木, 金], 土, UnitType.Melee),
+        new StageInfo("S 2-A", 33, 7271, 4480, [日, 金], 火, UnitType.Magic),
     ];
 }
 function updateTable() {
@@ -713,6 +726,9 @@ function updateTable() {
                         break;
                     case StageMode.Twist:
                         rhs += 2.25;
+                        break;
+                    case StageMode.Space:
+                        rhs += 10;
                         break;
                 }
                 return lhs_1 >= rhs;
@@ -928,6 +944,8 @@ function initializeExpTable(ev) {
             option.attributes.setNamedItem(valueAttr);
         };
         addOption("すべての難易度", "All", "inherit");
+        addOption("H8 まで (推奨Lv 76-80)", "H8", "#E08000");
+        addOption("N8 まで (推奨Lv 66-70)", "N8", "inherit");
         addOption("H7 まで (推奨Lv 71-75)", "H7", "#E08000");
         addOption("N7 まで (推奨Lv 61-65)", "N7", "inherit");
         addOption("H6 まで (推奨Lv 66-70)", "H6", "#E08000");
