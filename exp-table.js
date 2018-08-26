@@ -89,6 +89,7 @@ function getStageModeClassName(mode) {
         case StageMode.Normal: return "stage_mode_normal";
         case StageMode.Hard: return "stage_mode_hard";
         case StageMode.Twist: return "stage_mode_twist";
+        case StageMode.Space: return "stage_mode_space";
     }
 }
 var StageCategory;

@@ -57,6 +57,10 @@ td.stage_mode_twist {
   color: #FF0040;
 }
 
+td.stage_mode_space {
+  color: #9200ea;
+}
+
 td.exp_bonus_unit_type {
   /*font-weight: bold;*/
   text-align: center;
