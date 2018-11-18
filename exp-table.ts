@@ -630,6 +630,7 @@ function initializeStageList() {
     new StageInfo("N 6-EX3", 35, 7515, 4760, [金,土], 木, UnitType.Heavy),
     new StageInfo("N 6-EX4", 35, 7520, 4740, [月,火], 金, UnitType.Magic),
     new StageInfo("N 6-EX5", 35, 7511, 4760, [日,水], 土, UnitType.Heavy),
+    new StageInfo("N 6-EX6", 35, 7556, 4759, [火,木], 日, UnitType.Melee),
 
     // H 6
     new StageInfo("H 6-1", 43, 8008, 5370, [日,木], 水, UnitType.Magic),
@@ -647,6 +648,7 @@ function initializeStageList() {
     new StageInfo("H 6-EX3", 55, 12096, 7700, [日,土], 月, UnitType.Melee),
     new StageInfo("H 6-EX4", 55, 12102, 7710, [水,土], 火, UnitType.Magic),
     new StageInfo("H 6-EX5", 55, 12111, 7720, [日,火], 水, UnitType.Heavy),
+    new StageInfo("H 6-EX6", 55, 12128, 7740, [月,金], 木, UnitType.Magic),
 
     // N 7
     new StageInfo("N 7-1", 28, 5193, 3470, [月,木], 日, UnitType.Ranged),
@@ -731,6 +733,11 @@ function initializeStageList() {
     new StageInfo("S 2-2", 34, 7506, 4620, [日,水], 金, UnitType.Magic),
     new StageInfo("S 2-3", 35, 7804, 4690, [木,金], 土, UnitType.Melee),
     new StageInfo("S 2-A", 33, 7271, 4480, [日,金], 火, UnitType.Magic),
+
+    // S 3
+    new StageInfo("S 3-1", 33, 7265, 4470, [月,木], 土, UnitType.Heavy),
+    new StageInfo("S 3-2", 34, 7529, 4600, [水,金], 日, UnitType.Ranged),
+    new StageInfo("S 3-3", 35, 7784, 4730, [火,土], 月, UnitType.Magic),
 
     // 第一次闘弌治宝戦挙
     // 第二次闘弌治宝戦挙
