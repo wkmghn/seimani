@@ -45,20 +45,36 @@ td.stage_name {
   font-weight: bold;
 }
 
-td.stage_mode_normal {
+td.stage_name_chapter1_normal {
   color: inherit;
 }
 
-td.stage_mode_hard {
+td.stage_name_chapter1_hard {
   color: #E08000;
 }
 
-td.stage_mode_twist {
+td.stage_name_chapter1_twist {
   color: #FF0040;
 }
 
-td.stage_mode_space {
+td.stage_name_chapter1_chaos {
+  /* TODO */
+}
+
+td.stage_name_chapter2_normal {
   color: #9200ea;
+}
+
+td.stage_name_chapter2_hard {
+  color: #f801d7;
+}
+
+td.stage_name_chapter2_twist {
+  /* TODO */
+}
+
+td.stage_name_chapter2_chaos {
+  /* TODO */
 }
 
 td.exp_bonus_unit_type {

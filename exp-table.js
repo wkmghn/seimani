@@ -1,9 +1,8 @@
-function getFromLocalStorage(name, notFoundValue) {
-    if (notFoundValue === void 0) { notFoundValue = null; }
+function getFromLocalStorage(name, notFoundValue = null) {
     if (!localStorage) {
         return notFoundValue;
     }
-    var item = localStorage.getItem(name);
+    let item = localStorage.getItem(name);
     if (item) {
         return item;
     }
@@ -12,7 +11,7 @@ function getFromLocalStorage(name, notFoundValue) {
     }
 }
 function getBooleanFromLocalStorage(name, notFoundValue) {
-    var str = getFromLocalStorage(name);
+    let str = getFromLocalStorage(name);
     if (str) {
         return str == "0" ? false : true;
     }
@@ -68,37 +67,25 @@ function getBonusDayLetter(dayOfWeek) {
     }
     return "？";
 }
-var StageMode;
-(function (StageMode) {
-    StageMode[StageMode["Normal"] = 0] = "Normal";
-    StageMode[StageMode["Hard"] = 1] = "Hard";
-    StageMode[StageMode["Twist"] = 2] = "Twist";
-    StageMode[StageMode["Space"] = 3] = "Space";
-})(StageMode || (StageMode = {}));
-function getStageModeLetter(mode) {
-    switch (mode) {
-        case StageMode.Normal: return "N";
-        case StageMode.Hard: return "H";
-        case StageMode.Twist: return "T";
-        case StageMode.Space: return "S";
-    }
-    return "?";
-}
-function getStageModeClassName(mode) {
-    switch (mode) {
-        case StageMode.Normal: return "stage_mode_normal";
-        case StageMode.Hard: return "stage_mode_hard";
-        case StageMode.Twist: return "stage_mode_twist";
-        case StageMode.Space: return "stage_mode_space";
-    }
-}
-var StageCategory;
-(function (StageCategory) {
-    StageCategory[StageCategory["Numbered"] = 0] = "Numbered";
-    StageCategory[StageCategory["Alphabetical"] = 1] = "Alphabetical";
-    StageCategory[StageCategory["Extra"] = 2] = "Extra";
-    StageCategory[StageCategory["Event"] = 3] = "Event";
-})(StageCategory || (StageCategory = {}));
+var Chapter;
+(function (Chapter) {
+    Chapter[Chapter["Chapter1"] = 0] = "Chapter1";
+    Chapter[Chapter["Chapter2"] = 1] = "Chapter2";
+    Chapter[Chapter["Event"] = 2] = "Event";
+})(Chapter || (Chapter = {}));
+var Difficulty;
+(function (Difficulty) {
+    Difficulty[Difficulty["Normal"] = 0] = "Normal";
+    Difficulty[Difficulty["Hard"] = 1] = "Hard";
+    Difficulty[Difficulty["Twist"] = 2] = "Twist";
+    Difficulty[Difficulty["Chaos"] = 3] = "Chaos";
+})(Difficulty || (Difficulty = {}));
+var NumberingType;
+(function (NumberingType) {
+    NumberingType[NumberingType["Numbered"] = 0] = "Numbered";
+    NumberingType[NumberingType["Alphabetical"] = 1] = "Alphabetical";
+    NumberingType[NumberingType["Extra"] = 2] = "Extra";
+})(NumberingType || (NumberingType = {}));
 var UnitType;
 (function (UnitType) {
     UnitType[UnitType["Melee"] = 0] = "Melee";
@@ -137,10 +124,8 @@ function getExpBonusUnitTypeLetter(unitType) {
         case UnitType.Heavy: return "重";
     }
 }
-var StageInfo = (function () {
-    function StageInfo(stageName, motivationConsumption, baseExp, baseGold, expBonusDays, goldBonusDay, expBonusUnitType, isManaBonusAllowed, isProtectionBonusAllowed) {
-        if (isManaBonusAllowed === void 0) { isManaBonusAllowed = true; }
-        if (isProtectionBonusAllowed === void 0) { isProtectionBonusAllowed = false; }
+class StageInfo {
+    constructor(stageName, motivationConsumption, baseExp, baseGold, expBonusDays, goldBonusDay, expBonusUnitType, isManaBonusAllowed = true, isProtectionBonusAllowed = false) {
         this._motivationConsumption = motivationConsumption;
         this._baseExp = baseExp;
         this._baseGold = baseGold;
@@ -149,141 +134,84 @@ var StageInfo = (function () {
         this._expBonusUnitType = expBonusUnitType;
         this._isManaBonusAllowed = isManaBonusAllowed;
         this._isProtectionBonusAllowed = isProtectionBonusAllowed;
-        if (0 <= ["N", "H", "T", "S"].indexOf(stageName[0])) {
-            this._districtLetter = stageName[2];
-            switch (stageName[0]) {
+        this._fullName = stageName;
+        let m = stageName.match(/(N|H|T|C|S|HS) ([0-9])-(([0-9])|([A-Z])|(EX([0-9])))$/);
+        if (m !== null) {
+            switch (m[1]) {
                 case "N":
-                    this._mode = StageMode.Normal;
+                    this._chapter = Chapter.Chapter1;
+                    this._difficulty = Difficulty.Normal;
                     break;
                 case "H":
-                    this._mode = StageMode.Hard;
+                    this._chapter = Chapter.Chapter1;
+                    this._difficulty = Difficulty.Hard;
                     break;
                 case "T":
-                    this._mode = StageMode.Twist;
+                    this._chapter = Chapter.Chapter1;
+                    this._difficulty = Difficulty.Twist;
+                    break;
+                case "C":
+                    this._chapter = Chapter.Chapter1;
+                    this._difficulty = Difficulty.Chaos;
                     break;
                 case "S":
-                    this._mode = StageMode.Space;
+                    this._chapter = Chapter.Chapter2;
+                    this._difficulty = Difficulty.Normal;
                     break;
+                case "HS":
+                    this._chapter = Chapter.Chapter2;
+                    this._difficulty = Difficulty.Hard;
+                    break;
+                default: throw new Error(`Unknown stage name prefix ${m[1]} in ${stageName}.`);
             }
-            if (stageName.length == 5) {
-                if (isNaN(parseInt(stageName[4], 10))) {
-                    this._category = StageCategory.Alphabetical;
-                }
-                else {
-                    this._category = StageCategory.Numbered;
-                }
+            this._districtNumber = Number.parseInt(m[2]);
+            if (m[4] !== undefined) {
+                this._numberingType = NumberingType.Numbered;
+                this._numberLetter = m[4];
+            }
+            else if (m[5] !== undefined) {
+                this._numberingType = NumberingType.Alphabetical;
+                this._numberLetter = m[5];
+            }
+            else if (m[7] !== undefined) {
+                this._numberingType = NumberingType.Extra;
+                this._numberLetter = m[7];
             }
             else {
-                this._category = StageCategory.Extra;
+                throw new Error(`Failed to parse stage name ${stageName}`);
             }
-            this._name = stageName.slice(2);
         }
         else {
-            this._districtLetter = null;
-            this._mode = null;
-            this._category = StageCategory.Event;
-            this._name = stageName;
+            this._chapter = Chapter.Event;
+            this._difficulty = null;
+            this._numberingType = null;
+            this._numberLetter = null;
         }
     }
-    Object.defineProperty(StageInfo.prototype, "fullName", {
-        get: function () {
-            if (this._category == StageCategory.Event) {
-                return this._name;
-            }
-            else {
-                return getStageModeLetter(this._mode) + " " + this._name;
-            }
-        },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(StageInfo.prototype, "shortName", {
-        get: function () {
-            if (this._category == StageCategory.Event) {
-                return this._name;
-            }
-            else {
-                return this._name;
-            }
-        },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(StageInfo.prototype, "district", {
-        get: function () { return this._districtLetter ? parseInt(this._districtLetter) : null; },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(StageInfo.prototype, "category", {
-        get: function () { return this._category; },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(StageInfo.prototype, "mode", {
-        get: function () { return this._mode; },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(StageInfo.prototype, "motivationConsumption", {
-        get: function () { return this._motivationConsumption; },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(StageInfo.prototype, "baseExp", {
-        get: function () { return this._baseExp; },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(StageInfo.prototype, "expBonusDays", {
-        get: function () { return this._expBonusDays; },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(StageInfo.prototype, "expBonusUnitType", {
-        get: function () { return this._expBonusUnitType; },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(StageInfo.prototype, "isManaBonusAllowed", {
-        get: function () { return this._isManaBonusAllowed; },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(StageInfo.prototype, "baseGold", {
-        get: function () { return this._baseGold; },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(StageInfo.prototype, "goldBonusDay", {
-        get: function () { return this._goldBonusDay; },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(StageInfo.prototype, "isProtectionBonusAllowed", {
-        get: function () { return this._isProtectionBonusAllowed; },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(StageInfo.prototype, "isNumberedStage", {
-        get: function () { return this._category == StageCategory.Numbered; },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(StageInfo.prototype, "isEventStage", {
-        get: function () { return this._category == StageCategory.Event; },
-        enumerable: true,
-        configurable: true
-    });
-    return StageInfo;
-}());
-var TableRecord = (function () {
-    function TableRecord(stageInfo, expBonusUnitType, dayOfWeek, useManaBonus, useDoubleExpBonus, useProtectionBonus) {
+    get fullName() { return this._fullName; }
+    get chapter() { return this._chapter; }
+    get district() { return this._districtNumber; }
+    get numberingType() { return this._numberingType; }
+    get difficulty() { return this._difficulty; }
+    get numberLetter() { return this._numberLetter; }
+    get motivationConsumption() { return this._motivationConsumption; }
+    get baseExp() { return this._baseExp; }
+    get expBonusDays() { return this._expBonusDays; }
+    get expBonusUnitType() { return this._expBonusUnitType; }
+    get isManaBonusAllowed() { return this._isManaBonusAllowed; }
+    get baseGold() { return this._baseGold; }
+    get goldBonusDay() { return this._goldBonusDay; }
+    get isProtectionBonusAllowed() { return this._isProtectionBonusAllowed; }
+    get isEventStage() { return this.chapter == Chapter.Event; }
+}
+class TableRecord {
+    constructor(stageInfo, expBonusUnitType, dayOfWeek, useManaBonus, useDoubleExpBonus, useProtectionBonus) {
         this._stageInfo = stageInfo;
         this._expBonusUnitType = expBonusUnitType;
         this._dayOfWeek = dayOfWeek;
         this._isDoubleExpBonusApplied = useDoubleExpBonus;
         {
-            var factors = [];
+            let factors = [];
             if (this._stageInfo.expBonusDays != null && (0 <= this._stageInfo.expBonusDays.indexOf(this._dayOfWeek))) {
                 factors.push(1.3);
                 this._isExpBonusDay = true;
@@ -308,10 +236,9 @@ var TableRecord = (function () {
             else {
                 this._isUnitTypeExpBonusApplied = false;
             }
-            var finalFactor = 1.0;
-            var finalExp = this._stageInfo.baseExp;
-            for (var _i = 0, factors_1 = factors; _i < factors_1.length; _i++) {
-                var factor = factors_1[_i];
+            let finalFactor = 1.0;
+            let finalExp = this._stageInfo.baseExp;
+            for (let factor of factors) {
                 finalFactor *= factor;
                 finalExp = Math.floor(finalExp * factor);
             }
@@ -319,7 +246,7 @@ var TableRecord = (function () {
             this._finalExp = finalExp;
         }
         {
-            var goldFactor = 1.0;
+            let goldFactor = 1.0;
             if (this._stageInfo.goldBonusDay != null && this._stageInfo.goldBonusDay == this._dayOfWeek) {
                 goldFactor *= 1.3;
                 this._isGoldBonusDay = true;
@@ -334,67 +261,46 @@ var TableRecord = (function () {
         }
         this.expColorScaleRatio = null;
     }
-    Object.defineProperty(TableRecord.prototype, "stageInfo", {
-        get: function () { return this._stageInfo; },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(TableRecord.prototype, "isUnitTypeExpBonnusApplied", {
-        get: function () { return this._isUnitTypeExpBonusApplied; },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(TableRecord.prototype, "isExpBonusDay", {
-        get: function () { return this._isExpBonusDay; },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(TableRecord.prototype, "isSpecialExpBonusDay", {
-        get: function () { return this._isSpecialExpBonusDay; },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(TableRecord.prototype, "isManaBonusApplied", {
-        get: function () { return this._isManaBonusApplied; },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(TableRecord.prototype, "isExpDoubleBonusApplied", {
-        get: function () { return this._isDoubleExpBonusApplied; },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(TableRecord.prototype, "finalExpFactor", {
-        get: function () { return this._finalExpFactor; },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(TableRecord.prototype, "finalExp", {
-        get: function () { return this._finalExp; },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(TableRecord.prototype, "finalExpPerMotivation", {
-        get: function () { return this._finalExp / this._stageInfo.motivationConsumption; },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(TableRecord.prototype, "isGoldBonusDay", {
-        get: function () { return this._isGoldBonusDay; },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(TableRecord.prototype, "finalGoldPerMotivation", {
-        get: function () { return this._stageInfo.baseGold * this._finalGoldFactor / this._stageInfo.motivationConsumption; },
-        enumerable: true,
-        configurable: true
-    });
-    return TableRecord;
-}());
+    get stageInfo() { return this._stageInfo; }
+    get isUnitTypeExpBonnusApplied() { return this._isUnitTypeExpBonusApplied; }
+    get isExpBonusDay() { return this._isExpBonusDay; }
+    get isSpecialExpBonusDay() { return this._isSpecialExpBonusDay; }
+    get isManaBonusApplied() { return this._isManaBonusApplied; }
+    get isExpDoubleBonusApplied() { return this._isDoubleExpBonusApplied; }
+    get finalExpFactor() { return this._finalExpFactor; }
+    get finalExp() { return this._finalExp; }
+    get finalExpPerMotivation() { return this._finalExp / this._stageInfo.motivationConsumption; }
+    get isGoldBonusDay() { return this._isGoldBonusDay; }
+    get finalGoldPerMotivation() { return this._stageInfo.baseGold * this._finalGoldFactor / this._stageInfo.motivationConsumption; }
+}
+function getStageNameClassName(stage) {
+    switch (stage.chapter) {
+        case Chapter.Chapter1:
+            switch (stage.difficulty) {
+                case Difficulty.Normal: return "stage_name_chapter1_normal";
+                case Difficulty.Hard: return "stage_name_chapter1_hard";
+                case Difficulty.Twist: return "stage_name_chapter1_twist";
+                case Difficulty.Chaos: return "stage_name_chapter1_chaos";
+                default: throw new Error();
+            }
+        case Chapter.Chapter2:
+            switch (stage.difficulty) {
+                case Difficulty.Normal: return "stage_name_chapter2_normal";
+                case Difficulty.Hard: return "stage_name_chapter2_hard";
+                case Difficulty.Twist: return "stage_name_chapter2_twist";
+                case Difficulty.Chaos: return "stage_name_chapter2_chaos";
+                default: throw new Error();
+            }
+        case Chapter.Event:
+            return "stage_name_event";
+        default:
+            throw new Error();
+    }
+}
 function getSelectedExpBonusUnitType() {
-    var radios = document.getElementsByName("exp_bonus_unit_type");
-    for (var i = 0; i < radios.length; ++i) {
-        var radio = radios[i];
+    let radios = document.getElementsByName("exp_bonus_unit_type");
+    for (let i = 0; i < radios.length; ++i) {
+        let radio = radios[i];
         if (radio.checked) {
             if (radio.value == "Souri") {
                 return null;
@@ -407,10 +313,10 @@ function getSelectedExpBonusUnitType() {
     return null;
 }
 function getSelectedDayOfWeek() {
-    var now = new Date();
-    var radios = document.getElementsByName("exp_bonus_day");
-    for (var index in radios) {
-        var radio = (radios[index]);
+    let now = new Date();
+    let radios = document.getElementsByName("exp_bonus_day");
+    for (let index in radios) {
+        let radio = (radios[index]);
         if (radio.checked) {
             return parseInt(radio.value);
         }
@@ -418,10 +324,10 @@ function getSelectedDayOfWeek() {
     return 0;
 }
 function setDayOfWeekSelectorLabels() {
-    var now = new Date();
-    for (var i = 0; i < 7; ++i) {
-        var labelNodeID = "exp_bonus_day_" + i;
-        var labelNode = document.getElementById(labelNodeID);
+    let now = new Date();
+    for (let i = 0; i < 7; ++i) {
+        let labelNodeID = "exp_bonus_day_" + i;
+        let labelNode = document.getElementById(labelNodeID);
         labelNode.innerText = getDayOfWeekLetter(i);
         if (i == now.getDay()) {
             labelNode.innerText += "(今日)";
@@ -690,78 +596,115 @@ function initializeStageList() {
         new StageInfo("S 5-1", 39, 10728, 5690, [水, 土], 月, UnitType.Magic),
         new StageInfo("S 5-2", 39, 10765, 5670, [日, 木], 火, UnitType.Ranged),
         new StageInfo("S 5-3", 40, 11008, 5780, [月, 金], 水, UnitType.Melee),
+        new StageInfo("HS 1-1", 50, 13484, 6990, [火, 木], 金, UnitType.Ranged),
+        new StageInfo("HS 1-2", 51, 13870, 7090, [水, 金], 土, UnitType.Magic),
+        new StageInfo("HS 1-3", 52, 14136, 7300, [木, 土], 日, UnitType.Melee),
+        new StageInfo("HS 1-4", 53, 14608, 7460, [日, 金], 月, UnitType.Heavy),
+        new StageInfo("HS 1-5", 54, 14927, 7560, [月, 土], 火, UnitType.Ranged),
+        new StageInfo("HS 1-A", 50, 13501, 6970, [日, 火], 水, UnitType.Magic),
+        new StageInfo("HS 1-B", 51, 13888, 7170, [月, 水], 木, UnitType.Heavy),
+        new StageInfo("HS 2-1", 50, 13512, 6950, [日, 火], 金, UnitType.Heavy),
+        new StageInfo("HS 2-2", 51, 13831, 7140, [月, 水], 土, UnitType.Melee),
+        new StageInfo("HS 2-3", 52, 14131, 7320, [火, 木], 日, UnitType.Magic),
+        new StageInfo("HS 2-4", 53, 14576, 7410, [水, 金], 月, UnitType.Ranged),
+        new StageInfo("HS 2-5", 54, 14924, 7550, [木, 土], 火, UnitType.Heavy),
+        new StageInfo("HS 2-A", 50, 13523, 6950, [日, 金], 水, UnitType.Melee),
+        new StageInfo("HS 2-B", 51, 13914, 7130, [月, 土], 木, UnitType.Magic),
+        new StageInfo("HS 3-1", 50, 13537, 7010, [日, 金], 火, UnitType.Melee),
+        new StageInfo("HS 3-2", 51, 13822, 7120, [月, 土], 水, UnitType.Magic),
+        new StageInfo("HS 3-3", 52, 14179, 7280, [日, 火], 木, UnitType.Ranged),
+        new StageInfo("HS 3-4", 53, 14627, 7400, [月, 水], 金, UnitType.Heavy),
+        new StageInfo("HS 3-5", 54, 14939, 7570, [火, 木], 土, UnitType.Melee),
+        new StageInfo("HS 3-A", 50, 13574, 6960, [水, 金], 日, UnitType.Ranged),
+        new StageInfo("HS 4-1", 55, 15215, 7960, [火, 木], 金, UnitType.Magic),
     ];
 }
 function updateTable() {
-    var separateEventStages = document.getElementById("separateEventStage").checked;
-    var records = [];
+    let separateEventStages = document.getElementById("separateEventStage").checked;
+    let records = [];
     {
-        var expBonusUnitType = getSelectedExpBonusUnitType();
-        var dayOfWeek = getSelectedDayOfWeek();
-        var useManaBonus = true;
-        var useDoubleExpBonus = (expBonusUnitType != null);
-        var useProtectionBonus = true;
-        for (var _i = 0, stages_1 = stages; _i < stages_1.length; _i++) {
-            var stageInfo = stages_1[_i];
-            var r = new TableRecord(stageInfo, expBonusUnitType, dayOfWeek, useManaBonus, useDoubleExpBonus, useProtectionBonus);
+        let expBonusUnitType = getSelectedExpBonusUnitType();
+        let dayOfWeek = getSelectedDayOfWeek();
+        let useManaBonus = true;
+        let useDoubleExpBonus = (expBonusUnitType != null);
+        let useProtectionBonus = true;
+        for (let stageInfo of stages) {
+            let r = new TableRecord(stageInfo, expBonusUnitType, dayOfWeek, useManaBonus, useDoubleExpBonus, useProtectionBonus);
             records.push(r);
         }
     }
     records.sort(function (a, b) {
         return b.finalExpPerMotivation - a.finalExpPerMotivation;
     });
-    var separatedEventStageRecords = [];
+    let separatedEventStageRecords = [];
     if (separateEventStages) {
         separatedEventStageRecords = records.filter(function (item, index) { return item.stageInfo.isEventStage; });
     }
     records = records.filter(function (item, index) { return 0 < item.stageInfo.motivationConsumption; });
     if (!document.getElementById("includeExtraStage").checked) {
-        records = records.filter(function (item, index) { return item.stageInfo.category != StageCategory.Extra; });
+        records = records.filter(function (item, index) { return item.stageInfo.numberingType != NumberingType.Extra; });
     }
     {
-        var selectedDifficulty = document.getElementById("difficulty").value;
+        let selectedDifficulty = document.getElementById("difficulty").value;
         if (selectedDifficulty == "All") {
         }
         else {
-            var lhs_1 = parseInt(selectedDifficulty[1]);
+            let lhs = parseInt(selectedDifficulty[1]);
             switch (selectedDifficulty[0]) {
                 case 'N': break;
                 case 'H':
-                    lhs_1 += 0.5;
+                    lhs += 0.5;
                     break;
                 case 'T':
-                    lhs_1 += 2.25;
+                    lhs += 2.25;
+                    break;
+                case 'S':
+                    lhs += 100;
                     break;
             }
-            var filter = function (element, index, array) {
-                var rhs = element.stageInfo.district;
+            let filter = function (element, index, array) {
+                let rhs = element.stageInfo.district;
                 if (rhs == null) {
                     return true;
                 }
-                switch (element.stageInfo.mode) {
-                    case StageMode.Normal: break;
-                    case StageMode.Hard:
-                        rhs += 0.5;
+                switch (element.stageInfo.chapter) {
+                    case Chapter.Chapter1:
+                        switch (element.stageInfo.difficulty) {
+                            case Difficulty.Normal: break;
+                            case Difficulty.Hard:
+                                rhs += 0.5;
+                                break;
+                            case Difficulty.Twist:
+                                rhs += 2.25;
+                                break;
+                        }
                         break;
-                    case StageMode.Twist:
-                        rhs += 2.25;
+                    case Chapter.Chapter2:
+                        rhs += 100;
+                        switch (element.stageInfo.difficulty) {
+                            case Difficulty.Normal: break;
+                            case Difficulty.Hard:
+                                rhs += 10;
+                                break;
+                            case Difficulty.Twist:
+                                rhs += 20;
+                                break;
+                        }
                         break;
-                    case StageMode.Space:
-                        rhs += 10;
+                    case Chapter.Event:
                         break;
                 }
-                return lhs_1 >= rhs;
+                return lhs >= rhs;
             };
             records = records.filter(filter);
         }
     }
     {
-        var maxFinalExpPerMotivation = records[0].finalExpPerMotivation;
-        var minFinalExpPerMotivation = records[Math.min(10, records.length) - 1].finalExpPerMotivation;
-        for (var _a = 0, records_1 = records; _a < records_1.length; _a++) {
-            var record = records_1[_a];
+        let maxFinalExpPerMotivation = records[0].finalExpPerMotivation;
+        let minFinalExpPerMotivation = records[Math.min(10, records.length) - 1].finalExpPerMotivation;
+        for (let record of records) {
             if (minFinalExpPerMotivation <= record.finalExpPerMotivation) {
-                var linearRatio = (record.finalExpPerMotivation - minFinalExpPerMotivation) / (maxFinalExpPerMotivation - minFinalExpPerMotivation);
+                let linearRatio = (record.finalExpPerMotivation - minFinalExpPerMotivation) / (maxFinalExpPerMotivation - minFinalExpPerMotivation);
                 record.expColorScaleRatio = Math.pow(linearRatio, 1.5);
             }
             else {
@@ -772,37 +715,37 @@ function updateTable() {
     if (20 < records.length && document.getElementById("only20").checked) {
         records = records.slice(0, 20);
     }
-    var table = document.getElementById("stages");
-    var table_body = document.getElementById("stages_body");
+    let table = document.getElementById("stages");
+    let table_body = document.getElementById("stages_body");
     if (table_body != null) {
         table.removeChild(table_body);
     }
-    var tBody = table.createTBody();
+    let tBody = table.createTBody();
     tBody.id = "stages_body";
     tBody.classList.add("stripe");
-    var selectedDayOfWeek = getSelectedDayOfWeek();
-    var insertRow = function (r) {
-        var newRow = tBody.insertRow();
+    let selectedDayOfWeek = getSelectedDayOfWeek();
+    let insertRow = function (r) {
+        let newRow = tBody.insertRow();
         {
-            var cell = newRow.insertCell();
+            let cell = newRow.insertCell();
             cell.innerText = r.stageInfo.fullName;
             cell.classList.add("stage_name");
-            cell.classList.add(getStageModeClassName(r.stageInfo.mode));
+            cell.classList.add(getStageNameClassName(r.stageInfo));
         }
         {
-            var cell = newRow.insertCell();
+            let cell = newRow.insertCell();
             cell.innerText = r.stageInfo.motivationConsumption.toString();
             cell.classList.add("motivation_consumption");
         }
         {
-            var cell = newRow.insertCell();
+            let cell = newRow.insertCell();
             cell.innerText = r.stageInfo.baseExp.toString();
             cell.classList.add("base_exp");
         }
         {
-            var bonudDaysCell = newRow.insertCell();
+            let bonudDaysCell = newRow.insertCell();
             bonudDaysCell.style.borderRightWidth = "0px";
-            var scaleCell = newRow.insertCell();
+            let scaleCell = newRow.insertCell();
             scaleCell.style.borderLeftWidth = "0px";
             scaleCell.style.paddingLeft = "0px";
             if (r.isSpecialExpBonusDay) {
@@ -812,9 +755,8 @@ function updateTable() {
                 scaleCell.classList.add("special_exp_bonus_day");
             }
             else {
-                for (var _i = 0, _a = r.stageInfo.expBonusDays; _i < _a.length; _i++) {
-                    var expBonusDay = _a[_i];
-                    var dayOfWeekElement = document.createElement("span");
+                for (let expBonusDay of r.stageInfo.expBonusDays) {
+                    let dayOfWeekElement = document.createElement("span");
                     bonudDaysCell.appendChild(dayOfWeekElement);
                     dayOfWeekElement.innerText = getBonusDayLetter(expBonusDay);
                     if (expBonusDay == selectedDayOfWeek) {
@@ -835,8 +777,8 @@ function updateTable() {
             }
         }
         {
-            var cell = newRow.insertCell();
-            var unitTypeElement = document.createElement("span");
+            let cell = newRow.insertCell();
+            let unitTypeElement = document.createElement("span");
             cell.appendChild(unitTypeElement);
             unitTypeElement.innerText = getExpBonusUnitTypeLetter(r.stageInfo.expBonusUnitType);
             unitTypeElement.classList.add(getExpBonusUnitTypeClassName(r.stageInfo.expBonusUnitType));
@@ -844,12 +786,12 @@ function updateTable() {
             cell.innerHTML += r.isUnitTypeExpBonnusApplied ? " x1.3" : "";
         }
         {
-            var cell = newRow.insertCell();
+            let cell = newRow.insertCell();
             cell.innerText = r.isExpDoubleBonusApplied ? "x2.0" : "";
             cell.style.textAlign = "center";
         }
         {
-            var cell = newRow.insertCell();
+            let cell = newRow.insertCell();
             cell.innerText = r.isManaBonusApplied ? "x1.2" : (r.stageInfo.isManaBonusAllowed ? "--" : "--");
             if (!r.isManaBonusApplied) {
                 cell.classList.add("inactive_mana_bonus");
@@ -857,17 +799,17 @@ function updateTable() {
             cell.style.textAlign = "center";
         }
         {
-            var cell = newRow.insertCell();
+            let cell = newRow.insertCell();
             cell.innerText = "x" + r.finalExpFactor.toFixed(2);
             cell.style.textAlign = "center";
         }
         {
-            var cell = newRow.insertCell();
+            let cell = newRow.insertCell();
             cell.innerText = r.finalExp.toFixed(0);
             cell.classList.add("final_exp");
         }
         {
-            var cell = newRow.insertCell();
+            let cell = newRow.insertCell();
             if (isFinite(r.finalExpPerMotivation)) {
                 cell.innerText = r.finalExpPerMotivation.toFixed(2);
             }
@@ -877,9 +819,9 @@ function updateTable() {
             cell.classList.add("final_exp_per_motivation");
             if (r.expColorScaleRatio != null) {
                 function lerp(a, b, t) { return a * (1 - t) + b * t; }
-                var colorR = lerp(255, 60, r.expColorScaleRatio).toFixed(0);
-                var colorG = lerp(255, 240, r.expColorScaleRatio).toFixed(0);
-                var colorB = lerp(255, 92, r.expColorScaleRatio).toFixed(0);
+                let colorR = lerp(255, 60, r.expColorScaleRatio).toFixed(0);
+                let colorG = lerp(255, 240, r.expColorScaleRatio).toFixed(0);
+                let colorB = lerp(255, 92, r.expColorScaleRatio).toFixed(0);
                 cell.style.backgroundColor = "rgb(" + colorR + ", " + colorG + ", " + colorB + ")";
                 cell.style.borderTopWidth = "1px";
                 cell.style.borderBottomWidth = "1px";
@@ -890,7 +832,7 @@ function updateTable() {
         }
         {
             {
-                var cell = newRow.insertCell();
+                let cell = newRow.insertCell();
                 cell.classList.add("final_gold_per_motivation");
                 cell.style.borderRightWidth = "0px";
                 if (0 < r.finalGoldPerMotivation) {
@@ -906,7 +848,7 @@ function updateTable() {
                 }
             }
             {
-                var cell = newRow.insertCell();
+                let cell = newRow.insertCell();
                 cell.style.borderLeftWidth = "0px";
                 cell.style.paddingLeft = "0px";
                 cell.classList.add(r.isGoldBonusDay ? "active_exp_bonus_day" : "inactive_exp_bonus_day");
@@ -916,23 +858,21 @@ function updateTable() {
         return newRow;
     };
     if (separatedEventStageRecords) {
-        for (var _b = 0, separatedEventStageRecords_1 = separatedEventStageRecords; _b < separatedEventStageRecords_1.length; _b++) {
-            var r = separatedEventStageRecords_1[_b];
-            var row = insertRow(r);
+        for (let r of separatedEventStageRecords) {
+            let row = insertRow(r);
             if (separatedEventStageRecords[separatedEventStageRecords.length - 1] == r) {
-                for (var i = 0; i < row.cells.length; ++i) {
-                    var cell = (row.cells.item(i));
+                for (let i = 0; i < row.cells.length; ++i) {
+                    let cell = (row.cells.item(i));
                     cell.style.borderBottom = "solid 2px #c0c0c0";
                 }
             }
         }
     }
-    for (var _c = 0, records_2 = records; _c < records_2.length; _c++) {
-        var r = records_2[_c];
+    for (let r of records) {
         insertRow(r);
     }
     {
-        var combo = (document.getElementById("difficulty"));
+        let combo = (document.getElementById("difficulty"));
         if (combo.value == "All") {
             combo.style.backgroundColor = null;
         }
@@ -947,22 +887,23 @@ function initializeExpTable(ev) {
     initializeStageList();
     setDayOfWeekSelectorLabels();
     {
-        var now = new Date();
-        var radio = document.getElementById("exp_bonus_day_radio_" + now.getDay());
+        let now = new Date();
+        let radio = document.getElementById("exp_bonus_day_radio_" + now.getDay());
         radio.checked = true;
     }
     {
-        var combo_1 = document.getElementById("difficulty");
-        var addOption = function (label, value, foreColor) {
-            var option = combo_1.appendChild(document.createElement("option"));
+        let combo = document.getElementById("difficulty");
+        let addOption = function (label, value, foreColor) {
+            let option = combo.appendChild(document.createElement("option"));
             option.innerText = label;
             option.style.color = foreColor;
             option.style.backgroundColor = "white";
-            var valueAttr = document.createAttribute("value");
+            let valueAttr = document.createAttribute("value");
             valueAttr.value = value;
             option.attributes.setNamedItem(valueAttr);
         };
         addOption("すべての難易度", "All", "inherit");
+        addOption("宇宙戦挙区 (ノーマル) まで", "S8", "#9200ea");
         addOption("H8 まで (推奨Lv 76-80)", "H8", "#E08000");
         addOption("N8 まで (推奨Lv 66-70)", "N8", "inherit");
         addOption("H7 まで (推奨Lv 71-75)", "H7", "#E08000");
@@ -981,17 +922,16 @@ function initializeExpTable(ev) {
         addOption("N2 まで (推奨Lv 15-30)", "N2", "inherit");
     }
     {
-        var existsEventStage = false;
-        for (var _i = 0, stages_2 = stages; _i < stages_2.length; _i++) {
-            var stageInfo = stages_2[_i];
+        let existsEventStage = false;
+        for (let stageInfo of stages) {
             if (stageInfo.isEventStage) {
                 existsEventStage = true;
                 break;
             }
         }
         if (!existsEventStage) {
-            var checkBox = document.getElementById("separateEventStage");
-            var parentLabel = checkBox.parentElement;
+            let checkBox = document.getElementById("separateEventStage");
+            let parentLabel = checkBox.parentElement;
             checkBox.style.visibility = "hidden";
             parentLabel.style.visibility = "hidden";
         }
