@@ -77,7 +77,7 @@ function initializeSumCashable(ev) {
     var tBody = table.createTBody();
     tBody.id = "table_body";
     tBody.classList.add("stripe");
-    var _loop_1 = function(cashable) {
+    var _loop_1 = function (cashable) {
         var row = tBody.insertRow();
         {
             var td = document.createElement("td");
